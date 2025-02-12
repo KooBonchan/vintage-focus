@@ -1,3 +1,7 @@
 export function Register() {
-  return <></>;
+  return (
+  <>
+  회원가입 페이지
+  </>
+  );
 }

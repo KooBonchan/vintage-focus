@@ -1,27 +1,10 @@
-import { ReactNode } from "react";
+import { Outlet } from "react-router";
 
-export function AuthLayout(
-  {children}:
-  {children:ReactNode;}) {
+export function AuthLayout() {
   return (
     <>
-    <Header></Header>
-    {children}
-    <Footer></Footer>
+    로그인입니다.
+    <Outlet />
     </>
-  );
-}
-
-function Header(){
-  return (
-  <>
-  </>
-  );
-}
-
-function Footer(){
-  return (
-  <>
-  </>
   );
 }

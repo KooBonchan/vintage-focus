@@ -1,0 +1,10 @@
+.nav {
+    width: calc(100vw - 4rem);
+    position: fixed;
+    height: 3rem;
+    top: 0;
+}
+
+.logo {
+    color: #333;
+}

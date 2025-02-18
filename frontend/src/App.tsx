@@ -8,11 +8,38 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { ProductList } from './pages/product/ProductList';
 import { ProductDetail } from './pages/product/ProductDetail';
-import { Container } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { red } from '@mui/material/colors';
+
+const baseTheme = createTheme({
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
+    fontSize: 14,
+  },
+  cssVariables: true,
+  palette: {
+    primary: {
+      main: '#cccccc',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: red.A400,
+    },
+  },
+});
 
 function App() {
   return (
-    <Container>
+    <ThemeProvider theme={baseTheme}>
+      <Router />
+    </ThemeProvider>
+  )
+}
+
+function Router(){
+  return (
     <Routes>
       <Route element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
@@ -28,8 +55,7 @@ function App() {
         </Route>
       </Route>
     </Routes>
-    </Container>
-  )
+  );
 }
 
 export default App

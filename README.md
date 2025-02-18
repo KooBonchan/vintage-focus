@@ -1,5 +1,5 @@
-# Junggo Gorae
-202502 중고거래 프로젝트 - Spring Boot + React
+# Vintage Focus
+202502 중고 카메라 거래 추천 프로젝트 - Spring Boot + React
 
 <img style="height:2rem" src="https://img.shields.io/badge/mysql-4479A1?logo=mysql&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/springboot-6DB33F?logo=springboot&logoColor=white" > <img style="height:2rem" src="https://img.shields.io/badge/react-61DAFB?logo=react&logoColor=black" >
 
@@ -39,6 +39,11 @@
 ## References
 
 ### 참고 프로젝트
+
+- [최애마켓 React](https://github.com/ChoiaeMarket/ChoiaeMarket_Web)
+- [최애마켓 Boot](https://github.com/ChoiaeMarket/ChoiaeMarket_Server)
+
+-----
 
 - [사과마켓 Vue](https://isfpp.tistory.com/161)
 - [줍줍마켓 React](https://github.com/HyunseoKoo/React_Final_Project?tab=readme-ov-file)

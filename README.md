@@ -13,7 +13,6 @@
 | 구본찬 | 김보민 | 이창현 | 양정민 | 이승관 |
 | --- | --- | --- | --- | --- |
 | 프로젝트 킥스타트 | 피그마 W/F 킥스타트 | 시장조사 | 기획서 작성 | 프로젝트 일정 조율/관리 |
-| | | | |
 
 ## 일정
 | 일정 | 업무 |
@@ -41,30 +40,33 @@
 | | 프로젝트 회고 |
 
 
-### References
-참고 프로젝트
+## References
 
-https://isfpp.tistory.com/161
+### 참고 프로젝트
 
-https://github.com/HyunseoKoo/React_Final_Project?tab=readme-ov-file
+- [사과마켓 Vue](https://isfpp.tistory.com/161)
+- [줍줍마켓 React](https://github.com/HyunseoKoo/React_Final_Project?tab=readme-ov-file)
+  - [줍줍마켓 Figma](https://www.figma.com/design/q7b02izl7kucudDRoXtmav/%EC%A4%8D%EC%A4%8D%EB%A7%88%EC%BC%93(%EC%A4%91%EA%B3%A0%EA%B1%B0%EB%9E%98%EC%84%9C%EB%B9%84%EC%8A%A4))
+- [중고거래 Boot-Thymeleaf](https://github.com/jooro122/Spring_SecondHand)
+- [싸다구마켓 Spring 5](https://github.com/junecheolpark/Market)
+- [가지마켓 Boot-React](https://github.com/gaji-market/gaji-market)
+- [바꾸바꾸 Boot-React](https://github.com/angielxx/baggu-baggu)
+- [싸그리 Boot-Vite](https://github.com/handaldog/SSAGRI)
 
-https://github.com/junecheolpark/Market
+### 참고 사이트
 
-https://github.com/gaji-market/gaji-market
+국내: [당근마켓](https://www.daangn.com/kr)
+[번개장터](https://m.bunjang.co.kr/)
+[중고나라 웹사이트](https://web.joongna.com/)
+[중고나라 카페](https://cafe.naver.com/f-e/cafes/10050146/introduction/ranking)
+[Mule](https://www.mule.co.kr/)
 
-https://github.com/angielxx/baggu-baggu
+해외: [eBay](https://www.ebay.com/)
+[Depop](https://www.depop.com/)
+[ThredUp](https://www.thredup.com/cleanout/guide)
+[Vinted](https://www.vinted.com/settings/bundle_discount)
+[Mercari](https://www.mercari.com/)
 
-https://github.com/handaldog/SSAGRI
+### 기타 참고자료
 
-https://github.com/jooro122/Spring_SecondHand
-
-
-중고거래 사이트 피그마 (참고용)
-https://www.figma.com/design/q7b02izl7kucudDRoXtmav/%EC%A4%8D%EC%A4%8D%EB%A7%88%EC%BC%93(%EC%A4%91%EA%B3%A0%EA%B1%B0%EB%9E%98%EC%84%9C%EB%B9%84%EC%8A%A4)
-
-
-
-
-
-
-
+- UseCase 도출 시 참고 - [eBay 중고상품 구매 시나리오](https://blog.naver.com/greenberry9/221176303411)

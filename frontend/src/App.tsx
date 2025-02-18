@@ -13,8 +13,8 @@ import { red } from '@mui/material/colors';
 
 const baseTheme = createTheme({
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", "sans-serif"',
-    fontSize: 14,
+    fontFamily: '"IBM Plex Sans KR", "Roboto", "Helvetica", "Arial", "sans-serif"',
+    fontSize: 28,
   },
   cssVariables: true,
   palette: {

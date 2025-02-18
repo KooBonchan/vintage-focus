@@ -1,0 +1,28 @@
+spring:
+#  Metadata
+  application.name: junggo
+  resources:
+    static-locations: classpath:/static/,classpath:/public/,classpath:/swagger-ui/
+
+#  Persistence
+  sql.init.mode: always
+  r2dbc:
+    enabled: true
+    url: r2dbc:h2:mem:///test;MODE=MySQL
+    username: sa
+    password:
+    pool:
+      enabled: true
+      max-size: 20
+  data:
+    r2dbc.repositories:
+      enabled: true
+  main.allow-bean-definition-overriding: true
+
+server.port: 8094
+
+logging.level:
+  root: DEBUG
+  org:
+    springframework:
+      data.r2dbc: TRACE

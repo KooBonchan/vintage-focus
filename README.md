@@ -46,10 +46,12 @@
 https://isfpp.tistory.com/161
 https://github.com/HyunseoKoo/React_Final_Project?tab=readme-ov-file
 https://github.com/junecheolpark/Market
-https://github.com/gaji-market/gaji-market(구현 영상까지 아주 잘되어있음)
+https://github.com/gaji-market/gaji-market
 https://github.com/angielxx/baggu-baggu
 https://github.com/handaldog/SSAGRI
 https://github.com/jooro122/Spring_SecondHand
+
+
 중고거래 사이트 피그마 (참고용)
 https://www.figma.com/design/q7b02izl7kucudDRoXtmav/%EC%A4%8D%EC%A4%8D%EB%A7%88%EC%BC%93(%EC%A4%91%EA%B3%A0%EA%B1%B0%EB%9E%98%EC%84%9C%EB%B9%84%EC%8A%A4)
 

@@ -1,1 +1,1 @@
-rootProject.name = "junggo"
+rootProject.name = "vintage-focus"

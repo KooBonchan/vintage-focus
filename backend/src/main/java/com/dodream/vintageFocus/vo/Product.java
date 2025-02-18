@@ -1,10 +1,11 @@
-package com.dodream.junggo.vo;
+package com.dodream.vintageFocus.vo;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table @Data
+@AllArgsConstructor
 public class Product {
   @Id
   private Long id;

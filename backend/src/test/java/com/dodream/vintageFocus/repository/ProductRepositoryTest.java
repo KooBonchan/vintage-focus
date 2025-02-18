@@ -1,7 +1,5 @@
-package com.dodream.junggo.repository;
+package com.dodream.vintageFocus.repository;
 
-import com.dodream.junggo.vo.Product;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,13 +1,9 @@
 # Junggo Gorae
 202502 중고거래 프로젝트 - Spring Boot + React
 
-<img style="height:3rem" src="https://img.shields.io/badge/mysql-4479A1?logo=mysql&logoColor=white">
-<img style="height:3rem" src="https://img.shields.io/badge/springboot-6DB33F?logo=springboot&logoColor=white" >
-<img style="height:3rem" src="https://img.shields.io/badge/react-61DAFB?logo=react&logoColor=black" >
+<img style="height:2rem" src="https://img.shields.io/badge/mysql-4479A1?logo=mysql&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/springboot-6DB33F?logo=springboot&logoColor=white" > <img style="height:2rem" src="https://img.shields.io/badge/react-61DAFB?logo=react&logoColor=black" >
 
-<img style="height:3rem" src="https://img.shields.io/badge/github-181717?logo=github&logoColor=white">
-<img style="height:3rem" src="https://img.shields.io/badge/git-F05032?logo=git&logoColor=white">
-<img style="height:3rem" src="https://img.shields.io/badge/figma-F24E1E?logo=figma&logoColor=white">
+<img style="height:2rem" src="https://img.shields.io/badge/github-181717?logo=github&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/git-F05032?logo=git&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/figma-F24E1E?logo=figma&logoColor=white">
 
 ## Collaborators
 | 구본찬 | 김보민 | 이창현 | 양정민 | 이승관 |

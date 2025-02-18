@@ -8,9 +8,11 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { ProductList } from './pages/product/ProductList';
 import { ProductDetail } from './pages/product/ProductDetail';
+import { Container } from '@mui/material';
 
 function App() {
   return (
+    <Container>
     <Routes>
       <Route element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
@@ -26,6 +28,7 @@ function App() {
         </Route>
       </Route>
     </Routes>
+    </Container>
   )
 }
 

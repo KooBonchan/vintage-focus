@@ -55,6 +55,14 @@
 
 ### 참고 사이트
 
+중고 카메라:
+[UA카메라](https://uacamera.co.kr/)
+[효성카메라](https://hscdna.com/)
+[KEH](https://www.keh.com/)
+[MPB](https://www.mpb.com/)
+
+--------------------------------
+
 국내: [당근마켓](https://www.daangn.com/kr)
 [번개장터](https://m.bunjang.co.kr/)
 [중고나라 웹사이트](https://web.joongna.com/)

@@ -1,35 +1,33 @@
-import { Button, styled } from "@mui/material";
+import styled from "@emotion/styled/macro";
+import { Button } from "@mui/material";
 import { Link, NavLink, useNavigate } from "react-router";
 
-const Nav = styled('nav')({
-  padding: '2rem',
-  backgroundColor: '#444456',
-  color: 'white',
-  display: 'flex',
-})
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  font-color: #aaffff;
+`;
 
 export function Header() {
     let navigate = useNavigate();
     
     return (
-      <Nav>
-        <NavLink
+      <nav>
+        <StyledNavLink
           to="/"
           className={({ isActive }) =>
             isActive ? "active" : ""
           }
         >
           <Button>Home</Button>
-        </NavLink>
-  
-        <Link to="/product">
+        </StyledNavLink>
+        <StyledNavLink to="/product">
           <Button>Products</Button>
-        </Link>
-        <Link to="/about">
+        </StyledNavLink>
+        <StyledNavLink to="/about">
           <Button>About Us</Button>
-        </Link>
+        </StyledNavLink>
         
-      </Nav>
+      </nav>
     );
   }
   

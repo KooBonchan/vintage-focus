@@ -1,8 +1,8 @@
-import styled from "@emotion/styled/macro";
+import newStyled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { Link, NavLink, useNavigate } from "react-router";
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = newStyled(NavLink)`
   text-decoration: none;
   font-color: #aaffff;
 `;

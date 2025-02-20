@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
 import { Footer } from "./Footer";
-import { Header } from "./Header";
+import HeaderBar from "./HeaderBar";
 
 export function HeaderFooterLayout() {
   return (
     <>
-      <Header></Header>
+      <HeaderBar></HeaderBar>
       <Outlet />
       <Footer></Footer>
     </>

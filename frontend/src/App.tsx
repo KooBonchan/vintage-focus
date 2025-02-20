@@ -10,6 +10,7 @@ import { ProductList } from './pages/product/ProductList';
 import { ProductDetail } from './pages/product/ProductDetail';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { red } from '@mui/material/colors';
+import AppTheme from './theme/AppTheme';
 
 const baseTheme = createTheme({
   typography: {
@@ -18,6 +19,9 @@ const baseTheme = createTheme({
   },
   cssVariables: true,
   palette: {
+    background:{
+      default: '#135799',
+    },
     primary: {
       main: '#cccccc',
     },
@@ -27,14 +31,20 @@ const baseTheme = createTheme({
     error: {
       main: red.A400,
     },
+    text: {
+      primary: '#ff0000',
+      secondary: '#00ffff',
+    },
   },
 });
 
 function App() {
   return (
-    <ThemeProvider theme={baseTheme}>
-      <Router />
-    </ThemeProvider>
+    <AppTheme>
+      <ThemeProvider theme={{baseTheme}}>
+        <Router />
+      </ThemeProvider>
+    </AppTheme>
   )
 }
 
@@ -49,6 +59,7 @@ function Router(){
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
+        {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="product">
           <Route index element={<ProductList />} />
           <Route path=":id" element={<ProductDetail />} />

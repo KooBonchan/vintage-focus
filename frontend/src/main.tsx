@@ -8,7 +8,7 @@ import { CssBaseline } from '@mui/material'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       <App />
     </BrowserRouter>
   </StrictMode>,

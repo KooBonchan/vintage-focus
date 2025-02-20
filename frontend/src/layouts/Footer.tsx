@@ -1,9 +1,8 @@
-import styled from "@emotion/styled";
-import { Box, Container } from "@mui/material";
+import { Box, Container, styled } from "@mui/material";
 
-const FooterBlock = styled(Container)`
+const FooterBlock = styled(Container)({
   padding: '2rem',
-`;
+});
 
 export function Footer() {
   return (

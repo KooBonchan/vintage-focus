@@ -46,6 +46,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.security:spring-security-oauth2-client:6.4.2")
 
+//	Utils
+	implementation("jakarta.validation:jakarta.validation-api:3.1.1")
+
 }
 
 tasks.withType<Test> {

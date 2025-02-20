@@ -5,6 +5,9 @@
 
 <img style="height:2rem" src="https://img.shields.io/badge/github-181717?logo=github&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/git-F05032?logo=git&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/figma-F24E1E?logo=figma&logoColor=white">
 
+## Links
+[팀 피그마](https://www.figma.com/design/CLvsOTqOlGz8o6IRNSQigx/Vintage-Focus?node-id=0-1&t=sT9lJ4xssj1izO5I-1)
+
 ## Collaborators
 | 구본찬 | 김보민 | 이창현 | 양정민 | 이승관 |
 | --- | --- | --- | --- | --- |

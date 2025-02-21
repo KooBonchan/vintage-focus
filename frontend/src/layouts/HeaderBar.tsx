@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import Logo from '../components/Logo';
-import Sitemark from '../marketing-page/components/SitemarkIcon';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import { styled } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import * as React from 'react';
+import { NavLink } from 'react-router';
 import ColorModeIconDropdown from '../components/ColorModeIconDropdown';
-import { Typography } from '@mui/material';
+import Logo from '../components/Logo';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -29,6 +29,18 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   boxShadow: theme.shadows[1],
   padding: '8px 12px',
 }));
+
+type RouteMetadata = {
+  name: string,
+  route: string,
+};
+
+const routes: RouteMetadata[] = [
+  { name : "홈", route: "/", },
+  { name : "상품", route: "/product", },
+  { name : "문의", route: "/about", },
+  { name : "매각", route: "/about", },
+];
 
 export default function HeaderBar() {
   const [open, setOpen] = React.useState(false);
@@ -49,27 +61,18 @@ export default function HeaderBar() {
     >
       <Container maxWidth="lg">
         <StyledToolbar variant="dense" disableGutters>
+
+          {/* md size */}
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            <Typography color='primary' >로고자리입니다.</Typography>
+            <Logo />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button variant="text" color="info" size="small">
-                Features
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Testimonials
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Highlights
-              </Button>
-              <Button variant="text" color="info" size="small">
-                Pricing
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                FAQ
-              </Button>
-              <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                Blog
-              </Button>
+              {routes.map(({name, route}) => (
+                <NavLink to={route} key={name}>
+                  <Button variant="text" color="info" size="small">
+                    {name}
+                  </Button>
+                </NavLink>
+              ))}
             </Box>
           </Box>
           <Box
@@ -87,6 +90,9 @@ export default function HeaderBar() {
             </Button>
             <ColorModeIconDropdown />
           </Box>
+          {/* md size end */}
+
+          {/* xs size */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
             <ColorModeIconDropdown size="medium" />
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
@@ -134,6 +140,7 @@ export default function HeaderBar() {
               </Box>
             </Drawer>
           </Box>
+          {/* xs size end */}
         </StyledToolbar>
       </Container>
     </AppBar>

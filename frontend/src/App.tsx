@@ -1,16 +1,16 @@
-import { Route, Routes } from 'react-router'
-import './App.css'
+import { createTheme, ThemeProvider, useTheme } from '@mui/material';
+import { red } from '@mui/material/colors';
+import { Route, Routes } from 'react-router';
+import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
+import { About } from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
 import { Home } from './pages/Home';
-import { About } from './pages/About';
-import { ProductList } from './pages/product/ProductList';
 import { ProductDetail } from './pages/product/ProductDetail';
-import { createTheme, ThemeProvider } from '@mui/material';
-import { red } from '@mui/material/colors';
-import AppTheme from './theme/AppTheme';
+import { ProductList } from './pages/product/ProductList';
+import { useEffect } from 'react';
 
 const baseTheme = createTheme({
   typography: {
@@ -39,12 +39,16 @@ const baseTheme = createTheme({
 });
 
 function App() {
+  const theme = useTheme();
+  useEffect(() => {
+    document.body.style.backgroundColor= theme.palette.background.default;
+  }, [theme]);
+
   return (
-    <AppTheme>
-      <ThemeProvider theme={{baseTheme}}>
-        <Router />
-      </ThemeProvider>
-    </AppTheme>
+    
+    <ThemeProvider theme={{baseTheme}}>
+      <Router />
+    </ThemeProvider>
   )
 }
 

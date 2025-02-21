@@ -1,7 +1,10 @@
 import { NavLink } from "react-router";
-import { Typography } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
+
+
 
 export default function Logo(){
+  const theme = useTheme();
   return (
   <NavLink to="/">
     <Typography
@@ -9,7 +12,7 @@ export default function Logo(){
       noWrap
       sx={{
         mr: 2,
-        color: 'inherit',
+        color: theme.palette.text.primary,
         textDecoration: 'none',
       }}
     >

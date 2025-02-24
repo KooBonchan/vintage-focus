@@ -84,3 +84,4 @@
 ### 기타 참고자료
 
 - UseCase 도출 시 참고 - [eBay 중고상품 구매 시나리오](https://blog.naver.com/greenberry9/221176303411)
+- [대시보드 템플릿](https://adminmart.com/)

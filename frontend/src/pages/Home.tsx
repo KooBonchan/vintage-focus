@@ -64,10 +64,10 @@ export function Home() {
   };
 
   return (
-    <ThemedContainer sx={{ height: '80vh' }}>
+    <ThemedContainer sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}> {/* flex로 설정 */}
       <StyledImageBox id="image" />
       {/* 네 개의 아이템을 감싸는 큰 DIV */}
-      <Grid container spacing={0} sx={{ padding: 5 }}>
+      <Grid container spacing={2} sx={{ padding: 2 }}>
         {[
           { id: "camera", label: "중고카메라" },
           { id: "dicam", label: "중고디카" },
@@ -118,6 +118,61 @@ export function Home() {
           </Grid>
         ))}
       </Grid>
+
+      {/* New Item을 감싸는 큰 div */}
+      <Box
+        sx={{
+          width: "100%",
+          backgroundColor: "none", // 배경색을 none으로 설정
+          padding: 4,
+          textAlign: "center",
+          borderRadius: 2,
+          marginTop: 4,
+        }}
+      >
+        <Typography variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}>
+          New Item
+        </Typography>
+
+        {/* New Item 박스 두 개 가로 배치 */}
+        <Grid container spacing={2} sx={{ marginTop: 3 }}>
+          <Grid item xs={12} sm={6}>
+            <Box
+              sx={{
+                width: "100%",
+                height: 300,
+                backgroundColor: "grey.300",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="h6">박스 1</Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box
+              sx={{
+                width: "100%",
+                height: 300,
+                backgroundColor: "grey.400",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="h6">박스 2</Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+
+
+
+
+
     </ThemedContainer>
   );
 }

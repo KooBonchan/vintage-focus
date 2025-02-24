@@ -2,6 +2,7 @@ package com.dodream.vintageFocus.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.SignalType;
 import reactor.test.StepVerifier;

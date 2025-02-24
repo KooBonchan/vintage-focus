@@ -42,6 +42,7 @@ dependencies {
 	testImplementation("io.r2dbc:r2dbc-h2:1.0.0.RELEASE")
 	implementation("io.asyncer:r2dbc-mysql:1.3.2")
 
+
 //	Spring Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.security:spring-security-oauth2-client:6.4.2")

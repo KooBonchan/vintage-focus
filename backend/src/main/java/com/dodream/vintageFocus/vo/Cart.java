@@ -13,8 +13,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("Order")
-public class Order {
+@Table("Cart")
+public class Cart {
   @Id
   private UUID id;
 

@@ -14,24 +14,17 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("Payment")
-public class Payment {
+@Table("Delivery")
+public class Delivery {
   @Id
   private UUID id;
-  private UUID order_id;
-
-  private Integer sumProduct;
-  private Integer deliveryFee;
-  private Integer totalPrice;
-  private Boolean isCanceled;
-  private Instant paymentDate;
   private Long memberId;
+  private String status;
+  private Instant orderDate;
+  private String address;
+  private String detailAddress;
+  private String zipcode;
+  private String recipientName;
+  private String recipientPhone;
 
-  // Custom method to format total price for display
-  public String getFormattedTotalPrice() {
-    if (totalPrice == null) {
-      return "0";
-    }
-    return String.format("%,d", totalPrice);
-  }
 }

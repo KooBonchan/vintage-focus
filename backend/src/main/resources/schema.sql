@@ -104,16 +104,26 @@ CREATE TABLE IF NOT EXISTS `review_image` (
     `review_id` Long NOT NULL
 );
 
-
-
 CREATE TABLE IF NOT EXISTS `Payment` (
     `id` BINARY(16) NOT NULL,
+    `delivery_id` BINARY(16) NOT NULL,
     `sum_product` Int NULL,
     `delivery_fee` Int NULL,
     `total_price` Int NULL,
     `is_canceled` Boolean NULL,
     `payment_date` Timestamp NULL,
     `member_id` Long NOT NULL
+);
+CREATE TABLE IF NOT EXISTS `Delivery` (
+    `id` BINARY(16) NOT NULL PRIMARY KEY,
+    `member_id` Long NOT NULL,
+    `status` VARCHAR(50) NULL COMMENT 'pending, shipped, delivered',
+    `order_date` Timestamp NULL,
+    `address` VARCHAR(255) NULL,
+    `detail_address` VARCHAR(255) NULL,
+    `zipcode` VARCHAR(10) NULL,
+    `recipient_name` VARCHAR(100) NULL,
+    `recipient_phone` VARCHAR(20) NULL
 );
 
 CREATE TABLE IF NOT EXISTS `Cart` (

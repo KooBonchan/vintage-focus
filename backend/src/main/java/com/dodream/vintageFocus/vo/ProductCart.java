@@ -13,12 +13,12 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("product_order")
-public class ProductOrder {
+@Table("product_cart")
+public class ProductCart {
   @Id
   private Long id;
   private Long productId;
-  private UUID orderId;
+  private UUID cartId;
   private Integer quantity;
   private Integer price;
   private Integer sum;

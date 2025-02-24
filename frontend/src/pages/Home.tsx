@@ -121,53 +121,140 @@ export function Home() {
 
       {/* New Item을 감싸는 큰 div */}
       <Box
+  sx={{
+    width: "100%",
+    backgroundColor: "none", // 배경색을 none으로 설정
+    padding: 4,
+    textAlign: "center",
+    borderRadius: 2,
+    marginTop: 4,
+  }}
+>
+  <Typography variant="h3" sx={{ color: 'black', fontWeight: 'bold' }}>
+    New Item
+  </Typography>
+
+  {/* New Item 박스 두 개 가로 배치 */}
+  <Grid container spacing={2} sx={{ marginTop: 3 }}>
+    <Grid item xs={12} sm={6}>
+      <Box
         sx={{
           width: "100%",
-          backgroundColor: "none", // 배경색을 none으로 설정
-          padding: 4,
-          textAlign: "center",
+          height: 300,
+          backgroundImage: "url(/image/sample/sample.jpg)", // 이미지를 여기에 삽입
+          backgroundSize: "cover", // 이미지 크기를 맞춤
+          backgroundPosition: "center", // 이미지 위치 중앙
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           borderRadius: 2,
-          marginTop: 4,
+          position: "relative", // 자식 요소의 위치 설정을 위해 필요
+          "&:hover": {
+            // 마우스 오버 시
+            "& .image": {
+              filter: "brightness(0.3)", // 이미지 어두워지게 설정
+              transition: "filter 0.3s ease-in-out", // 밝기 변경 부드럽게 전환
+            },
+            "& .text": {
+              opacity: 1, // 텍스트를 보이게 함
+              color: 'white', // 글씨 색상 검정
+              transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
+            }
+          }
         }}
       >
-        <Typography variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}>
-          New Item
+        <Box
+          className="image"
+          sx={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundImage: "url(/image/sample/sample.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: 2,
+            transition: "filter 0.3s ease-in-out", // 밝기 변경 부드럽게 전환
+          }}
+        />
+        <Typography
+          className="text"
+          variant="h4"
+          sx={{
+            position: "relative",
+            color: 'transparent', // 기본적으로 텍스트는 안 보이게 설정
+            fontWeight: 'lighter',
+            opacity: 0, // 기본적으로 텍스트는 투명하게 설정
+            transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
+          }}
+        >
+          sample
         </Typography>
-
-        {/* New Item 박스 두 개 가로 배치 */}
-        <Grid container spacing={2} sx={{ marginTop: 3 }}>
-          <Grid item xs={12} sm={6}>
-            <Box
-              sx={{
-                width: "100%",
-                height: 300,
-                backgroundColor: "grey.300",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2,
-              }}
-            >
-              <Typography variant="h6">박스 1</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box
-              sx={{
-                width: "100%",
-                height: 300,
-                backgroundColor: "grey.400",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2,
-              }}
-            >
-              <Typography variant="h6">박스 2</Typography>
-            </Box>
-          </Grid>
-        </Grid>
       </Box>
+    </Grid>
+
+    <Grid item xs={12} sm={6}>
+      <Box
+        sx={{
+          width: "100%",
+          height: 300,
+          backgroundImage: "url(/image/sample/sample2.jpg)", // 두 번째 이미지를 여기에 삽입
+          backgroundSize: "cover", // 이미지 크기를 맞춤
+          backgroundPosition: "center", // 이미지 위치 중앙
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 2,
+          position: "relative", // 자식 요소의 위치 설정을 위해 필요
+          "&:hover": {
+            // 마우스 오버 시
+            "& .image": {
+              filter: "brightness(0.3)", // 이미지 어두워지게 설정
+              transition: "filter 0.3s ease-in-out", // 밝기 변경 부드럽게 전환
+            },
+            "& .text": {
+              opacity: 1, // 텍스트를 보이게 함
+              color: 'white', // 글씨 색상 검정
+              transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
+            }
+          }
+        }}
+      >
+        <Box
+          className="image"
+          sx={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundImage: "url(/image/sample/sample2.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: 2,
+            transition: "filter 0.3s ease-in-out", // 밝기 변경 부드럽게 전환
+          }}
+        />
+        <Typography
+          className="text"
+          variant="h4"
+          sx={{
+            position: "relative",
+            color: 'transparent', // 기본적으로 텍스트는 안 보이게 설정
+            fontWeight: 'lighter',
+            opacity: 0, // 기본적으로 텍스트는 투명하게 설정
+            transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
+          }}
+        >
+          sample2
+        </Typography>
+      </Box>
+    </Grid>
+  </Grid>
+</Box>
+
+
 
 
 

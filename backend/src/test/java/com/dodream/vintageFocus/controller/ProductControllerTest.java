@@ -24,10 +24,11 @@ class ProductControllerTest {
 
   @Test
   void getAllProducts_shouldReturnProducts(){
-    Product product1 = new Product(1L, "Product 1", 100);
-    Product product2 = new Product(2L, "Product 2", 200);
+    Product product1 = createSampleProduct(1L);
+    Product product2 = createSampleProduct(2L);
 
-    when(productService.getAllProduct())
+
+    when(productService.getAllProducts())
       .thenReturn(Flux.just(product1, product2));
 
     webTestClient.get().uri("/product")
@@ -40,13 +41,20 @@ class ProductControllerTest {
 
   @Test
   void getAllProducts_WhenError_ShouldReturn500(){
-    when(productService.getAllProduct())
+    when(productService.getAllProducts())
       .thenReturn(Flux.error(new RuntimeException("DB Error")));
 
     webTestClient.get().uri("/product")
       .exchange()
       .expectStatus()
       .is5xxServerError();
+  }
+
+  private Product createSampleProduct(long mockId){
+    Product product = Product.builder()
+      .id(mockId)
+      .build();
+    return product;
   }
 
 }

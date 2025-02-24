@@ -15,7 +15,7 @@ public class ProductController {
 
   @RequestMapping("")
   public Flux<Product> getAllProduct(){
-    return productService.getAllProduct();
+    return productService.getAllProducts();
   }
 
 }

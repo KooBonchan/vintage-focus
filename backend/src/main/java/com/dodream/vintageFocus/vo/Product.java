@@ -59,14 +59,17 @@ public class Product {
   @Column("stock")
   private Integer stock;
 
-  @Column("Field")
-  private Integer field1;
+  @PositiveOrZero(message = "Consumer price cannot be negative")
+  @Column("consumer_price")
+  private Integer consumerPrice;
 
-  @Column("Field2")
-  private Integer field2;
+  @PositiveOrZero(message = "Selling price cannot be negative")
+  @Column("selling_price")
+  private Integer sellingPrice;
 
-  @Column("Field3")
-  private Integer field3;
+  @PositiveOrZero(message = "Rental price cannot be negative")
+  @Column("rental_price")
+  private Integer rentalPrice;
 
   @PositiveOrZero(message = "Review count cannot be negative")
   @Column("review_count")

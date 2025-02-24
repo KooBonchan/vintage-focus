@@ -86,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `product` (
        COMMENT 'Enum(1-POOR, 2-FAIR, 3-GOOD, 4-EXCELLENT, 5-MINT)',
 
     `stock` INT NULL,
-    `Field` INT NULL,
-    `Field2` INT NULL,
-    `Field3` INT NULL,
+    `consumer_price` INT NULL,
+    `selling_price` INT NULL,
+    `rental_price` INT NULL,
     `review_count` INT NULL,
     `like_count` INT NULL,
     `view_count` INT NULL

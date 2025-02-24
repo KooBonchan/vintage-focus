@@ -41,7 +41,7 @@ public class ProductService {
 
   }
 
-  public Flux<Product> getAllProduct(){ return productRepository.findAll(); }
+  public Flux<Product> getAllProducts(){ return productRepository.findAll(); }
   public Mono<Product> getProductById(Long id){ return productRepository.findById(id); }
   public Mono<Product> getProductByName(String name){ return productRepository.findByName(name); }
 

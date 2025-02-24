@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `lental` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `member_id` Long NULL,
     `lental_fee` Int NULL,
     `delivery_fee` Int NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `lental` (
 );
 
 CREATE TABLE IF NOT EXISTS `product_image` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `product_payment` (
 );
 
 CREATE TABLE IF NOT EXISTS `board_image` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `lental-order` (
 );
 
 CREATE TABLE IF NOT EXISTS `member` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(63) NULL,
     `password` VARCHAR(127) NULL,
     `phone` VARCHAR(20) NULL,
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `member` (
 );
 
 CREATE TABLE IF NOT EXISTS `product` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `code` VARCHAR(63) NULL,
     `model_name` VARCHAR(63) NULL,
     `product_name` VARCHAR(255) NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `product` (
     `category_1` VARCHAR(63) NULL,
     `category_2` VARCHAR(63) NULL,
     `category_3` VARCHAR(63) NULL,
-    `condition` TINYINT NOT NULL
+    `condition` TINYINT NOT NULL default 3
        COMMENT 'Enum(1-POOR, 2-FAIR, 3-GOOD, 4-EXCELLENT, 5-MINT)',
 
     `stock` INT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `product` (
 );
 
 CREATE TABLE IF NOT EXISTS `product_detail_image` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `product_detail_image` (
 );
 
 CREATE TABLE IF NOT EXISTS `Review` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `content` VARCHAR(255) NULL,
     `write_date` Date NULL,
     `update_date` Date NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `Review` (
 );
 
 CREATE TABLE IF NOT EXISTS `review_image` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `Order` (
 );
 
 CREATE TABLE IF NOT EXISTS `board` (
-    `id` Long NOT NULL,
+    `id` Long NOT NULL AUTO_INCREMENT,
     `category` VARCHAR(63) NULL,
     `writer_id` Long NULL,
     `write_date` Date NULL,

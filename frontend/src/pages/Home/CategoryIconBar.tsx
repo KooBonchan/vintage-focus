@@ -1,4 +1,4 @@
-import { Grid, Box, Typography, useTheme } from "@mui/material";
+import { Grid2, Box, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 
 // 아이콘 URL들 예시 (실제 이미지 파일이 해당 경로에 존재하는지 확인 필요)
@@ -7,6 +7,7 @@ const iconUrls = {
   dicam: '/image/dicam-icon.png',
   lens: '/image/lens-icon.png',
   accessories: '/image/accessories-icon.png',
+  rental: '/image/rental-icon.png', // 대여 아이콘 추가
 };
 
 // 마우스 오버 시 아이콘 변경용 이미지 URL
@@ -15,6 +16,7 @@ const hoverIconUrls = {
   dicam: '/image/dicam-icon2.png',
   lens: '/image/lens-icon2.png',
   accessories: '/image/accessories-icon2.png',
+  rental: '/image/rental-icon2.png', // 대여 아이콘 hover 이미지 추가
 };
 
 // 아이템과 연결된 경로 설정
@@ -23,6 +25,7 @@ const routes = {
   dicam: '/dicam',
   lens: '/lens',
   accessories: '/accessories',
+  rental: '/rental', // 대여 페이지 경로 추가
 };
 
 const CategoryIconBar = () => {
@@ -38,14 +41,25 @@ const CategoryIconBar = () => {
   };
 
   return (
-    <Grid container spacing={2} sx={{ padding: 2 }}>
+    <Grid2
+      container
+      spacing={6}
+      sx={{
+        padding: 2,
+        justifyContent: "center", // 아이템을 수평으로 중앙 정렬
+        alignItems: "center", // 아이템을 수직으로 중앙 정렬
+        display: 'flex',
+        flexWrap: 'wrap', // 화면 크기에 맞춰 항목들이 줄바꿈될 수 있게 함
+      }}
+    >
       {[
         { id: "camera", label: "중고카메라" },
         { id: "dicam", label: "중고디카" },
         { id: "lens", label: "중고렌즈" },
-        { id: "accessories", label: "카메라부속" }
+        { id: "accessories", label: "카메라부속" },
+        { id: "rental", label: "대여" }, // 대여 카테고리 추가
       ].map((item) => (
-        <Grid item xs={6} sm={6} md={3} key={item.id}> {/* xs={6}으로 한 행에 2개씩 배치 */}
+        <Grid2 item xs={6} sm={6} md={2.4} key={item.id}>
           <Box
             sx={{
               width: "100%",
@@ -69,8 +83,8 @@ const CategoryIconBar = () => {
             >
               <Box
                 sx={{
-                  width: 80,
-                  height: 80,
+                  width: 50,
+                  height: 50,
                   backgroundImage: `url(${
                     hoveredItem === item.id ? hoverIconUrls[item.id] : iconUrls[item.id]
                   })`,
@@ -95,9 +109,9 @@ const CategoryIconBar = () => {
               {item.label} {/* 아이템 텍스트 */}
             </Typography>
           </Box>
-        </Grid>
+        </Grid2>
       ))}
-    </Grid>
+    </Grid2>
   );
 };
 

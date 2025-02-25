@@ -106,7 +106,7 @@ export default function WeeklyBestGallery() {
                 <ProductTitle variant="h6">
                   제품 제목 {index + 1}
                 </ProductTitle>
-                <ProductPrice variant="h6">가격</ProductPrice>
+                <ProductPrice variant="h6">100,000</ProductPrice>
               </TitlePriceContainer>
 
               {/* 제품 소개 내용 */}

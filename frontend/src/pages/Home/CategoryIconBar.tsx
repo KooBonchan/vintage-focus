@@ -27,7 +27,7 @@ const routes = {
 
 const CategoryIconBar = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const theme = useTheme(); // Get theme to check dark or light mode
+  const theme = useTheme(); // 다크 모드 또는 라이트 모드를 확인하기 위한 테마 객체
 
   const handleMouseEnter = (id: string) => {
     setHoveredItem(id); // 마우스 오버 시 해당 아이템의 ID 설정
@@ -45,7 +45,7 @@ const CategoryIconBar = () => {
         { id: "lens", label: "중고렌즈" },
         { id: "accessories", label: "카메라부속" }
       ].map((item) => (
-        <Grid item xs={6} sm={6} md={3} key={item.id}> {/* Changed to xs={6} for 2 items per row */}
+        <Grid item xs={6} sm={6} md={3} key={item.id}> {/* xs={6}으로 한 행에 2개씩 배치 */}
           <Box
             sx={{
               width: "100%",
@@ -77,7 +77,8 @@ const CategoryIconBar = () => {
                   backgroundSize: "contain", // 이미지를 비율 유지하면서 맞춤
                   backgroundPosition: "center",
                   borderRadius: 2,
-                  transition: "background-image 0.3s ease-in-out", // 부드러운 전환 효과 추가
+                  transition: "background-image 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out", // 배경 이미지, 크기, 그림자 전환 추가
+                  transform: hoveredItem === item.id ? "scale(1.1) rotate(10deg)" : "scale(1)", // 아이콘 크기 변화 및 회전
                 }}
               />
             </a>
@@ -85,9 +86,10 @@ const CategoryIconBar = () => {
             <Typography
               variant="h6"
               sx={{
-                color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dynamically change text color based on dark/light mode
+                color: theme.palette.mode === 'dark' ? 'white' : 'black', // 다크 모드일 때 글씨 색상을 흰색으로 변경
                 fontWeight: 'regular',
                 fontSize: '18px', // 텍스트 크기
+                transition: "color 0.3s ease-in-out", // 텍스트 색상 전환 부드럽게
               }}
             >
               {item.label} {/* 아이템 텍스트 */}

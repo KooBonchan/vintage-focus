@@ -23,5 +23,4 @@ public class CartDTO {
   private String expireDate;
 
   private List<CartProductDTO> products;
-  private List<CartRentalDTO> rentals;
 }

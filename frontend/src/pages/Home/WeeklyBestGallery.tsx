@@ -13,12 +13,13 @@ const WeeklyBestContainer = styled(Box)({
   borderRadius: 2,
   flexDirection: "column",
   padding: 2,
+  marginTop: 100,
 });
 
-const WeeklyBestTitle = styled(Typography)({
-  color: "black",
+const WeeklyBestTitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.mode === "dark" ? "#fff" : "black", // 다크모드일 경우 흰색으로
   fontWeight: "bold",
-});
+}));
 
 const ProductCard = styled(Box)({
   width: "100%",
@@ -30,17 +31,19 @@ const ProductCard = styled(Box)({
   borderRadius: 2,
   flexDirection: "column",
   padding: 2,
+  
 });
 
 const ImageContainer = styled(Box)({
   width: "100%",
   height: "60%",
   backgroundColor: "lightgray",
-  borderRadius: 2,
+  borderRadius: 10,
   marginBottom: 2,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  
 });
 
 const TitlePriceContainer = styled(Box)({
@@ -48,6 +51,7 @@ const TitlePriceContainer = styled(Box)({
   justifyContent: "space-between",
   width: "100%",
   marginBottom: 1,
+  marginTop: 1,
 });
 
 const ProductTitle = styled(Typography)({
@@ -56,7 +60,9 @@ const ProductTitle = styled(Typography)({
 
 const ProductPrice = styled(Typography)({
   fontWeight: "bold",
+  color: "#AA1F3E", // 올바른 색상 코드
 });
+
 
 const ProductDescription = styled(Typography)({
   color: "text.secondary",
@@ -87,7 +93,7 @@ export default function WeeklyBestGallery() {
                 <ProductTitle variant="h6">
                   제품 제목 {index + 1}
                 </ProductTitle>
-                <ProductPrice variant="h6">$ 가격</ProductPrice>
+                <ProductPrice variant="h6">가격</ProductPrice>
               </TitlePriceContainer>
 
               {/* 제품 소개 내용 */}

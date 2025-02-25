@@ -7,13 +7,11 @@ import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import { About } from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
-import { Home } from './pages/Home';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
 import { useEffect } from 'react';
-import Cart from './pages/order/Cart';
-
-
+import Cart from './pages/order/cart';
+import { Home } from './pages/Home';
 
 const baseTheme = createTheme({
   typography: {

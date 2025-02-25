@@ -1,16 +1,16 @@
 import { createTheme, ThemeProvider, useTheme } from '@mui/material';
 import { red } from '@mui/material/colors';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router';
 import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
-import { About } from './pages/About';
+import About from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
 import { Home } from './pages/Home';
 import { ProductDetail } from './pages/product/ProductDetail';
 import { ProductList } from './pages/product/ProductList';
-import { useEffect } from 'react';
 
 const baseTheme = createTheme({
   typography: {
@@ -62,7 +62,9 @@ function Router(){
 
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
+        <Route path="sell-inquiry" element={<About />} />
+        <Route path="buy-inquiry" element={<About />} />
+        <Route path="rental-inquiry" element={<About />} />
         {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="product">
           <Route index element={<ProductList />} />
@@ -73,4 +75,4 @@ function Router(){
   );
 }
 
-export default App
+export default App;

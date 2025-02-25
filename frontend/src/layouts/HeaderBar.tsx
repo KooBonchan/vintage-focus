@@ -36,10 +36,13 @@ type RouteMetadata = {
 };
 
 const routes: RouteMetadata[] = [
-  { name : "홈", route: "/", },
-  { name : "상품", route: "/product", },
-  { name : "문의", route: "/about", },
-  { name : "매각", route: "/about", },
+ { name: "홈", route: "/" },
+  { name: "상품", route: "/product" },
+  { name: "공지사항", route: "/notice" }, // ✅ 변경됨
+  { name: "매각문의", route: "/sell-inquiry" }, // ✅ 변경됨
+  { name: "구매문의", route: "/buy-inquiry" }, // ✅ 변경됨
+  { name: "대여문의", route: "/rental-inquiry" }, // ✅ 변경됨
+  { name: "구매후기", route: "/reviews" }, // ✅ 변경됨
 ];
 
 export default function HeaderBar() {

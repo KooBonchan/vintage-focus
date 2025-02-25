@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -8,8 +8,10 @@ import {
   Tabs,
   Tab,
   Pagination,
+  IconButton,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
+import EditIcon from "@mui/icons-material/Edit"; // ✏️ 펜 아이콘 추가
 import { useNavigate, useLocation } from "react-router-dom"; // ✅ URL을 감지하고 변경하는 훅
 
 // ✅ 카테고리별 URL 매핑
@@ -50,9 +52,7 @@ export default function BoardList() {
   const selectedTab = categoryRoutes[currentPath] || "매각문의"; // 기본값: 매각문의
 
   // ✅ 선택한 탭의 데이터 필터링
-  const filteredArticles = articleInfo.filter(
-    (article) => article.tag === selectedTab
-  );
+  const filteredArticles = articleInfo.filter((article) => article.tag === selectedTab);
 
   // ✅ 현재 페이지에 맞는 데이터 추출
   const paginatedArticles = filteredArticles.slice(
@@ -62,7 +62,7 @@ export default function BoardList() {
 
   return (
     <Box sx={{ width: "100%", maxWidth: 800, margin: "0 auto", textAlign: "center", p: 2 }}>
-      {/* ✅ 탭 메뉴 */}
+      {/* ✅ 상단 탭 메뉴 */}
       <Tabs
         value={selectedTab}
         onChange={(event, newValue) => {
@@ -80,6 +80,23 @@ export default function BoardList() {
           <Tab key={category} label={category} value={category} />
         ))}
       </Tabs>
+
+      {/* ✅ 게시글 작성 버튼 */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
+        <IconButton
+          sx={{ mr: 1 }}
+          onClick={() => navigate(`/write?category=${selectedTab}`)} // ✅ 현재 카테고리 전달
+        >
+          <EditIcon /> {/* ✏️ 펜 아이콘 */}
+        </IconButton>
+        <Typography
+          variant="body1"
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate(`/write?category=${selectedTab}`)} // ✅ 현재 카테고리 전달
+        >
+          문의하기
+        </Typography>
+      </Box>
 
       {/* ✅ 카드 리스트 */}
       <Grid container spacing={2} sx={{ mt: 3 }}>

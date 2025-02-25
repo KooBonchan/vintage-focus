@@ -12,6 +12,7 @@ import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
 import Cart from './pages/order/cart';
 import { Home } from './pages/Home';
+import WritePage from './pages/WritePage';
 
 
 const baseTheme = createTheme({
@@ -72,6 +73,7 @@ function Router(){
         <Route path="sell-inquiry" element={<About />} />
         <Route path="buy-inquiry" element={<About />} />
         <Route path="rental-inquiry" element={<About />} />
+        <Route path="write" element={<WritePage />} />
         {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="about" element={<About />} />
         <Route path="product">

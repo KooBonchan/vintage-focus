@@ -56,16 +56,21 @@ const TitlePriceContainer = styled(Box)({
   width: "100%",
   marginBottom: 1,
   marginTop: 1,
+  paddingLeft: 25,  // 왼쪽에 여유 공간 추가
+  paddingRight: 25, // 오른쪽에 여유 공간 추가
 });
 
 const ProductTitle = styled(Typography)({
   fontWeight: "bold",
+
 });
 
 const ProductPrice = styled(Typography)({
   fontWeight: "bold",
   color: "#AA1F3E", // 올바른 색상 코드
+
 });
+
 
 const ProductDescription = styled(Typography)({
   color: "text.secondary",
@@ -106,8 +111,8 @@ export default function WeeklyBestGallery() {
 
               {/* 제품 소개 내용 */}
               <ProductDescription variant="body2">
-                제품 소개 내용 {index + 1}이 여기에 들어갑니다. 이 제품은 매우
-                유용하고 고품질입니다. 다양한 기능과 이점을 제공합니다.
+             {index + 1} 카메라 / 제조사 기흥 / 상태 A급
+            
               </ProductDescription>
             </ProductCard>
           </Grid2>

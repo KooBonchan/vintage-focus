@@ -48,10 +48,7 @@ function App() {
   return (
     
     <ThemeProvider theme={{baseTheme}}>
-        <Routes>
-          <Route path="/product" element={<ProductList />} />
-          <Route path="/order/cart" element={<Cart />} />
-        </Routes>
+      <Router />
     </ThemeProvider>
     
   )
@@ -69,11 +66,17 @@ function Router(){
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
+
         <Route path="product">
           <Route index element={<ProductList />} />
           <Route path=":id" element={<ProductDetail />} />
         </Route>
-      </Route>
+
+        <Route path="order">
+          <Route path="cart" element={<Cart />} />
+        </Route>
+
+        </Route>
     </Routes>
   );
 }

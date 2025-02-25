@@ -21,5 +21,5 @@ public class ProductCart {
   private UUID cartId;
   private Integer quantity;
   private Integer price;
-  private Integer sum;
+  private Integer subtotal;
 }

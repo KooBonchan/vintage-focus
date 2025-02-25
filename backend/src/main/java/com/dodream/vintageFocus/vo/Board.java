@@ -19,11 +19,11 @@ public class Board {
   private Long id;
 
   private String category;
-  private Long writerId;
   private LocalDate writeDate;
   private LocalDate updateDate;
   private Boolean secured;
   private String content;
   private String title;
   private Long memberId;
+  private String writer;
 }

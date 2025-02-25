@@ -1,2 +1,4 @@
-.vscode/*
-.idea/*
+vscode/*
+node_modules
+.idea/
+

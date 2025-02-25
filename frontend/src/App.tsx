@@ -8,9 +8,10 @@ import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import About from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
-import { Home } from './pages/Home';
 import { ProductDetail } from './pages/product/ProductDetail';
 import { ProductList } from './pages/product/ProductList';
+import { Home } from './pages/Home';
+
 
 const baseTheme = createTheme({
   typography: {

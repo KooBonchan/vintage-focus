@@ -97,8 +97,7 @@ export default function Cart() {
                       <RemoveIcon />
                     </IconButton>
                     <Typography sx={{ mx: 1 }}>{item.quantity}</Typography>
-                    <IconButton onClick={() => { handleQuantityChange(item.id, -1); }}>
-
+                    <IconButton onClick={() => { handleQuantityChange(item.id, 1); }}>
                       <AddIcon />
                     </IconButton>
                   </Box>

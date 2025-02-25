@@ -50,12 +50,10 @@ function App() {
   return (
     
     <ThemeProvider theme={{baseTheme}}>
-      <Router>
         <Routes>
           <Route path="/product" element={<ProductList />} />
-          <Route path="pages/order/cart" element={<Cart />} />
+          <Route path="/order/cart" element={<Cart />} />
         </Routes>
-      </Router>
     </ThemeProvider>
     
   )

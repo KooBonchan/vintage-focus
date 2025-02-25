@@ -8,8 +8,9 @@ import { About } from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
 import { ProductDetail } from './pages/product/ProductDetail';
-import { ProductList } from './pages/product/ProductList';
+import ProductList from "./pages/product/ProductList";
 import { useEffect } from 'react';
+import Cart from './pages/order/cart';
 import { Home } from './pages/Home';
 
 const baseTheme = createTheme({
@@ -47,13 +48,18 @@ function App() {
   return (
     
     <ThemeProvider theme={{baseTheme}}>
-      <Router />
+        <Routes>
+          <Route path="/product" element={<ProductList />} />
+          <Route path="/order/cart" element={<Cart />} />
+        </Routes>
     </ThemeProvider>
+    
   )
 }
 
 function Router(){
   return (
+    
     <Routes>
       <Route element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
@@ -63,7 +69,6 @@ function Router(){
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
-        {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="product">
           <Route index element={<ProductList />} />
           <Route path=":id" element={<ProductDetail />} />
@@ -73,4 +78,4 @@ function Router(){
   );
 }
 
-export default App
+export default App;

@@ -61,7 +61,7 @@ export function Footer() {
           </Box>
         </Box>
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-              Subscribe for weekly updates. No spams ever!
+            Your Perfect Shot Begins with Vintage.
             </Typography>
             {/* <InputLabel htmlFor="email-newsletter">Email</InputLabel> */}
             {/* <Stack direction="row" spacing={1} useFlexGap> */}

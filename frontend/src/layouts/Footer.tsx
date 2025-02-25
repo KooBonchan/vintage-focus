@@ -17,6 +17,7 @@ function Copyright() {
 }
 
 export function Footer() {
+  
   return (
     <Container
       sx={{
@@ -26,6 +27,7 @@ export function Footer() {
         gap: { xs: 4, sm: 8 },
         py: { xs: 8, sm: 10 },
         textAlign: { sm: 'center', md: 'left' },
+        marginTop:5,
       }}
     >
       <Box
@@ -45,16 +47,25 @@ export function Footer() {
           }}
         >
           <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
-            <Typography>Vintage Focus</Typography>
-            <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, mt: 2 }}>
-              Join the newsletter
-            </Typography>
+          <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4,
+            minWidth: { xs: '100%', sm: '60%' },
+          }}
+        >
+          <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
+            {/* 로고를 추가합니다 */}
+            <img src="/image/logo.png" alt="Vintage Focus Logo" style={{ width: 'auto', maxWidth: '200px', marginBottom: '16px' }} />
+          </Box>
+        </Box>
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
               Subscribe for weekly updates. No spams ever!
             </Typography>
-            <InputLabel htmlFor="email-newsletter">Email</InputLabel>
-            <Stack direction="row" spacing={1} useFlexGap>
-              <TextField
+            {/* <InputLabel htmlFor="email-newsletter">Email</InputLabel> */}
+            {/* <Stack direction="row" spacing={1} useFlexGap> */}
+              {/* <TextField
                 id="email-newsletter"
                 hiddenLabel
                 size="small"
@@ -69,9 +80,9 @@ export function Footer() {
                   },
                 }}
                 sx={{ width: '250px' }}
-              />
+              /> */}
               {/* TODO: Form으로 변경? 필요 */}
-              <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 size="small"
@@ -79,7 +90,7 @@ export function Footer() {
               >
                 Subscribe
               </Button>
-            </Stack>
+            </Stack> */}
           </Box>
         </Box>
         <Box

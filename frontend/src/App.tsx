@@ -11,6 +11,7 @@ import { Register } from './pages/auth/Register';
 import { ProductDetail } from './pages/product/ProductDetail';
 import { ProductList } from './pages/product/ProductList';
 import { Home } from './pages/Home';
+import WritePage from './pages/WritePage';
 
 
 const baseTheme = createTheme({
@@ -66,6 +67,7 @@ function Router(){
         <Route path="sell-inquiry" element={<About />} />
         <Route path="buy-inquiry" element={<About />} />
         <Route path="rental-inquiry" element={<About />} />
+        <Route path="write" element={<WritePage />} />
         {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="product">
           <Route index element={<ProductList />} />

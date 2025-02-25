@@ -16,7 +16,7 @@ const StyledImageBox = styled("div")(({ theme }) => ({
   borderColor: theme.palette.grey[200],
   backgroundImage:
     theme.palette.mode === "dark"
-      ? "url(/image/main.jpg)" // 다크 모드일 때 이미지
+      ? "url(/image/main2.jpg)" // 다크 모드일 때 이미지
       : "url(/image/main.jpg)", // 기본 모드일 때 이미지
   backgroundSize: "cover",
   backgroundPosition: "center",

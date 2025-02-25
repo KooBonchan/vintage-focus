@@ -1,17 +1,19 @@
 import { createTheme, ThemeProvider, useTheme } from '@mui/material';
 import { red } from '@mui/material/colors';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router';
 import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
-import { About } from './pages/About';
+import About from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
-import { useEffect } from 'react';
 import Cart from './pages/order/cart';
 import { Home } from './pages/Home';
+import WritePage from './pages/WritePage';
+
 
 const baseTheme = createTheme({
   typography: {
@@ -65,6 +67,11 @@ function Router(){
 
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
+        <Route path="sell-inquiry" element={<About />} />
+        <Route path="buy-inquiry" element={<About />} />
+        <Route path="rental-inquiry" element={<About />} />
+        <Route path="write" element={<WritePage />} />
+        {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="about" element={<About />} />
 
         <Route path="product">

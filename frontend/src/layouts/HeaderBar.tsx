@@ -21,9 +21,9 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
+  // borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
   backdropFilter: 'blur(24px)',
-  border: '1px solid',
+  // border: '1px solid',
   borderColor: theme.palette.divider,
   backgroundColor: `rgba(${theme.palette.background.default} / 0.4)`,
   boxShadow: theme.shadows[1],
@@ -36,10 +36,13 @@ type RouteMetadata = {
 };
 
 const routes: RouteMetadata[] = [
-  { name : "홈", route: "/", },
-  { name : "상품", route: "/product", },
-  { name : "문의", route: "/about", },
-  { name : "매각", route: "/about", },
+ { name: "홈", route: "/" },
+  { name: "상품", route: "/product" },
+  { name: "공지사항", route: "/notice" }, // ✅ 변경됨
+  { name: "매각문의", route: "/sell-inquiry" }, // ✅ 변경됨
+  { name: "구매문의", route: "/buy-inquiry" }, // ✅ 변경됨
+  { name: "대여문의", route: "/rental-inquiry" }, // ✅ 변경됨
+  { name: "구매후기", route: "/reviews" }, // ✅ 변경됨
 ];
 
 export default function HeaderBar() {

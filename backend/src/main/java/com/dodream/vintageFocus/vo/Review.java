@@ -19,6 +19,7 @@ public class Review {
   private Long id;
 
   private String content;
+  private String writer;
   private LocalDate writeDate;
   private LocalDate updateDate;
   private Boolean secured;

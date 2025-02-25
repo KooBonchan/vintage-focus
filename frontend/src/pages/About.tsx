@@ -1,7 +1,12 @@
-export function About() {
+
+import * as React from 'react';
+import BoardList from './BoardList';
+
+export default function About() {
+
   return (
     <>
-    사이트 설명
+    <BoardList/>
     </>
   );
 }

@@ -13,12 +13,13 @@ const WeeklyBestContainer = styled(Box)({
   borderRadius: 2,
   flexDirection: "column",
   padding: 2,
+  marginTop: 100,
 });
 
-const WeeklyBestTitle = styled(Typography)({
-  color: "black",
+const WeeklyBestTitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.mode === "dark" ? "#fff" : "black", // 다크모드일 경우 흰색으로
   fontWeight: "bold",
-});
+}));
 
 const ProductCard = styled(Box)({
   width: "100%",
@@ -36,11 +37,17 @@ const ImageContainer = styled(Box)({
   width: "100%",
   height: "60%",
   backgroundColor: "lightgray",
-  borderRadius: 2,
+  borderRadius: 10,
   marginBottom: 2,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  overflow: "hidden", // 넘치는 부분 숨기기
+  transition: "transform 0.3s ease, box-shadow 0.3s ease", // 부드러운 전환 효과 추가
+  "&:hover": {
+    transform: "scale(1.02)", // 마우스를 올렸을 때 이미지를 살짝 확대
+    boxShadow: "0px 4px 20px rgba(179, 179, 179, 0.2)", // 그림자 효과 추가
+  },
 });
 
 const TitlePriceContainer = styled(Box)({
@@ -48,15 +55,22 @@ const TitlePriceContainer = styled(Box)({
   justifyContent: "space-between",
   width: "100%",
   marginBottom: 1,
+  marginTop: 1,
+  paddingLeft: 25,  // 왼쪽에 여유 공간 추가
+  paddingRight: 25, // 오른쪽에 여유 공간 추가
 });
 
 const ProductTitle = styled(Typography)({
   fontWeight: "bold",
+
 });
 
 const ProductPrice = styled(Typography)({
   fontWeight: "bold",
+  color: "#AA1F3E", // 올바른 색상 코드
+
 });
+
 
 const ProductDescription = styled(Typography)({
   color: "text.secondary",
@@ -76,9 +90,14 @@ export default function WeeklyBestGallery() {
               {/* 이미지 박스 */}
               <ImageContainer>
                 <img
-                  src="image_url_here"
+                  src={`/image/sample/bestsample/bestsample${index + 1}.jpg`} 
                   alt={`product ${index + 1}`}
-                  style={{ width: "100%", height: "auto", borderRadius: 4 }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover", // 비율을 유지하면서 세로 꽉 채우기
+                    borderRadius: 4,
+                  }}
                 />
               </ImageContainer>
 
@@ -87,13 +106,13 @@ export default function WeeklyBestGallery() {
                 <ProductTitle variant="h6">
                   제품 제목 {index + 1}
                 </ProductTitle>
-                <ProductPrice variant="h6">$ 가격</ProductPrice>
+                <ProductPrice variant="h6">가격</ProductPrice>
               </TitlePriceContainer>
 
               {/* 제품 소개 내용 */}
               <ProductDescription variant="body2">
-                제품 소개 내용 {index + 1}이 여기에 들어갑니다. 이 제품은 매우
-                유용하고 고품질입니다. 다양한 기능과 이점을 제공합니다.
+             {index + 1} 카메라 / 제조사 기흥 / 상태 A급
+            
               </ProductDescription>
             </ProductCard>
           </Grid2>

@@ -78,7 +78,23 @@ const NewItemGallery = () => {
                 transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
               }}
             >
-              sample
+              Camera
+              <br></br>
+           Canon | Price: $499
+            </Typography>
+            <Typography
+              className="text"
+              variant="body2"
+              sx={{
+                position: "relative",
+                color: 'transparent', // 기본적으로 텍스트는 안 보이게 설정
+                fontWeight: 'lighter',
+                opacity: 0, // 기본적으로 텍스트는 투명하게 설정
+                transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
+                marginTop: 1,
+              }}
+            >
+            
             </Typography>
           </Box>
         </Grid>
@@ -136,13 +152,29 @@ const NewItemGallery = () => {
                 transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
               }}
             >
-              sample2
+              Camera
+              <br></br>
+            Canon | Price: $499
+            </Typography>
+            <Typography
+              className="text"
+              variant="body2"
+              sx={{
+                position: "relative",
+                color: 'transparent', // 기본적으로 텍스트는 안 보이게 설정
+                fontWeight: 'lighter',
+                opacity: 0, // 기본적으로 텍스트는 투명하게 설정
+                transition: "opacity 0.3s ease-in-out, color 0.3s ease-in-out", // 부드러운 전환
+                marginTop: 1,
+              }}
+            >
+
             </Typography>
           </Box>
         </Grid>
       </Grid>
     </Box>
   );
-}
+};
 
 export default NewItemGallery;

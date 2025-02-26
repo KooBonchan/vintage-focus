@@ -82,21 +82,21 @@ export default function BoardList() {
       </Tabs>
 
       {/* ✅ 게시글 작성 버튼 */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
-        <IconButton
-          sx={{ mr: 1 }}
-          onClick={() => navigate(`/write?category=${selectedTab}`)} // ✅ 현재 카테고리 전달
-        >
-          <EditIcon /> {/* ✏️ 펜 아이콘 */}
-        </IconButton>
-        <Typography
-          variant="body1"
-          sx={{ cursor: "pointer" }}
-          onClick={() => navigate(`/write?category=${selectedTab}`)} // ✅ 현재 카테고리 전달
-        >
-          문의하기
-        </Typography>
-      </Box>
+<Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
+  <IconButton
+    sx={{ mr: 1 }}
+    onClick={() => navigate(`/rental-detail?category=${selectedTab}`)} // ✅ RentalDetail.jsx로 이동
+  >
+    <EditIcon /> {/* ✏️ 펜 아이콘 */}
+  </IconButton>
+  <Typography
+    variant="body1"
+    sx={{ cursor: "pointer" }}
+    onClick={() => navigate(`/rental-detail?category=${selectedTab}`)} // ✅ RentalDetail.jsx로 이동
+  >
+    문의하기
+  </Typography>
+</Box>
 
       {/* ✅ 카드 리스트 */}
       <Grid container spacing={2} sx={{ mt: 3 }}>

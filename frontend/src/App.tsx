@@ -8,11 +8,12 @@ import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import About from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
+import { Home } from './pages/Home';
+import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
-import Cart from './pages/order/cart';
-import { Home } from './pages/Home';
-import WritePage from './pages/WritePage';
+import RentalDetail from './pages/Detail/RentalDetail';
+
 
 
 const baseTheme = createTheme({
@@ -50,10 +51,7 @@ function App() {
   return (
     
     <ThemeProvider theme={{baseTheme}}>
-        <Routes>
-          <Route path="/product" element={<ProductList />} />
-          <Route path="/order/cart" element={<Cart />} />
-        </Routes>
+      <Router />
     </ThemeProvider>
     
   )
@@ -73,12 +71,17 @@ function Router(){
         <Route path="sell-inquiry" element={<About />} />
         <Route path="buy-inquiry" element={<About />} />
         <Route path="rental-inquiry" element={<About />} />
-        <Route path="write" element={<WritePage />} />
+        <Route path="/rental-detail" element={<RentalDetail />} /> {/* ✅ 추가된 라우트 */}
         {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="about" element={<About />} />
+
         <Route path="product">
           <Route index element={<ProductList />} />
           <Route path=":id" element={<ProductDetail />} />
+        </Route>
+
+        <Route path="order">
+          <Route path="cart" element={<Cart />} />
         </Route>
       </Route>
     </Routes>
@@ -86,3 +89,4 @@ function Router(){
 }
 
 export default App;
+

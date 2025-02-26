@@ -102,44 +102,43 @@ export default function BoardList() {
         </Typography>
       </Box>
 
-      {/* ✅ 카드 리스트 */}
-      <Grid container spacing={2} sx={{ mt: 3 }}>
-        {paginatedArticles.map((article) => (
-          <Grid item xs={12} sm={6} key={article.id}>
-            <Card
-              sx={{
-                p: 2,
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                boxShadow: "none",
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-                position: "relative",
-              }}
-            >
-              {/* ✅ 제목 & 잠금 아이콘 */}
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Typography variant="subtitle1" fontWeight="bold">
-                  {article.title}
-                </Typography>
-                <LockIcon fontSize="small" />
-              </Box>
+      {paginatedArticles.map((article) => (
+  <Grid item xs={12} sm={6} key={article.id}>
+    <Card
+      sx={{
+        p: 2,
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        boxShadow: "none",
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
+        position: "relative",
+        cursor: "pointer", // 🔹 클릭 가능하도록 설정
+        "&:hover": { backgroundColor: "#f9f9f9" }, // 🔹 마우스 호버 시 배경색 변경
+      }}
+      onClick={() => navigate(`${currentPath}/detail/${article.id}`)} // 🔹 상세 페이지로 이동
+    >
+      {/* ✅ 제목 & 잠금 아이콘 */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography variant="subtitle1" fontWeight="bold">
+          {article.title}
+        </Typography>
+        <LockIcon fontSize="small" />
+      </Box>
 
-              {/* ✅ 아이디 및 게시 날짜, 조회수 */}
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
-                <Typography variant="caption" color="text.primary" fontWeight="bold">
-                  {article.authors[0].name}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {article.date} • 조회수 {article.views}
-                </Typography>
-              </Box>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-
+      {/* ✅ 아이디 및 게시 날짜, 조회수 */}
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
+        <Typography variant="caption" color="text.primary" fontWeight="bold">
+          {article.authors[0].name}
+        </Typography>
+        <Typography variant="caption" color="text.secondary">
+          {article.date} • 조회수 {article.views}
+        </Typography>
+      </Box>
+    </Card>
+  </Grid>
+))}
       {/* ✅ 페이지네이션 추가 */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
         <Pagination

@@ -1,123 +1,87 @@
-import { Grid2 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Box, Grid, Pagination, Typography } from "@mui/material";
+import { useState } from "react";
+import WeeklyBestItem from "./WeeklyBestItem";  // WeeklyBestItem 컴포넌트를 import
 
-// styled 컴포넌트 정의
-const WeeklyBestContainer = styled(Box)({
-  width: "100%",
-  backgroundColor: "grey.200",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  borderRadius: 2,
-  flexDirection: "column",
-  padding: 2,
-  marginTop: 100,
-});
+const ITEMS_PER_PAGE = 16;
 
-const WeeklyBestTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.mode === "dark" ? "#fff" : "black", // 다크모드일 경우 흰색으로
-  fontWeight: "bold",
-}));
+const sampleProducts = [
+  { image: "https://placehold.co/250x250", name: "빈티지 카메라", price: "120,000" },
+  { image: "https://placehold.co/250x250", name: "필름 카메라", price: "150,000" },
+  { image: "https://placehold.co/250x250", name: "DSLR 카메라", price: "1,200,000" },
+  { image: "https://placehold.co/250x250", name: "미러리스 카메라", price: "900,000" },
+  { image: "https://placehold.co/250x250", name: "즉석 카메라", price: "80,000" },
+  { image: "https://placehold.co/250x250", name: "액션 카메라", price: "500,000" },
+  { image: "https://placehold.co/250x250", name: "중형 카메라", price: "2,500,000" },
+  { image: "https://placehold.co/250x250", name: "파노라마 카메라", price: "700,000" },
+  { image: "https://placehold.co/250x250", name: "필름 컴팩트 카메라", price: "400,000" },
+  { image: "https://placehold.co/250x250", name: "카메라 렌즈", price: "300,000" },
+  { image: "https://placehold.co/250x250", name: "삼각대", price: "120,000" },
+  { image: "https://placehold.co/250x250", name: "카메라 가방", price: "150,000" },
+  { image: "https://placehold.co/250x250", name: "야외 촬영용 카메라", price: "1,100,000" },
+  { image: "https://placehold.co/250x250", name: "고프로", price: "600,000" },
+  { image: "https://placehold.co/250x250", name: "카메라 플래시", price: "200,000" },
+  { image: "https://placehold.co/250x250", name: "스튜디오 조명", price: "1,500,000" },
+  { image: "https://placehold.co/250x250", name: "카메라 필터", price: "50,000" },
+  { image: "https://placehold.co/250x250", name: "무선 리모컨", price: "30,000" },
+];
 
-const ProductCard = styled(Box)({
-  width: "100%",
-  height: 400,
-  backgroundColor: "grey.200",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  borderRadius: 2,
-  flexDirection: "column",
-  padding: 2,
-});
+const WeeklyBestContainer = (props: any) => {
+  return (
+    <Box
+    sx={{
+      width: "100%",
+      backgroundColor: "transparent",  // 배경색 제거
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: 2,
+      flexDirection: "column",
+      padding: 2,
+      marginTop: 20, 
+    }}
+  >
+    {props.children}
+  </Box>
+  );
+};
 
-const ImageContainer = styled(Box)({
-  width: "100%",
-  height: "60%",
-  backgroundColor: "lightgray",
-  borderRadius: 10,
-  marginBottom: 2,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  overflow: "hidden", // 넘치는 부분 숨기기
-  transition: "transform 0.3s ease, box-shadow 0.3s ease", // 부드러운 전환 효과 추가
-  "&:hover": {
-    transform: "scale(1.02)", // 마우스를 올렸을 때 이미지를 살짝 확대
-    boxShadow: "0px 4px 20px rgba(179, 179, 179, 0.2)", // 그림자 효과 추가
-  },
-});
+const WeeklyBestTitle = (props: any) => {
+  return (
+    <Typography variant="h3" sx={{ fontWeight: "bold", color: "black" }}>
+      {props.children}
+    </Typography>
+  );
+};
 
-const TitlePriceContainer = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  width: "100%",
-  marginBottom: 1,
-  marginTop: 1,
-  paddingLeft: 25,  // 왼쪽에 여유 공간 추가
-  paddingRight: 25, // 오른쪽에 여유 공간 추가
-});
+const WeeklyBestGallery = () => {
+  const [page, setPage] = useState(1);
 
-const ProductTitle = styled(Typography)({
-  fontWeight: "bold",
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentPageProducts = sampleProducts.slice(startIndex, endIndex);
 
-});
+  const totalPages = Math.ceil(sampleProducts.length / ITEMS_PER_PAGE);
 
-const ProductPrice = styled(Typography)({
-  fontWeight: "bold",
-  color: "#AA1F3E", // 올바른 색상 코드
-
-});
-
-
-const ProductDescription = styled(Typography)({
-  color: "text.secondary",
-  textAlign: "left",
-});
-
-export default function WeeklyBestGallery() {
   return (
     <WeeklyBestContainer>
-      <WeeklyBestTitle variant="h3">Weekly Best</WeeklyBestTitle>
+      <WeeklyBestTitle>Weekly Best</WeeklyBestTitle>
 
-      {/* Weekly Best 박스를 4칸 3줄로 배치 */}
-      <Grid2 container spacing={2} sx={{ marginTop: 3 }}>
-        {Array.from({ length: 12 }).map((_, index) => (
-          <Grid2 size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-            <ProductCard>
-              {/* 이미지 박스 */}
-              <ImageContainer>
-                <img
-                  src={`/image/sample/bestsample/bestsample${index + 1}.jpg`} 
-                  alt={`product ${index + 1}`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover", // 비율을 유지하면서 세로 꽉 채우기
-                    borderRadius: 4,
-                  }}
-                />
-              </ImageContainer>
-
-              {/* 제목과 가격이 가로로 나란히 배치된 div */}
-              <TitlePriceContainer>
-                <ProductTitle variant="h6">
-                  제품 제목 {index + 1}
-                </ProductTitle>
-                <ProductPrice variant="h6">100,000</ProductPrice>
-              </TitlePriceContainer>
-
-              {/* 제품 소개 내용 */}
-              <ProductDescription variant="body2">
-             {index + 1} 카메라 / 제조사 기흥 / 상태 A급
-            
-              </ProductDescription>
-            </ProductCard>
-          </Grid2>
+      <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
+        {currentPageProducts.map((product, index) => (
+          <WeeklyBestItem key={index} product={product} />
         ))}
-      </Grid2>
+      </Grid>
+
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(event, value) => setPage(value)}
+          color="primary"
+        />
+      </Box>
     </WeeklyBestContainer>
   );
-}
+};
+
+export default WeeklyBestGallery;

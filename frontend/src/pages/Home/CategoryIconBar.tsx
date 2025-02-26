@@ -1,3 +1,4 @@
+import { Architecture, BatteryChargingFull, Camera, CameraAlt, CameraAltOutlined, CameraAltTwoTone, CameraOutlined, Lens, SdCard, SdCardOutlined, Settings, ShoppingBag, Storefront, SupervisorAccount, SupervisorAccountOutlined, Videocam, VideocamOutlined } from "@mui/icons-material";
 import { Grid2, Box, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 
@@ -18,6 +19,24 @@ const hoverIconUrls = {
   accessories: '/image/accessories-icon2.png',
   rental: '/image/rental-icon2.png', // 대여 아이콘 hover 이미지 추가
 };
+
+const iconComponents = {
+  camera: CameraAlt,
+  dicam: Videocam,  // 예시로 다른 아이콘 사용
+  lens: Camera,
+  accessories: SdCard, // 다른 아이콘으로 변경
+  rental: SupervisorAccount, // 다른 아이콘으로 변경
+};
+const hoverIconComponents = {
+  camera: CameraAltOutlined, // hover 시에 사용할 아이콘
+  dicam: VideocamOutlined, // hover 아이콘 예시
+  lens: CameraOutlined, // hover 시에 다른 아이콘
+  accessories: SdCardOutlined, // hover 시에 다른 아이콘
+  rental: SupervisorAccountOutlined, // hover 시에 다른 아이콘
+};
+
+
+
 
 // 아이템과 연결된 경로 설정
 const routes = {
@@ -57,21 +76,23 @@ const CategoryIconBar = () => {
         { id: "dicam", label: "중고디카" },
         { id: "lens", label: "중고렌즈" },
         { id: "accessories", label: "카메라부속" },
-        { id: "rental", label: "대여" }, // 대여 카테고리 추가
-      ].map((item) => (
+        { id: "rental", label: "대여" }, 
+      ].map((item) => {
+        const Icon = hoveredItem === item.id ? hoverIconComponents[item.id] : iconComponents[item.id];
+        return (
         <Grid2 item xs={6} sm={6} md={2.4} key={item.id}>
           <Box
             sx={{
               width: "100%",
               height: "100%",
               display: "flex",
-              flexDirection: "column", // 상하로 배치
+              flexDirection: "column", 
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "none",
               borderRadius: 2,
               padding: 2,
-              textAlign: "center", // 텍스트 정렬
+              textAlign: "center",
             }}
           >
             {/* 아이템 이미지 */}
@@ -85,16 +106,16 @@ const CategoryIconBar = () => {
                 sx={{
                   width: 50,
                   height: 50,
-                  backgroundImage: `url(${
-                    hoveredItem === item.id ? hoverIconUrls[item.id] : iconUrls[item.id]
-                  })`,
-                  backgroundSize: "contain", // 이미지를 비율 유지하면서 맞춤
-                  backgroundPosition: "center",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   borderRadius: 2,
                   transition: "background-image 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out", // 배경 이미지, 크기, 그림자 전환 추가
                   transform: hoveredItem === item.id ? "scale(1.1) rotate(10deg)" : "scale(1)", // 아이콘 크기 변화 및 회전
                 }}
-              />
+              >
+                <Icon sx={{fontSize: 50}} />
+              </Box>
             </a>
             {/* 아이템 텍스트 */}
             <Typography
@@ -110,7 +131,7 @@ const CategoryIconBar = () => {
             </Typography>
           </Box>
         </Grid2>
-      ))}
+      )})}
     </Grid2>
   );
 };

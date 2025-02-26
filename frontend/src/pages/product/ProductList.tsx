@@ -68,7 +68,7 @@ function ProductList() {
     <>
       <Navbar />
       <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "20px 0" }}>
-        <FilterBar />
+        
         {/* 상품 리스트 */}
         <Grid2 container spacing={3} columns={4} justifyContent="center">
           {currentPageProducts.map((product, index) => (

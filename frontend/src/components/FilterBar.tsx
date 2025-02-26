@@ -16,16 +16,24 @@ function FilterBar() {
         alignItems: "center",
         gap: 2,
         p: 2,
-        bgcolor: "#f8f9fa", // 배경색
-        borderRadius: 2, // 둥글게
+        borderRadius: "25px",
+        width: "fit-content",
+        mx: "auto", 
       }}
     >
+      
       {/* 제조사 선택 */}
-      <FormControl sx={{ minWidth: 140 }} size="small">
+      <FormControl sx={{ minWidth: 100 }} size="small">
         <InputLabel>제조사</InputLabel>
         <Select
           value={manufacturer}
           onChange={(e) => setManufacturer(e.target.value)}
+          sx={{
+            border: "1px solid #bdbdbd", // ✅ 테두리 추가
+            borderRadius: "15px", // ✅ 둥글게
+            fontWeight: 600, // ✅ 글자 굵게
+            backgroundColor: "transparent", // ✅ 배경 없앰
+          }}
         >
           <MenuItem value="all">All</MenuItem>
           <MenuItem value="sony">Sony</MenuItem>
@@ -35,11 +43,17 @@ function FilterBar() {
       </FormControl>
 
       {/* 년식 선택 */}
-      <FormControl sx={{ minWidth: 140 }} size="small">
+      <FormControl sx={{ minWidth: 100 }} size="small">
         <InputLabel>년식</InputLabel>
         <Select
           value={year}
           onChange={(e) => setYear(e.target.value)}
+          sx={{
+            border: "1px solid #bdbdbd",
+            borderRadius: "15px",
+            fontWeight: 600,
+            backgroundColor: "transparent",
+          }}
         >
           {Array.from({ length: 10 }, (_, i) => (
             <MenuItem key={2024 - i} value={2024 - i}>
@@ -50,23 +64,35 @@ function FilterBar() {
       </FormControl>
 
       {/* 가격 필터 */}
-      <FormControl sx={{ minWidth: 140 }} size="small">
+      <FormControl sx={{ minWidth: 100 }} size="small">
         <InputLabel>가격</InputLabel>
         <Select
           value={price}
           onChange={(e) => setPrice(e.target.value)}
+          sx={{
+            border: "1px solid #bdbdbd",
+            borderRadius: "15px",
+            fontWeight: 600,
+            backgroundColor: "transparent",
+          }}
         >
           <MenuItem value="low">낮은 가격순</MenuItem>
           <MenuItem value="high">높은 가격순</MenuItem>
         </Select>
       </FormControl>
 
-      {/* ✅ 정렬 기준 추가 */}
-      <FormControl sx={{ minWidth: 140 }} size="small">
-        <InputLabel>정렬 기준</InputLabel>
+      {/* 정렬 기준 */}
+      <FormControl sx={{ minWidth: 100 }} size="small">
+        <InputLabel>필터</InputLabel>
         <Select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
+          sx={{
+            border: "1px solid #bdbdbd",
+            borderRadius: "15px",
+            fontWeight: 600,
+            backgroundColor: "transparent",
+          }}
         >
           <MenuItem value="recommended">추천순</MenuItem>
           <MenuItem value="popular">인기순</MenuItem>

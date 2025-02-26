@@ -21,13 +21,6 @@ public class ProductPayment {
   private UUID paymentId;
   private Integer quantity;
   private Integer price;
-  private Integer sum;
+  private Integer subtotal;
 
-  // Custom method to format sum for display
-  public String getFormattedSum() {
-    if (sum == null) {
-      return "0";
-    }
-    return String.format("%,d", sum);
-  }
 }

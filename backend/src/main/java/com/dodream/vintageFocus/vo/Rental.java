@@ -20,8 +20,6 @@ public class Rental {
 
   private Long memberId;
   private Integer rentalFee;
-  private Integer deliveryFee;
-  private Integer totalPrice;
   private Instant paymentTimestamp;
   private Instant rentalTimestamp;
   private Instant returnTimestamp;

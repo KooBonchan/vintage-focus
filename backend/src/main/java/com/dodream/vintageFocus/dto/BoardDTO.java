@@ -1,7 +1,5 @@
-package com.dodream.vintageFocus.vo;
+package com.dodream.vintageFocus.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,19 +9,19 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Table("Review")
-public class Review {
-  @Id
+@NoArgsConstructor
+public class BoardDTO {
   private Long id;
+  private Long memberId;
+  private Long writer;
 
+  private String title;
   private String content;
-  private String writer;
+  private String category;
   private LocalDate writeDate;
   private LocalDate updateDate;
+
   private Boolean secured;
-  private String title;
-  private Long memberId;
-  private Long productId;
+
 }

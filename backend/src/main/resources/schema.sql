@@ -47,24 +47,25 @@ CREATE TABLE IF NOT EXISTS `rental` (
 CREATE TABLE IF NOT EXISTS `board` (
     `id` Long NOT NULL AUTO_INCREMENT,
     `category` VARCHAR(63) NULL,
-    `writer_id` Long NULL,
     `write_date` Date NULL,
     `update_date` Date NULL,
     `secured` Boolean NULL,
-    `content` VARCHAR(255) NULL,
+    `content` TEXT NULL,
     `title` VARCHAR(255) NULL,
-    `member_id` Long NOT NULL
+    `member_id` Long NOT NULL,
+    `writer` VARCHAR(255) NULL
 );
 
 CREATE TABLE IF NOT EXISTS `Review` (
     `id` Long NOT NULL AUTO_INCREMENT,
-    `content` VARCHAR(255) NULL,
+    `content` TEXT NULL,
     `write_date` Date NULL,
     `update_date` Date NULL,
     `secured` Boolean NULL,
     `title` VARCHAR(255) NULL,
     `member_id` Long NOT NULL,
-    `product_id` Long NOT NULL
+    `product_id` Long NOT NULL,
+    `writer` VARCHAR(255) NULL
 );
 
 
@@ -141,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `product_cart` (
   `cart_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` Int NULL,
-  `sum` Int NULL
+  `subtotal` Int NULL
 );
 
 CREATE TABLE IF NOT EXISTS `rental_payment` (
@@ -150,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `rental_payment` (
   `payment_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` int NULL,
-  `sum` int NULL
+  `subtotal` int NULL
 );
 
 CREATE TABLE IF NOT EXISTS `product_payment` (
@@ -159,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `product_payment` (
   `payment_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` int NULL,
-  `sum` int NULL
+  `subtotal` int NULL
 );
 
 CREATE TABLE IF NOT EXISTS `rental_cart` (
@@ -168,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `rental_cart` (
   `cart_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` int NULL,
-  `sum` int NULL
+  `subtotal` int NULL
 );
 
 

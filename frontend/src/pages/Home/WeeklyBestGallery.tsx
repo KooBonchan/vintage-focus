@@ -28,20 +28,20 @@ const sampleProducts = [
 const WeeklyBestContainer = (props: any) => {
   return (
     <Box
-    sx={{
-      width: "100%",
-      backgroundColor: "transparent",  // 배경색 제거
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      borderRadius: 2,
-      flexDirection: "column",
-      padding: 2,
-      marginTop: 20, 
-    }}
-  >
-    {props.children}
-  </Box>
+      sx={{
+        width: "100%",
+        backgroundColor: "transparent",  // 배경색 제거
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 2,
+        flexDirection: "column",
+        padding: 2,
+        marginTop: 20,
+      }}
+    >
+      {props.children}
+    </Box>
   );
 };
 

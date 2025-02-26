@@ -12,7 +12,7 @@ export default function Logo() {
         <img
           src={logoImage}  // 테마에 따라 이미지 변경
           alt="Logo"
-          style={{ height: 20, width: "auto", marginRight: 8 }}
+          style={{ height: 25, width: "auto", marginRight: 8 }}
         />
         <Typography
           variant="h6"

@@ -8,11 +8,13 @@ import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import About from './pages/About';
 import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
+import BuyWrite from './pages/Board/Write/BuyWrite';
+import RentalWrite from './pages/Board/Write/RentalWrite';
+import SellWrite from './pages/Board/Write/SellWrite';
 import { Home } from './pages/Home';
 import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
-import RentalDetail from './pages/Detail/RentalDetail';
 
 
 
@@ -68,10 +70,25 @@ function Router(){
 
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
-        <Route path="sell-inquiry" element={<About />} />
-        <Route path="buy-inquiry" element={<About />} />
-        <Route path="rental-inquiry" element={<About />} />
-        <Route path="/rental-detail" element={<RentalDetail />} /> {/* ✅ 추가된 라우트 */}
+        
+        {/* ✅ 매각문의 라우트 그룹 */}
+        <Route path="sell-inquiry">
+          <Route index element={<About />} />
+          <Route path="write" element={<SellWrite />} />
+        </Route>
+
+        {/* ✅ 구매문의 라우트 그룹 */}
+        <Route path="buy-inquiry">
+          <Route index element={<About />} />
+          <Route path="write" element={<BuyWrite />} />
+        </Route>
+
+        {/* ✅ 대여문의 라우트 그룹 */}
+        <Route path="rental-inquiry">
+          <Route index element={<About />} />
+          <Route path="write" element={<RentalWrite />} />
+        </Route>
+
         {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="about" element={<About />} />
 

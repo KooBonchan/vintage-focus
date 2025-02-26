@@ -41,7 +41,7 @@ export default function RentalDetail() {
         {/* 제품 정보 */}
         <Box sx={{ flex: 1 }}>
           <Typography variant="h6" fontWeight="bold">
-            제품이름 (문의 {id})
+            빌려비려 (문의 {id})
           </Typography>
           <Typography variant="caption" sx={{ backgroundColor: "#4CAF50", color: "white", px: 1, py: 0.5, borderRadius: "4px" }}>
             제조사

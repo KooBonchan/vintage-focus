@@ -21,6 +21,13 @@ const categoryRoutes = {
   "/rental-inquiry": "대여문의",
 };
 
+// ✅ 카테고리별 상세 페이지 경로 설정
+const detailPageRoutes = {
+  "매각문의": "/sell-write",
+  "구매문의": "/buy-write",
+  "대여문의": "/rental-write",
+};
+
 // ✅ 더미 데이터 생성
 const generateDummyData = () => {
   const categories = Object.values(categoryRoutes);
@@ -64,20 +71,17 @@ export default function BoardList() {
     <Box sx={{ width: "100%", maxWidth: 800, margin: "0 auto", textAlign: "center", p: 2 }}>
       {/* ✅ 상단 탭 메뉴 */}
       <Tabs
-        value={selectedTab}
+        value={currentPath} // ✅ URL과 매칭
         onChange={(event, newValue) => {
-          navigate(
-            Object.keys(categoryRoutes).find((key) => categoryRoutes[key] === newValue) ||
-              "/sell-inquiry"
-          ); // ✅ 선택된 탭의 URL로 이동
+          navigate(newValue); // ✅ 해당 URL로 이동
           setPage(1);
         }}
         centered
         textColor="inherit"
         indicatorColor="primary"
       >
-        {Object.values(categoryRoutes).map((category) => (
-          <Tab key={category} label={category} value={category} />
+        {Object.entries(categoryRoutes).map(([path, label]) => (
+          <Tab key={path} label={label} value={path} />
         ))}
       </Tabs>
 
@@ -85,14 +89,14 @@ export default function BoardList() {
       <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
         <IconButton
           sx={{ mr: 1 }}
-          onClick={() => navigate(`/write?category=${selectedTab}`)} // ✅ 현재 카테고리 전달
+          onClick={() => navigate('./write')} // ✅ 선택된 탭에 따라 이동
         >
           <EditIcon /> {/* ✏️ 펜 아이콘 */}
         </IconButton>
         <Typography
           variant="body1"
           sx={{ cursor: "pointer" }}
-          onClick={() => navigate(`/write?category=${selectedTab}`)} // ✅ 현재 카테고리 전달
+          onClick={() => navigate('./write')} // ✅ 선택된 탭에 따라 이동
         >
           문의하기
         </Typography>

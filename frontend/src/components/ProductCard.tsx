@@ -8,6 +8,7 @@ interface ProductProps {
         price : string;
     };
 }
+
 function ProductCard({ product, width, height }: ProductProps & { width: number; height: number }) {
   return (
     <Card 
@@ -33,13 +34,16 @@ function ProductCard({ product, width, height }: ProductProps & { width: number;
         <Typography variant="body1" fontWeight="bold">
           {product.name}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
+        <Typography 
+          variant="h6" // 가격 부분을 h6로 설정하여 폰트 크기 키움
+          color="primary" // 색상을 primary로 설정 (필요에 따라 색상 변경 가능)
+          sx={{ fontSize: '1.2rem', fontWeight: 'bold' }} // 폰트 크기와 굵기 추가
+        >
           {product.price}원
         </Typography>
       </CardContent>
     </Card>
   );
 }
-
 
 export default ProductCard;

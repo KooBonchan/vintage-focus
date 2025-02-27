@@ -32,7 +32,7 @@ SmallCard.args = {
     price: "5000",
   },
   width: 200,
-  height: 200,
+  height: 300,
 };
 
 export const LargeCard = Template.bind({});

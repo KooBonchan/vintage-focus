@@ -26,8 +26,8 @@ export const Default = Template.bind({});
 Default.args = {
   width: 66,
   height: 22,
-  backgroundColor: 'white',
-  borderColor: '#AA1F3E',
+  backgroundColor: '#445366',
+  borderColor: '#ffffff',
   borderRadius: 10,
   content: 'Button',
 };
@@ -37,9 +37,9 @@ Default.args = {
 export const SmallButton = Template.bind({});
 SmallButton.args = {
   width: 50,
-  height: 20,
-  backgroundColor: 'white',
-  borderColor: '#AA1F3E',
+  height: 22,
+  backgroundColor: '#445366',
+  borderColor: '#ffffff',
   borderRadius: 10,
   content: 'Button',
 };
@@ -50,8 +50,8 @@ export const MediumButton = Template.bind({});
 MediumButton.args = {
   width: 100,
   height: 30,
-  backgroundColor: 'white',
-  borderColor: '#AA1F3E',
+  backgroundColor: '#445366',
+  borderColor: '#ffffff',
   borderRadius: 10,
   content: 'Button',
 };
@@ -61,8 +61,8 @@ export const LargeButton = Template.bind({});
 LargeButton.args = {
   width: 300,
   height: 35,
-  backgroundColor: 'white',
-  borderColor: '#AA1F3E',
+  backgroundColor: '#445366',
+  borderColor: '#ffffff',
   borderRadius: 10,
   content: 'Button',
 };

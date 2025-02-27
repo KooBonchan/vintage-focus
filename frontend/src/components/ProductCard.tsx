@@ -8,26 +8,26 @@ interface ProductProps {
         price : string;
     };
 }
-
-function ProductCard({ product }: ProductProps) {
+function ProductCard({ product, width, height }: ProductProps & { width: number; height: number }) {
   return (
     <Card 
       sx={{ 
-        maxWidth: 250, 
-        textAlign: 
-        "center", p: 2, 
+        width: width,  // 동적으로 width 설정
+        height: height, // 동적으로 height 설정
+        textAlign: "center", 
+        p: 2, 
         borderRadius: 3, 
-        transition: "all 0.3s ease", // 부드러운 전환 추가
+        transition: "all 0.3s ease",
         "&:hover": {
-          transform: "translateY(-6px)", // 마우스 올리면 살짝 위로 올라감 추가
-          boxShadow: 6, // 그림자 효과 추가
+          transform: "translateY(-6px)",
+          boxShadow: 6,
         },
-        }}>
+      }}>
       <CardMedia
         component="img"
-        // height="140"
         image={product.image}
         alt={product.name}
+        sx={{ width: "100%", height: "auto" }} // 이미지 크기도 자동 조정
       />
       <CardContent>
         <Typography variant="body1" fontWeight="bold">
@@ -40,5 +40,6 @@ function ProductCard({ product }: ProductProps) {
     </Card>
   );
 }
+
 
 export default ProductCard;

@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit"; // ✏️ 펜 아이콘 추가
 import { useNavigate, useLocation } from "react-router-dom"; // ✅ URL을 감지하고 변경하는 훅
-import BoardCard from "../../components/BoardCard";
 
 
 // ✅ 카테고리별 URL 매핑

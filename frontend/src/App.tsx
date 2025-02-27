@@ -46,10 +46,43 @@ const baseTheme = createTheme({
 });
 
 function App() {
+  useEffect(() => {
+    initializeSessionStorage(); // ✅ 개발 서버 시작 시 `sessionStorage` 초기화
+  }, []);
   const theme = useTheme();
   useEffect(() => {
     document.body.style.backgroundColor= theme.palette.background.default;
   }, [theme]);
+  const initializeSessionStorage = () => {
+    const existingPosts = sessionStorage.getItem("posts");
+
+    // ✅ 이미 데이터가 있으면 초기화 방지
+    if (existingPosts) return;
+
+    // ✅ 기본 더미 데이터 생성
+    const dummyPosts = [];
+    const categories = ["매각문의", "구매문의", "대여문의"];
+
+    for (let i = 1; i <= 50; i++) {
+      dummyPosts.push({
+        id: Date.now() + i, // 고유 ID
+        title: `테스트 게시글 ${i}`,
+        price: `${Math.floor(Math.random() * 100000) + 10000}원`,
+        content: `이것은 ${i}번째 테스트 게시글입니다.`,
+        date: new Date().toISOString().split("T")[0],
+        views: Math.floor(Math.random() * 500),
+        authors: [{ name: `사용자${i}`, avatar: "/static/images/avatar/default.png" }],
+        tag: categories[i % categories.length], // 매각문의 / 구매문의 / 대여문의 순환
+        locked: i % 2 === 0, // 짝수 번째 게시글은 비공개
+        password: i % 2 === 0 ? "1234" : null, // 비공개 게시글만 비밀번호 설정
+      });
+    }
+
+    // ✅ `sessionStorage`에 데이터 저장
+    sessionStorage.setItem("posts", JSON.stringify(dummyPosts));
+  };
+
+
 
   return (
     

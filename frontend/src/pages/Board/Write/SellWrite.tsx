@@ -40,9 +40,9 @@ export default function SellDetail() {
       password: isPublic ? null : password, // 비공개면 비밀번호 저장
     };
 
-    // 로컬 스토리지에서 기존 데이터 가져오기
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-    localStorage.setItem("posts", JSON.stringify([newPost, ...posts])); // 새 게시글 추가
+  // ✅ sessionStorage에 저장
+  const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+  sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
 
     alert("게시글이 등록되었습니다.");
     navigate("/sell-inquiry"); // 등록 후 리스트 페이지로 이동

@@ -42,9 +42,9 @@ export default function BoardList() {
   const currentPath = location.pathname;
   const selectedTab = categoryRoutes[currentPath] || "매각문의";
 
-  // ✅ 로컬 스토리지에서 게시글 불러오기 (최초 로드 시 실행)
+  // ✅ sessionStorage에서 게시글 불러오기
   useEffect(() => {
-    const storedPosts = JSON.parse(localStorage.getItem("posts") || "[]");
+    const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     setPosts(storedPosts);
   }, []);
 
@@ -60,6 +60,10 @@ export default function BoardList() {
       navigate(`${currentPath}/detail/${article.id}`);
     }
   };
+  useEffect(() => {
+    const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+    setPosts(storedPosts);
+  }, []);
 
   // ✅ 비밀번호 확인
   const handleCheckPassword = () => {
@@ -99,6 +103,8 @@ export default function BoardList() {
           문의하기
         </Typography>
       </Box>
+
+         
 
       {/* ✅ 카드 리스트 (클릭 시 상세 페이지 이동) */}
       <Grid container spacing={2} sx={{ mt: 3, display: "flex", flexDirection: "column" }}>

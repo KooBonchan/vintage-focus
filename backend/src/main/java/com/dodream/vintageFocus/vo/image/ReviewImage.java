@@ -5,10 +5,16 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Builder
+import java.time.Instant;
+
 @NoArgsConstructor
-@AllArgsConstructor
 @Table("review_image")
 public class ReviewImage extends BaseImage {
   private Long reviewId;
+
+  @Builder
+  public ReviewImage(Long id, String originalImageName, String path, String savedImageName, Instant uploadTimestamp, Long reviewId) {
+    super(id, originalImageName, path, savedImageName, uploadTimestamp);
+    this.reviewId = reviewId;
+  }
 }

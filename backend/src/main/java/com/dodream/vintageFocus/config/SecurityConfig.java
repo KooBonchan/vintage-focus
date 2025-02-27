@@ -19,8 +19,6 @@ public class SecurityConfig {
       .csrf(ServerHttpSecurity.CsrfSpec::disable)
       .cors(Customizer.withDefaults())
       .authorizeExchange(exchanges -> exchanges
-        .pathMatchers(HttpMethod.GET, "/product/**").permitAll()
-        .pathMatchers(HttpMethod.GET, "/test").permitAll()
         .pathMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**", "/favicon.ico").permitAll()
         .anyExchange().authenticated()
       )

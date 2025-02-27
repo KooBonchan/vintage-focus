@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -8,6 +8,12 @@ import {
   Tab,
   Pagination,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,21 +26,51 @@ const categoryRoutes = {
   "/rental-inquiry": "대여문의",
 };
 
-// ✅ 로컬 스토리지에서 게시글 불러오기
-const articleInfo = JSON.parse(localStorage.getItem("posts") || "[]");
-
 export default function BoardList() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const itemsPerPage = 8;
+
+  // ✅ 비밀번호 입력 모달 상태
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   // ✅ 현재 URL을 기반으로 선택된 탭을 설정
   const currentPath = location.pathname;
   const selectedTab = categoryRoutes[currentPath] || "매각문의";
 
+  // ✅ 로컬 스토리지에서 게시글 불러오기 (최초 로드 시 실행)
+  useEffect(() => {
+    const storedPosts = JSON.parse(localStorage.getItem("posts") || "[]");
+    setPosts(storedPosts);
+  }, []);
+
   // ✅ 선택한 탭의 데이터 필터링
-  const filteredArticles = articleInfo.filter((article) => article.tag === selectedTab);
+  const filteredArticles = posts.filter((article) => article.tag === selectedTab);
+
+  // ✅ 게시글 클릭 시 처리 (비밀번호 체크)
+  const handleArticleClick = (article) => {
+    if (article.locked) {
+      setSelectedArticle(article);
+      setOpen(true);
+    } else {
+      navigate(`${currentPath}/detail/${article.id}`);
+    }
+  };
+
+  // ✅ 비밀번호 확인
+  const handleCheckPassword = () => {
+    if (selectedArticle && selectedArticle.password === password) {
+      navigate(`${currentPath}/detail/${selectedArticle.id}`);
+      setOpen(false);
+      setPassword("");
+    } else {
+      alert("비밀번호가 틀렸습니다.");
+    }
+  };
 
   return (
     <Box sx={{ width: "100%", maxWidth: 1000, margin: "0 auto", textAlign: "center", p: 2 }}>
@@ -66,13 +102,13 @@ export default function BoardList() {
 
       {/* ✅ 카드 리스트 (클릭 시 상세 페이지 이동) */}
       <Grid container spacing={2} sx={{ mt: 3, display: "flex", flexDirection: "column" }}>
-        {filteredArticles.map((article) => (
+        {filteredArticles.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((article) => (
           <Grid
             item
             xs={12}
             key={article.id}
             sx={{ width: "100%", cursor: "pointer" }}
-            onClick={() => navigate(`${currentPath}/detail/${article.id}`)} // ✅ 상세 페이지 이동
+            onClick={() => handleArticleClick(article)} // ✅ 비밀번호 확인 적용
           >
             <BoardCard article={article} />
           </Grid>
@@ -88,6 +124,27 @@ export default function BoardList() {
           color="primary"
         />
       </Box>
+
+      {/* ✅ 비밀번호 입력 모달 */}
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>비밀번호 입력</DialogTitle>
+        <DialogContent>
+          <TextField
+            type="password"
+            label="비밀번호 (4자리 숫자)"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            inputProps={{ maxLength: 4 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>취소</Button>
+          <Button onClick={handleCheckPassword} color="primary">
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

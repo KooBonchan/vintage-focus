@@ -10,10 +10,11 @@ interface Article {
   date: string;
   views: number;
   tag: string;
+  locked?: boolean; // 🔒 비밀번호 잠금 여부
 }
 
 interface BoardCardProps {
-  article: Article; // article prop을 정의
+  article: Article;
 }
 
 const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
@@ -35,10 +36,10 @@ const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
         <Typography variant="subtitle1" fontWeight="bold">
           {article.title}
         </Typography>
-        <LockIcon fontSize="small" />
+        {article.locked && <LockIcon fontSize="small" />} {/* 🔒 잠긴 게시글 아이콘 */}
       </Box>
 
-      {/* 아이디 및 게시 날짜, 조회수 */}
+      {/* 작성자 및 날짜, 조회수 */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
         <Typography variant="caption" color="text.primary" fontWeight="bold">
           {article.authors[0].name}

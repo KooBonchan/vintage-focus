@@ -1,10 +1,52 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Switch, FormControlLabel } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-export default function RentalDetail() {
-  const { id } = useParams(); // ✅ URL에서 id 가져오기
+export default function RentalWrite() {
+  const navigate = useNavigate();
+  
+  // ✅ 게시글 데이터 상태 관리
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [content, setContent] = useState("");
+  const [isPublic, setIsPublic] = useState(true); // 공개/비공개 상태
+  const [password, setPassword] = useState(""); // 비밀번호 (비공개 시 필수)
+
+  // ✅ 게시글 등록 함수
+  const handleSubmit = () => {
+    if (!title.trim() || !content.trim()) {
+      alert("제목과 내용을 입력해주세요!");
+      return;
+    }
+
+    // 비공개 상태에서 비밀번호 미입력 시 경고
+    if (!isPublic && password.length !== 4) {
+      alert("비밀번호는 4자리 숫자로 입력해주세요.");
+      return;
+    }
+
+    // 새 게시글 객체 생성
+    const newPost = {
+      id: Date.now(), // 유니크 ID 생성
+      title,
+      price,
+      content,
+      date: new Date().toISOString().split("T")[0], // 현재 날짜
+      views: 0,
+      authors: [{ name: "판매자", avatar: "/static/images/avatar/default.png" }],
+      tag: "대여문의", // 판매문의 카테고리
+      locked: !isPublic, // 비공개 여부
+      password: isPublic ? null : password, // 비공개면 비밀번호 저장
+    };
+
+    // 로컬 스토리지에서 기존 데이터 가져오기
+    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
+    localStorage.setItem("posts", JSON.stringify([newPost, ...posts])); // 새 게시글 추가
+
+    alert("게시글이 등록되었습니다.");
+    navigate("/rental-inquiry"); // 등록 후 리스트 페이지로 이동
+  };
 
   return (
     <Box
@@ -19,7 +61,6 @@ export default function RentalDetail() {
     >
       {/* ✅ 제품 정보 */}
       <Box sx={{ display: "flex", flexDirection: "row", gap: 3, mb: 3 }}>
-        {/* 제품 이미지 */}
         <Box
           sx={{
             width: 120,
@@ -33,60 +74,66 @@ export default function RentalDetail() {
           }}
         >
           <FavoriteBorderIcon sx={{ position: "absolute", top: 8, left: 8 }} />
-          <Typography variant="body2" color="textSecondary">
-            이미지
-          </Typography>
+          <Typography variant="body2" color="textSecondary">이미지</Typography>
         </Box>
 
-        {/* 제품 정보 */}
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h6" fontWeight="bold">
-            빌려비려 (문의 {id})
-          </Typography>
-          <Typography variant="caption" sx={{ backgroundColor: "#4CAF50", color: "white", px: 1, py: 0.5, borderRadius: "4px" }}>
-            제조사
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            등록번호
-          </Typography>
-
-          <TextField label="상품가격(원)" variant="outlined" size="small" fullWidth sx={{ mt: 1 }} />
+          <TextField
+            label="제목"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            sx={{ mb: 1 }}
+          />
+          <TextField
+            label="상품 가격 (원)"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            sx={{ mb: 1 }}
+          />
         </Box>
       </Box>
 
-      {/* ✅ 설명 & 주의사항 */}
+      {/* ✅ 문의 내용 */}
       <Box sx={{ backgroundColor: "white", p: 2, borderRadius: "8px", mb: 3 }}>
-        <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-          문의내용
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          ● 대여일을 날짜와 시간, 반납하는 날짜와 시간을 적어주세요.
-          <br />● 대여신청 후 변경 불가하니 신중히 작성해주세요.
-          <br />● 대여 가능한 물품 리스트 검색해서 특정을 확인 바랍니다.
-          <br />● 리퍼비쉬 제품은 기본적으로 제공되지 않습니다.
-        </Typography>
-      </Box>
-
-      {/* ✅ 상세설명 */}
-      <Box sx={{ backgroundColor: "white", p: 2, borderRadius: "8px", mb: 3 }}>
-        <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-          설명(내역)
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          <strong>정확방법:</strong>
-          <br /> 대여기간: 문장이 출력되도록 표시 (년,월,일, 시간, 분 단위까지 한 단위는 30분 단위로 절삭)
-          <br /> 화재시 수령 방법: 택배 or 지정장소 수령
-        </Typography>
+        <TextField
+          label="문의 내용"
+          multiline
+          rows={4}
+          variant="outlined"
+          fullWidth
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
       </Box>
 
       {/* ✅ 게시물 공개 설정 */}
       <Box sx={{ backgroundColor: "white", p: 2, borderRadius: "8px", mb: 3 }}>
-        <FormControlLabel control={<Switch defaultChecked />} label="공개/비공개" />
-        <TextField label="비밀번호" type="password" variant="outlined" size="small" fullWidth sx={{ mt: 1 }} />
+        <FormControlLabel
+          control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
+          label="공개/비공개"
+        />
+        {!isPublic && (
+          <TextField
+            label="비밀번호 (4자리 숫자)"
+            type="password"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{ mt: 1 }}
+          />
+        )}
       </Box>
 
       {/* ✅ 등록 버튼 */}
-      <Button variant="contained" color="primary" fullWidth>
+      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
         게시글 등록하기
       </Button>
     </Box>

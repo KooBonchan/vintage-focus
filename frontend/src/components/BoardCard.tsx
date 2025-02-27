@@ -17,6 +17,23 @@ interface BoardCardProps {
   article: Article;
 }
 
+const formatDate = (dateString: string) => {
+  if (!dateString) return "날짜 없음";
+  
+  // ✅ 저장된 ISO 날짜를 변환
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid Date"; // 오류 방지
+
+  return date.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
 const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
   return (
     <Card
@@ -36,7 +53,7 @@ const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
         <Typography variant="subtitle1" fontWeight="bold">
           {article.title}
         </Typography>
-        {article.locked && <LockIcon fontSize="small" />} {/* 🔒 잠긴 게시글 아이콘 */}
+        {article.locked && <LockIcon fontSize="small" />}
       </Box>
 
       {/* 작성자 및 날짜, 조회수 */}
@@ -45,11 +62,10 @@ const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
           {article.authors[0].name}
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          {article.date} • 조회수 {article.views}
+          {formatDate(article.date)} • 조회수 {article.views}
         </Typography>
       </Box>
     </Card>
   );
 };
-
 export default BoardCard;

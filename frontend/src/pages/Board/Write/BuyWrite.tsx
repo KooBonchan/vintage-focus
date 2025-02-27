@@ -19,34 +19,36 @@ export default function BuyWrite() {
       alert("제목과 내용을 입력해주세요!");
       return;
     }
-
-    // 비공개 상태에서 비밀번호 미입력 시 경고
+  
     if (!isPublic && password.length !== 4) {
       alert("비밀번호는 4자리 숫자로 입력해주세요.");
       return;
     }
-
-    // 새 게시글 객체 생성
+  
+    // ✅ 현재 시간 (KST) 기준으로 저장
+    const now = new Date();
+    const formattedDate = now.toISOString();
+  
     const newPost = {
-      id: Date.now(), // 유니크 ID 생성
+      id: Date.now(),
       title,
       price,
       content,
-      date: new Date().toISOString().split("T")[0], // 현재 날짜
+      date: formattedDate, // ✅ 한국 시간 기준으로 저장
       views: 0,
       authors: [{ name: "판매자", avatar: "/static/images/avatar/default.png" }],
-      tag: "구매문의", // 판매문의 카테고리
-      locked: !isPublic, // 비공개 여부
-      password: isPublic ? null : password, // 비공개면 비밀번호 저장
+      tag: "구매문의",
+      locked: !isPublic,
+      password: isPublic ? null : password,
     };
-
-  // ✅ sessionStorage에 저장
-  const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-  sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
-
+  
+    const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+    sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
+  
     alert("게시글이 등록되었습니다.");
-    navigate("/buy-inquiry"); // 등록 후 리스트 페이지로 이동
+    navigate("/buy-inquiry");
   };
+  
 
   return (
     <Box

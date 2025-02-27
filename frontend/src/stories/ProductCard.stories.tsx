@@ -1,31 +1,47 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import ProductCard from '../components/ProductCard'; // 경로를 실제 위치에 맞게 수정
+import { Meta, StoryFn } from "@storybook/react";
+import ProductCard, { ProductProps } from "../components/ProductCard";
+
 
 export default {
-  title: 'Components/ProductCard', // Storybook에서 컴포넌트 카테고리와 이름
-  component: ProductCard, // 사용할 컴포넌트
-} as ComponentMeta<typeof ProductCard>;
+  title: "Components/ProductCard",
+  component: ProductCard,
+  argTypes: {
+    width: { control: "number", defaultValue: 250 },
+    height: { control: "number", defaultValue: 300 },
+  },
+} as Meta;
 
-// Template: ProductCard의 기본 모양을 만들고 args로 다양한 상태를 관리
-const Template: ComponentStory<typeof ProductCard> = (args) => <ProductCard {...args} />;
+const Template: StoryFn<ProductProps> = (args) => <ProductCard {...args} />;
 
-// 기본 ProductCard 스토리
 export const Default = Template.bind({});
 Default.args = {
   product: {
-    image: 'https://placehold.co/250x250', // 예시 이미지
-    name: '빈티지 카메라',
-    price: '120,000',
+    image: "https://placehold.co/200x200",
+    name: "Sample Product",
+    price: "10000",
   },
+  width: 250,
+  height: 350,
 };
 
-// 다른 예시를 추가할 수 있습니다 (옵션으로 추가)
-export const Discounted = Template.bind({});
-Discounted.args = {
+export const SmallCard = Template.bind({});
+SmallCard.args = {
   product: {
-    image: 'https://placehold.co/250x250',
-    name: '액션 카메라',
-    price: '80,000', // 할인된 가격
+    image: "https://placehold.co/150x150",
+    name: "Small Product",
+    price: "5000",
   },
+  width: 200,
+  height: 300,
+};
+
+export const LargeCard = Template.bind({});
+LargeCard.args = {
+  product: {
+    image: "https://placehold.co/250x250",
+    name: "Large Product",
+    price: "15000",
+  },
+  width: 300,
+  height: 400,
 };

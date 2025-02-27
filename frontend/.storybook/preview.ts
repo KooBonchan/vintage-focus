@@ -11,4 +11,12 @@ const preview: Preview = {
   },
 };
 
+export const parameters = {
+  docs: {
+    source: {
+      state: 'open',
+    }
+  }
+}
+
 export default preview;

@@ -24,8 +24,8 @@ const Template: StoryFn = (args) => <Button {...args}>{args.content ?? 'Button'}
 // 기본 버튼 스토리
 export const Default = Template.bind({});
 Default.args = {
-  width: 55,
-  height: 25,
+  width: 66,
+  height: 22,
   backgroundColor: 'white',
   borderColor: '#AA1F3E',
   borderRadius: 10,

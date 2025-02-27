@@ -10,11 +10,29 @@ interface Article {
   date: string;
   views: number;
   tag: string;
+  locked?: boolean; // 🔒 비밀번호 잠금 여부
 }
 
 interface BoardCardProps {
-  article: Article; // article prop을 정의
+  article: Article;
 }
+
+const formatDate = (dateString: string) => {
+  if (!dateString) return "날짜 없음";
+  
+  // ✅ 저장된 ISO 날짜를 변환
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid Date"; // 오류 방지
+
+  return date.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
 
 const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
   return (
@@ -35,20 +53,19 @@ const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
         <Typography variant="subtitle1" fontWeight="bold">
           {article.title}
         </Typography>
-        <LockIcon fontSize="small" />
+        {article.locked && <LockIcon fontSize="small" />}
       </Box>
 
-      {/* 아이디 및 게시 날짜, 조회수 */}
+      {/* 작성자 및 날짜, 조회수 */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
         <Typography variant="caption" color="text.primary" fontWeight="bold">
           {article.authors[0].name}
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          {article.date} • 조회수 {article.views}
+          {formatDate(article.date)} • 조회수 {article.views}
         </Typography>
       </Box>
     </Card>
   );
 };
-
 export default BoardCard;

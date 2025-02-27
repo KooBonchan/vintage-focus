@@ -97,6 +97,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
           </Typography>
         </Box>
       )}
+
     </Card>
   );
 };

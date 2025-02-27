@@ -1,6 +1,5 @@
 import { Meta, StoryFn } from "@storybook/react";
-import ProductCard, { ProductProps } from "../components/ProductCard";
-
+import { ProductCard, ProductCardProps } from "../components/ProductCard";
 
 export default {
   title: "Components/ProductCard",
@@ -11,7 +10,7 @@ export default {
   },
 } as Meta;
 
-const Template: StoryFn<ProductProps> = (args) => <ProductCard {...args} />;
+const Template: StoryFn<ProductCardProps> = (args) => <ProductCard {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

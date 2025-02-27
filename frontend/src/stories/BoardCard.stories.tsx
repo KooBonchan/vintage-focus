@@ -1,6 +1,7 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import BoardCard, { BoardCardProps } from "../components/BoardCard";
+import { fn } from "@storybook/test";
 
 // 기본 article 데이터를 설정
 const defaultArticle = {
@@ -12,39 +13,33 @@ const defaultArticle = {
   tag: "Technology",
 };
 
-const meta: Meta<typeof BoardCard> = {
+const meta = {
   title: "Components/BoardCard",
   component: BoardCard,
-  argTypes: {
-    article: {
-      control: "object",
-      defaultValue: defaultArticle,
-    },
-    highlighted: { control: "boolean", defaultValue: false },
-    iconVisible: { control: "boolean", defaultValue: true },
-    tagVisible: { control: "boolean", defaultValue: true },
-    backgroundColor: { control: "color", defaultValue: "#fff" },
-    borderColor: { control: "color", defaultValue: "#ddd" },
-    fontSize: { control: "text", defaultValue: "1rem" },
-    authorAvatarSize: { control: "number", defaultValue: 40 },
-    viewsCountColor: { control: "color", defaultValue: "text.secondary" },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
   },
-};
+  args: {
+    article: defaultArticle,
+  }
+} satisfies Meta<typeof BoardCard>;
 
 export default meta;
 
-type Story = StoryObj<typeof BoardCard>;
+type Story = StoryObj<typeof meta>;
 
 // 스토리 객체들을 StoryObj 형식으로 설정
 export const Default: Story = {
   args: {
-    article: defaultArticle,
+    highlighted: false,
+    iconVisible: true,
+    tagVisible: true,
   },
 };
 
 export const HighlightedCard: Story = {
   args: {
-    article: defaultArticle,
     highlighted: true,
   },
 };

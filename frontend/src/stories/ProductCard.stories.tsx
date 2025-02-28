@@ -9,11 +9,6 @@ const defaultProduct = {
   image: "https://placehold.co/200x200",
   name: "Sample Product",
   price: "10000",
-  author: {
-    name: "John Doe",
-    avatar: "https://placehold.co/50x50",
-  },
-  tag: "Technology",
 };
 
 const meta = {
@@ -26,7 +21,7 @@ const meta = {
   args: {
     product: defaultProduct,
     width: 250,
-    height: 300,
+    height: 310,
   },
 } satisfies Meta<typeof ProductCard>;
 
@@ -38,7 +33,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     width: 250,
-    height: 350,
+    height: 360,
   },
 };
 
@@ -48,14 +43,9 @@ export const SmallCard: Story = {
       image: "https://placehold.co/150x150",
       name: "Small Product",
       price: "5000",
-      author: {
-        name: "Jane Doe",
-        avatar: "https://placehold.co/50x50",
-      },
-      tag: "Lifestyle",
     },
     width: 200,
-    height: 300,
+    height: 310,
   },
 };
 
@@ -65,14 +55,9 @@ export const LargeCard: Story = {
       image: "https://placehold.co/250x250",
       name: "Large Product",
       price: "15000",
-      author: {
-        name: "Alice Smith",
-        avatar: "https://placehold.co/50x50",
-      },
-      tag: "Business",
     },
     width: 300,
-    height: 400,
+    height: 410,
   },
 };
 

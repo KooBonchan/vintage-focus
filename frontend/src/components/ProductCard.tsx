@@ -1,13 +1,13 @@
-// ProductCard.tsx
-
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Button } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Button, Box } from "@mui/material";
 
 // 제품 정보 타입 정의
 type Product = {
   image: string;
   name: string;
   price: string;
+  manufacturer: string; // 제조사 추가
+  year: string;         // 년도 추가
 };
 
 // ProductCardProps 인터페이스 정의
@@ -56,6 +56,17 @@ const ProductCard = ({
       >
         {product.price}원
       </Typography>
+
+      {/* 제조사와 년도를 가로로 나란히 배치 */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+        <Typography variant="body2" sx={{ mr: 2 }}> {/* mr: 2는 간격 조정 */}
+          제조사: {product.manufacturer}
+        </Typography>
+        <Typography variant="body2">
+          년도: {product.year}
+        </Typography>
+      </Box>
+
       {onAddToCart && (
         <Button
           variant="contained"

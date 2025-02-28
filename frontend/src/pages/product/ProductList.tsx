@@ -49,15 +49,14 @@ function ProductList() {
           {currentPageProducts.map((product, index) => (
             <Grid2 xs={3} key={index} sx={{ display: "flex", flexDirection: "column" }}>
               <ProductCard
-                height={360}
-                product={{
-                  image: product.image,
-                  name: product.name,
-                  price: product.price,
-                }}
-                width={250}
-                sx={{ mb: 3, height: '100%' }} // 여기에 height: '100%' 추가
-              />
+              height={360}
+              product={{
+                image: 'https://placehold.co/200x200',
+                name: 'Sample Product',
+                price: '10000'
+              }}
+              width={250}
+                sx={{ mb: 3, height: '0 auto' }}               />
             </Grid2>
           ))}
         </Grid2>

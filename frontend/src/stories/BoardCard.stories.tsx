@@ -38,6 +38,22 @@ export const Default: Story = {
   },
 };
 
+
+// manager
+export const manager: Story = {
+  args: {
+    highlighted: false,
+    iconVisible: true,
+    tagVisible: true,
+    backgroundColor: '#d3dbe4',
+    article: {
+      ...defaultArticle,
+      locked: true,  // 잠금 아이콘을 보이게 하는 부분
+    },
+  },
+};
+
+
 export const HighlightedCard: Story = {
   args: {
     highlighted: true,

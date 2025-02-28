@@ -26,10 +26,10 @@ PlusButton.args = {
   width: 35,
   height: 35,
   backgroundColor: '#ffffff',
-  borderColor: '#445366',
+  borderColor: '##a6b5c8;',
   borderRadius: 50,  // 원형
   content: '+',
-  fontColor: '#445366', // 폰트 색상 지정
+  fontColor: '#a6b5c8;', // 폰트 색상 지정
   borderWidth: 2, // 테두리 두께 지정
   borderStyle: 'solid', // 테두리 스타일 지정
 };
@@ -40,10 +40,10 @@ MinusButton.args = {
   width: 35,
   height: 35,
   backgroundColor: '#ffffff',
-  borderColor: '#445366',
+  borderColor: '#a6b5c8;',
   borderRadius: 50,  // 원형
   content: '-',
-  fontColor: '#445366', // 폰트 색상 지정
+  fontColor: '#a6b5c8;', // 폰트 색상 지정
   borderWidth: 2, // 테두리 두께 지정
   borderStyle: 'solid', // 테두리 스타일 지정
 };

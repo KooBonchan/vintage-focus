@@ -1,31 +1,63 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import ProductCard from '../components/ProductCard'; // 경로를 실제 위치에 맞게 수정
+// ProductCard.stories.tsx
 
-export default {
-  title: 'Components/ProductCard', // Storybook에서 컴포넌트 카테고리와 이름
-  component: ProductCard, // 사용할 컴포넌트
-} as ComponentMeta<typeof ProductCard>;
+import React from "react";
+import { Meta, StoryObj } from "@storybook/react";
+import ProductCard, { ProductCardProps } from "../components/ProductCard"; // 이제 정상적으로 default import
 
-// Template: ProductCard의 기본 모양을 만들고 args로 다양한 상태를 관리
-const Template: ComponentStory<typeof ProductCard> = (args) => <ProductCard {...args} />;
+// 기본 상품 데이터 설정
+const defaultProduct = {
+  image: "https://placehold.co/200x200",
+  name: "Sample Product",
+  price: "10000",
+};
 
-// 기본 ProductCard 스토리
-export const Default = Template.bind({});
-Default.args = {
-  product: {
-    image: 'https://placehold.co/250x250', // 예시 이미지
-    name: '빈티지 카메라',
-    price: '120,000',
+const meta = {
+  title: "Components/ProductCard",
+  component: ProductCard,
+  tags: ["autodocs"],
+  parameters: {
+    layout: "fullscreen",
+  },
+  args: {
+    product: defaultProduct,
+    width: 250,
+    height: 310,
+  },
+} satisfies Meta<typeof ProductCard>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+// 스토리 객체들을 StoryObj 형식으로 설정
+export const Default: Story = {
+  args: {
+    width: 250,
+    height: 360,
   },
 };
 
-// 다른 예시를 추가할 수 있습니다 (옵션으로 추가)
-export const Discounted = Template.bind({});
-Discounted.args = {
-  product: {
-    image: 'https://placehold.co/250x250',
-    name: '액션 카메라',
-    price: '80,000', // 할인된 가격
+export const SmallCard: Story = {
+  args: {
+    product: {
+      image: "https://placehold.co/150x150",
+      name: "Small Product",
+      price: "5000",
+    },
+    width: 200,
+    height: 310,
   },
 };
+
+export const LargeCard: Story = {
+  args: {
+    product: {
+      image: "https://placehold.co/250x250",
+      name: "Large Product",
+      price: "15000",
+    },
+    width: 300,
+    height: 410,
+  },
+};
+

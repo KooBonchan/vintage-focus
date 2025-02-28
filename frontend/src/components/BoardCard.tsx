@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Typography, Card, Avatar } from "@mui/material";
+import LockIcon from '@mui/icons-material/Lock';
 
 // `article` prop을 받아서 사용하는 컴포넌트
 export interface Author {
@@ -80,6 +81,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
         <Typography variant="subtitle1" fontWeight="bold" sx={{ fontSize }}>
           {article.title}
         </Typography>
+        {article?.locked && <LockIcon />}
       </Box>
 
       {/* 작성자 및 날짜, 조회수 */}

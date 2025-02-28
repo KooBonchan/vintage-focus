@@ -1,74 +1,77 @@
-import React from 'react';
-import { FaShoppingCart } from 'react-icons/fa'; // react-icons에서 장바구니 아이콘 가져오기
+import { MiscellaneousServicesRounded, PlusOne } from "@mui/icons-material";
+import { styled } from "@mui/material";
 
-// ActionButton의 prop 타입 정의
-export interface ActionButtonProps {
-  width: number;
-  height: number;
-  backgroundColor: string;
-  borderColor: string;
-  borderRadius: number;
-  content: string;
-  onClick: () => void;
-  fontColor?: string; // fontColor를 선택적으로 추가
-  borderWidth?: number; // 테두리 두께 추가 (옵션)
-  borderStyle?: string; // 테두리 스타일 추가 (옵션)
+export interface ButtonProps {
+  type: 'p+' | 'm-';  // Only plus or minus sizes allowed
+  backgroundColor?: string;
+  borderColor?: string;
+  onClick?: () => void;
 }
 
-// 액션 버튼 컴포넌트
-const ActionButton = ({
-  width,
-  height,
-  backgroundColor,
-  borderColor,
-  borderRadius,
-  content,
-  onClick,
-  fontColor, // fontColor prop 추가
-  borderWidth = 1, // 기본값 1px
-  borderStyle = 'solid', // 기본값 solid
-}: ActionButtonProps) => {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        width: width,
-        height: height,
-        backgroundColor: backgroundColor,
-        borderColor: borderColor,
-        borderRadius: borderRadius,
-        borderWidth: `${borderWidth}px`,  // 테두리 두께 적용
-        borderStyle: borderStyle,  // 테두리 스타일 적용
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: '18px',
-        fontWeight: '500',
-        cursor: 'pointer',
-        padding: '0',
-        lineHeight: 'normal',
-        color: fontColor, // fontColor를 style에 반영
-        transition: 'all 0.1s ease', // 부드러운 전환 효과
-      }}
-      // 눌린 상태에서의 스타일 변경
-      onMouseDown={(e) => {
-        e.currentTarget.style.transform = 'scale(0.95)'; // 버튼 눌릴 때 축소 효과
-        e.currentTarget.style.boxShadow = '0 4px 5px rgba(0, 0, 0, 0.2)'; // 눌릴 때 그림자 추가
-      }}
-      onMouseUp={(e) => {
-        e.currentTarget.style.transform = 'scale(1)'; // 눌린 상태에서 다시 원래 크기로
-        e.currentTarget.style.boxShadow = 'none'; // 그림자 제거
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'scale(1)'; // 버튼을 떠날 때 다시 원래 크기로
-        e.currentTarget.style.boxShadow = 'none'; // 그림자 제거
-      }}
-    >
-      {content}
-    </button>
-  );
+const CustomButton = styled('button')<ButtonProps>(({
+  type, backgroundColor, borderColor 
+}) => {
+
+  const size = '40px';  // 고정된 크기 설정
+
+  return {
+    backgroundColor,
+    borderColor,
+    borderRadius: '50%',
+    width: size,
+    height: size,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '2px solid',
+    cursor: 'pointer',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    transition: 'background-color 0.3s, border-color 0.3s',
+    '&:hover': {
+      backgroundColor: backgroundColor ? darken(backgroundColor, 0.1) : '#f0f0f0', // optional: darken the background on hover
+    },
+    '&:active': {
+      backgroundColor: backgroundColor ? darken(backgroundColor, 0.2) : '#e0e0e0', // optional: darken the background on active
+    },
+  };
+});
+
+
+
+const darken = (color: string, amount: number) => {
+  const hex = color.replace('#', '');
+  let r = parseInt(hex.slice(0, 2), 16);
+  let g = parseInt(hex.slice(2, 4), 16);
+  let b = parseInt(hex.slice(4, 6), 16);
+  
+  r = Math.max(0, Math.min(255, r - amount * 255));
+  g = Math.max(0, Math.min(255, g - amount * 255));
+  b = Math.max(0, Math.min(255, b - amount * 255));
+  
+  return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
 };
 
-export default ActionButton;
 
+/** Primary UI component for user interaction */
+export const ActionButton = ({
+  type,
+  backgroundColor = '#ffffff',
+  borderColor = '#555ab9',
+  ...props
+}: ButtonProps) => {
+  let buttonContent;
+
+  // Set button content for "+" and "-" buttons
+  if (type === 'p+') {
+    buttonContent = <PlusOne />;  // For plus buttons
+  } else {
+    buttonContent = <MiscellaneousServicesRounded />;  // For minus buttons
+  }
+
+  return (
+    <CustomButton type={type} backgroundColor={backgroundColor} borderColor={borderColor}>
+      {buttonContent}
+    </CustomButton>
+  );
+};

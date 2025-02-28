@@ -1,0 +1,28 @@
+/* ActionButton.module.css */
+.button {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #555ab9;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s, border-color 0.3s;
+    background-color: #ffffff; /* 고정된 배경 색상 */
+  }
+  
+  .button:hover {
+    background-color: #e0e0e0; /* hover 시 배경 색상 다크닝 */
+  }
+  
+  .button:active {
+    background-color: #c0c0c0; /* 클릭 시 배경 색상 다크닝 */
+  }
+  
+  .icon {
+    font-size: 24px; /* 아이콘 크기 조정 */
+  }
+  

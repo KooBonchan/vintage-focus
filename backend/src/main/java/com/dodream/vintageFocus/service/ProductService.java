@@ -7,6 +7,9 @@ import reactor.core.publisher.Mono;
 public interface ProductService {
   Mono<ProductDTO> getProductById(Long id);
   Mono<ProductDTO> getProductByModelName(String ModelName);
+  Mono<ProductDTO> createProduct(ProductDTO productDTO);
+  Mono<ProductDTO> updateProduct(ProductDTO productDTO);
+  Mono<Void>       deleteProduct(Long id);
   Mono<ProductDTO> incrementViewCount(Long id);
   Mono<ProductDTO> incrementLikeCount(Long id);
 

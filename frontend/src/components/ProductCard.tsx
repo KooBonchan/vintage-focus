@@ -1,4 +1,6 @@
-import React from "react";
+// ProductCard.tsx
+
+import React from 'react';
 import { Card, CardMedia, CardContent, Typography, Button } from "@mui/material";
 
 // 제품 정보 타입 정의
@@ -8,6 +10,7 @@ type Product = {
   price: string;
 };
 
+// ProductCardProps 인터페이스 정의
 export interface ProductCardProps {
   product: Product;
   width?: number;
@@ -15,7 +18,13 @@ export interface ProductCardProps {
   onAddToCart?: () => void;
 }
 
-export const ProductCard = ({ product, width = 250, height = 300, onAddToCart }: ProductCardProps) => (
+// ProductCard 컴포넌트 정의
+const ProductCard = ({
+  product,
+  width = 250,
+  height = 300,
+  onAddToCart,
+}: ProductCardProps) => (
   <Card
     sx={{
       width: width,  // 동적으로 width 설정
@@ -60,3 +69,6 @@ export const ProductCard = ({ product, width = 250, height = 300, onAddToCart }:
     </CardContent>
   </Card>
 );
+
+// **default export 추가**
+export default ProductCard;

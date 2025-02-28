@@ -15,6 +15,7 @@ export interface Article {
   date: string;
   views: number;
   tag: string;
+  locked?: boolean; // 🔒 비밀번호 잠금 여부
 }
 
 export interface BoardCardProps {
@@ -28,6 +29,24 @@ export interface BoardCardProps {
   authorAvatarSize?: number; // 작성자 아바타 크기
   viewsCountColor?: string; // 조회수 색상
 }
+
+// 날짜 포맷 함수
+const formatDate = (dateString: string) => {
+  if (!dateString) return "날짜 없음";
+  
+  // ✅ 저장된 ISO 날짜를 변환
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid Date"; // 오류 방지
+
+  return date.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
 
 const BoardCard: React.FC<BoardCardProps> = ({
   article,
@@ -63,10 +82,10 @@ const BoardCard: React.FC<BoardCardProps> = ({
         <Typography variant="subtitle1" fontWeight="bold" sx={{ fontSize }}>
           {article.title}
         </Typography>
-        {iconVisible && <LockIcon fontSize="small" />}
+        {article.locked && iconVisible && <LockIcon fontSize="small" />}
       </Box>
 
-      {/* 아이디 및 게시 날짜, 조회수 */}
+      {/* 작성자 및 날짜, 조회수 */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
         {/* 단일 저자 표시 */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -84,7 +103,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
           </Typography>
         </Box>
         <Typography variant="caption" color="text.secondary">
-          {article.date} • 조회수{" "}
+          {formatDate(article.date)} • 조회수{" "}
           <span style={{ color: viewsCountColor }}>{article.views}</span>
         </Typography>
       </Box>
@@ -97,7 +116,6 @@ const BoardCard: React.FC<BoardCardProps> = ({
           </Typography>
         </Box>
       )}
-
     </Card>
   );
 };

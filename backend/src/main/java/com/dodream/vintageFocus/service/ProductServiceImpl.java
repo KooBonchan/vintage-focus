@@ -2,6 +2,7 @@ package com.dodream.vintageFocus.service;
 
 import com.dodream.vintageFocus.dto.ProductDTO;
 import com.dodream.vintageFocus.repository.ProductRepository;
+import com.dodream.vintageFocus.util.ListUtils;
 import com.dodream.vintageFocus.vo.Product;
 import com.dodream.vintageFocus.vo.image.BaseImage;
 import com.dodream.vintageFocus.vo.image.ProductDetailImage;
@@ -12,7 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
+import static com.dodream.vintageFocus.util.ListUtils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,15 +33,15 @@ public class ProductServiceImpl {
     return productRepository.findByModelName(modelName)
       .map(this::mapToDTO);
   }
-  @Transactional
+
   public Mono<ProductDTO> createProduct(ProductDTO productDTO){
     return productRepository.save(mapToEntity(productDTO))
-      .map(this::mapToDTO)
-      .as(transactionalOperator::transactional);
+      .map(this::mapToDTO);
   }
+
   @Transactional
-  public Mono<ProductDTO> updateProduct(Long id, ProductDTO productDTO){
-    return productRepository.findById(id)
+  public Mono<ProductDTO> updateProduct(ProductDTO productDTO){
+    return productRepository.findById(productDTO.getId())
       .flatMap(existingProduct -> {
         updateProductEntity(existingProduct, productDTO);
         return productRepository.save(existingProduct);
@@ -129,12 +134,8 @@ public class ProductServiceImpl {
       .consumerPrice(product.getConsumerPrice())
       .sellingPrice(product.getSellingPrice())
       .rentalPrice(product.getRentalPrice())
-      .productImages(productImages.stream()
-        .map(BaseImage::getSavedImageName)
-        .toList())
-      .detailImages(detailImages.stream()
-        .map(BaseImage::getSavedImageName)
-        .toList())
+      .productImages(transformList(productImages, BaseImage::getSavedImageName))
+      .detailImages(transformList(detailImages, BaseImage::getSavedImageName))
       .reviewCount(product.getReviewCount())
       .likeCount(product.getLikeCount())
       .viewCount(product.getViewCount())

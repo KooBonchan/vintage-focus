@@ -36,7 +36,7 @@ export default function BuyWrite() {
       content,
       date: formattedDate, // ✅ 한국 시간 기준으로 저장
       views: 0,
-      authors: [{ name: "판매자", avatar: "/static/images/avatar/default.png" }],
+      author: { name: "판매자", avatar: "/static/images/avatar/default.png" },
       tag: "구매문의",
       locked: !isPublic,
       password: isPublic ? null : password,

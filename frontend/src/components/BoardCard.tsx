@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography, Card, Avatar } from "@mui/material";
-import LockIcon from "@mui/icons-material/Lock";
 
 // `article` prop을 받아서 사용하는 컴포넌트
 export interface Author {
@@ -87,14 +86,13 @@ const BoardCard: React.FC<BoardCardProps> = ({
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
         {/* 단일 저자 표시 */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          { article.author.avatar && (
             <Avatar 
-              src={article.author.avatar}
+              src={article?.author.avatar ?? "https://avatar.iran.liara.run/public"}
               sx={{
                 width: authorAvatarSize,
                 height: authorAvatarSize,
               }}
-            />)}
+            />
           <Typography variant="caption" color="text.primary" fontWeight="bold">
             {article.author.name}
           </Typography>

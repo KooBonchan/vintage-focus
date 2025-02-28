@@ -51,7 +51,7 @@ export default function BoardDetail() {
       </Typography>
 
       <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 1 }}>
-        작성자: {article.authors[0].name} | {formatDate(article.date)} | 조회수 {article.views}
+        작성자: {article.author.name} | {formatDate(article.date)} | 조회수 {article.views}
       </Typography>
 
       <Typography variant="body1" sx={{ mt: 3 }}>{article.content}</Typography>

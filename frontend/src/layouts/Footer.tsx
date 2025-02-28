@@ -2,6 +2,7 @@ import FacebookIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/X';
 import { Box, Button, Container, IconButton, InputLabel, Link, Stack, TextField, Typography } from "@mui/material";
+import FooterLogo from '../components/FooterLogo';
 
 function Copyright() {
   return (
@@ -38,61 +39,7 @@ export function Footer() {
           justifyContent: 'space-between',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 4,
-            minWidth: { xs: '100%', sm: '60%' },
-          }}
-        >
-          <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
-          <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 4,
-            minWidth: { xs: '100%', sm: '60%' },
-          }}
-        >
-          <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
-            {/* 로고를 추가합니다 */}
-            <img src="/image/logo.png" alt="Vintage Focus Logo" style={{ width: 'auto', maxWidth: '200px', marginBottom: '16px' }} />
-          </Box>
-        </Box>
-            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-            Your Perfect Shot Begins with Vintage.
-            </Typography>
-            {/* <InputLabel htmlFor="email-newsletter">Email</InputLabel> */}
-            {/* <Stack direction="row" spacing={1} useFlexGap> */}
-              {/* <TextField
-                id="email-newsletter"
-                hiddenLabel
-                size="small"
-                variant="outlined"
-                fullWidth
-                aria-label="Enter your email address"
-                placeholder="Your email address"
-                slotProps={{
-                  htmlInput: {
-                    autoComplete: 'off',
-                    'aria-label': 'Enter your email address',
-                  },
-                }}
-                sx={{ width: '250px' }}
-              /> */}
-              {/* TODO: Form으로 변경? 필요 */}
-              {/* <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                sx={{ flexShrink: 0 }}
-              >
-                Subscribe
-              </Button>
-            </Stack> */}
-          </Box>
-        </Box>
+        <FooterLogo />
         <Box
           sx={{
             display: { xs: 'none', sm: 'flex' },

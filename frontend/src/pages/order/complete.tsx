@@ -1,9 +1,25 @@
+import { useLocation } from "react-router-dom";
 import { Container, Paper, Box, Typography, Grid, Divider } from "@mui/material";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
 const OrderCompletePage = () => {
-  const orderNumber = "12345"; // 예제 주문번호 (실제 데이터 연동 필요)
-  const orderDate = "2023.02.23"; // 예제 날짜
+  const location = useLocation();
+  const { orderItems, paymentInfo } = location.state || {}; // 결제 페이지에서 넘긴 데이터 받기
+
+  if (!orderItems || !paymentInfo) {
+    return (
+      <Container maxWidth="md" sx={{ py: 4, minHeight: "100vh", bgcolor: "#f8f8f8" }}>
+        <Paper sx={{ p: 4, textAlign: "center", bgcolor: "#fff", borderRadius: "8px" }}>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            주문 정보가 없습니다.
+          </Typography>
+        </Paper>
+      </Container>
+    );
+  }
+
+  const orderNumber = paymentInfo.merchant_uid || "알 수 없음"; // 결제 고유 주문 번호
+  const orderDate = new Date().toLocaleDateString(); // 현재 날짜
 
   return (
     <Container maxWidth="md" sx={{ py: 4, minHeight: "100vh", bgcolor: "#f8f8f8" }}>
@@ -31,7 +47,15 @@ const OrderCompletePage = () => {
             <Grid item xs={2} sx={{ fontWeight: "bold" }}>합계 금액</Grid>
             <Grid item xs={3} sx={{ fontWeight: "bold" }}>배송비</Grid>
           </Grid>
-          <Box sx={{ p: 2, textAlign: "center", color: "#777" }}>주문한 상품이 여기에 표시됩니다.</Box>
+          {orderItems.map((item) => (
+            <Grid container spacing={1} key={item.id} sx={{ py: 1, borderBottom: "1px solid #eee", alignItems: "center" }}>
+              <Grid item xs={3}>{item.name}</Grid>
+              <Grid item xs={2}>{item.quantity}개</Grid>
+              <Grid item xs={2}>{item.price.toLocaleString()}원</Grid>
+              <Grid item xs={2}>{(item.price * item.quantity).toLocaleString()}원</Grid>
+              <Grid item xs={3}>{item.shipping.toLocaleString()}원</Grid>
+            </Grid>
+          ))}
         </Box>
       </Paper>
 
@@ -42,9 +66,9 @@ const OrderCompletePage = () => {
           <Paper sx={{ p: 3, bgcolor: "#fff", borderRadius: "8px", boxShadow: "none", border: "1px solid #ddd" }}>
             <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>배송지 정보</Typography>
             <Divider sx={{ mb: 2 }} />
-            <Typography sx={{ color: "#555", mb: 1 }}><strong>주문자:</strong> 홍길동</Typography>
-            <Typography sx={{ color: "#555", mb: 1 }}><strong>휴대폰 번호:</strong> 010-1234-5678</Typography>
-            <Typography sx={{ color: "#555" }}><strong>배송지 주소:</strong> 서울특별시 강남구 테헤란로 123</Typography>
+            <Typography sx={{ color: "#555", mb: 1 }}><strong>주문자:</strong> {paymentInfo.buyer_name}</Typography>
+            <Typography sx={{ color: "#555", mb: 1 }}><strong>휴대폰 번호:</strong> {paymentInfo.buyer_tel}</Typography>
+            <Typography sx={{ color: "#555" }}><strong>배송지 주소:</strong> {paymentInfo.buyer_addr}</Typography>
           </Paper>
         </Grid>
 
@@ -53,9 +77,9 @@ const OrderCompletePage = () => {
           <Paper sx={{ p: 3, bgcolor: "#fff", borderRadius: "8px", boxShadow: "none", border: "1px solid #ddd" }}>
             <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>결제 정보</Typography>
             <Divider sx={{ mb: 2 }} />
-            <Typography sx={{ color: "#555", mb: 1 }}><strong>상품 금액:</strong> 100,000원</Typography>
-            <Typography sx={{ color: "#555", mb: 1 }}><strong>배송비:</strong> 3,000원</Typography>
-            <Typography sx={{ color: "#111", fontWeight: "bold" }}><strong>총 결제 금액:</strong> 103,000원</Typography>
+            <Typography sx={{ color: "#555", mb: 1 }}><strong>상품 금액:</strong> {paymentInfo.paid_amount.toLocaleString()}원</Typography>
+            <Typography sx={{ color: "#555", mb: 1 }}><strong>결제 방식:</strong> {paymentInfo.pay_method === "card" ? "신용카드" : paymentInfo.pay_method}</Typography>
+            <Typography sx={{ color: "#111", fontWeight: "bold" }}><strong>결제 상태:</strong> {paymentInfo.status === "paid" ? "결제 완료" : "결제 실패"}</Typography>
           </Paper>
         </Grid>
       </Grid>

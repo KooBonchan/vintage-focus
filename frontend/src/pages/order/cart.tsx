@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Checkbox, Button, Typography, Box, IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 useNavigate 추가
+import { 
+  Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, 
+  Checkbox, Button, Typography, Box, IconButton 
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
@@ -13,6 +17,7 @@ const sampleCartItems = [
 export default function Cart() {
   const [cartItems, setCartItems] = useState(sampleCartItems);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
 
   // 개별 체크박스 핸들러
   const handleSelectItem = (id: number) => {
@@ -44,6 +49,18 @@ export default function Cart() {
   const totalShipping = cartItems
     .filter((item) => selectedItems.includes(item.id))
     .reduce((acc, item) => acc + item.shipping, 0);
+
+  // 주문 페이지로 이동하는 함수
+  const handleOrder = (type: "selected" | "all") => {
+    const orderItems = type === "selected" ? cartItems.filter(item => selectedItems.includes(item.id)) : cartItems;
+
+    if (orderItems.length === 0) {
+      alert("주문할 상품을 선택해주세요!");
+      return;
+    }
+
+    navigate("/order/delivery", { state: { orderItems } }); // 결제 페이지로 데이터 전달
+  };
 
   return (
     <Container sx={{ mt: 4 }}>
@@ -92,8 +109,7 @@ export default function Cart() {
                 {/* 수량 조절 */}
                 <TableCell>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <IconButton onClick={() => { handleQuantityChange(item.id, -1); }}>
-
+                    <IconButton onClick={() => { handleQuantityChange(item.id, -1); }}>
                       <RemoveIcon />
                     </IconButton>
                     <Typography sx={{ mx: 1 }}>{item.quantity}</Typography>
@@ -122,10 +138,10 @@ export default function Cart() {
         </Typography>
 
         <Box sx={{ display: "flex", gap: 2 }}>
-          <Button variant="outlined" color="primary">
+          <Button variant="outlined" color="primary" onClick={() => handleOrder("selected")}>
             선택 상품 주문
           </Button>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={() => handleOrder("all")}>
             전체 상품 주문
           </Button>
         </Box>

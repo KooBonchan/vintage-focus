@@ -16,6 +16,8 @@ import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
 import BoardDetail from './pages/Board/Detail/BoardDetail';
+import DeliveryPage from './pages/order/delivery';
+import OrderCompletePage from './pages/order/complete';
 
 
 
@@ -105,21 +107,21 @@ function Router(){
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
 
-            {/* ✅ 매각문의 라우트 그룹 */}
+            {/* 매각문의 라우트 그룹 */}
       <Route path="sell-inquiry">
         <Route index element={<About />} />
         <Route path="write" element={<SellWrite />} />
         <Route path="detail/:id" element={<BoardDetail />} /> {/* ✅ 상세 페이지 추가 */}
       </Route>
 
-      {/* ✅ 구매문의 라우트 그룹 */}
+      {/* 구매문의 라우트 그룹 */}
       <Route path="buy-inquiry">
         <Route index element={<About />} />
         <Route path="write" element={<BuyWrite />} />
         <Route path="detail/:id" element={<BoardDetail />} /> {/* ✅ 상세 페이지 추가 */}
       </Route>
 
-      {/* ✅ 대여문의 라우트 그룹 */}
+      {/* 대여문의 라우트 그룹 */}
       <Route path="rental-inquiry">
         <Route index element={<About />} />
         <Route path="write" element={<RentalWrite />} />
@@ -141,6 +143,8 @@ function Router(){
 
         <Route path="order">
           <Route path="cart" element={<Cart />} />
+          <Route path="delivery" element={<DeliveryPage />} />
+          <Route path="complete" element={<OrderCompletePage />} />
         </Route>
       </Route>
     </Routes>

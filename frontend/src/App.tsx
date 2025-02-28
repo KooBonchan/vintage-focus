@@ -16,6 +16,8 @@ import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
 import BoardDetail from './pages/Board/Detail/BoardDetail';
+import NoticePage from './pages/Board/Notice/NoticePage';
+import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 
 
 
@@ -127,7 +129,8 @@ function Router(){
       </Route>
 
 
-      
+      <Route path="/notice" element={<NoticePage />} /> {/* ✅ 추가 */}
+      <Route path="/notice/detail/:id" element={<NoticeDetail />} /> {/* ✅ 공지사항 상세 */}
 
 
       

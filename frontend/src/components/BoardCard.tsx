@@ -1,25 +1,25 @@
 import React from "react";
-import { Box, Typography, Card } from "@mui/material";
+import { Box, Typography, Card, Avatar } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 
 // `article` prop을 받아서 사용하는 컴포넌트
 export interface Author {
   name: string;
-  avatar: string;
+  avatar?: string;
 }
 
 export interface Article {
-  id: number;
+  id?: number;
   title: string;
   author: Author; // 단일 저자
-  date: string;
-  views: number;
-  tag: string;
+  date?: string;
+  views?: number;
+  tag?: string;
   locked?: boolean; // 🔒 비밀번호 잠금 여부
 }
 
 export interface BoardCardProps {
-  article: Article; // article prop을 정의
+  article?: Article; // article prop을 정의
   highlighted?: boolean; // 강조된 카드 여부
   iconVisible?: boolean; // 잠금 아이콘 표시 여부
   tagVisible?: boolean; // 태그 표시 여부
@@ -51,7 +51,6 @@ const formatDate = (dateString: string) => {
 const BoardCard: React.FC<BoardCardProps> = ({
   article,
   highlighted = false,
-  iconVisible = true,
   tagVisible = true,
   backgroundColor = "#fff",
   borderColor = "#ddd",
@@ -82,22 +81,20 @@ const BoardCard: React.FC<BoardCardProps> = ({
         <Typography variant="subtitle1" fontWeight="bold" sx={{ fontSize }}>
           {article.title}
         </Typography>
-        {article.locked && iconVisible && <LockIcon fontSize="small" />}
       </Box>
 
       {/* 작성자 및 날짜, 조회수 */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
         {/* 단일 저자 표시 */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <img
-            src={article.author.avatar}
-            alt={article.author.name}
-            style={{
-              width: authorAvatarSize,
-              height: authorAvatarSize,
-              borderRadius: "50%",
-            }}
-          />
+          { article.author.avatar && (
+            <Avatar 
+              src={article.author.avatar}
+              sx={{
+                width: authorAvatarSize,
+                height: authorAvatarSize,
+              }}
+            />)}
           <Typography variant="caption" color="text.primary" fontWeight="bold">
             {article.author.name}
           </Typography>

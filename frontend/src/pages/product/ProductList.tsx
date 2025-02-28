@@ -49,7 +49,7 @@ function ProductList() {
           {currentPageProducts.map((product, index) => (
             <Grid2 xs={3} key={index} sx={{ display: "flex", flexDirection: "column" }}>
               <ProductCard
-              height={360}
+              height={330}
               product={{
                 image: 'https://placehold.co/200x200',
                 name: 'Sample Product',

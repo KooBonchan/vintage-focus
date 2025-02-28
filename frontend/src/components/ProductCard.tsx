@@ -22,7 +22,7 @@ export interface ProductCardProps {
 const ProductCard = ({
   product,
   width = 250,
-  height = 300,
+  height = 330,
   onAddToCart,
 }: ProductCardProps) => (
   <Card

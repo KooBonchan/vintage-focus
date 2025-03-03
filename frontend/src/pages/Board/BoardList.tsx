@@ -60,10 +60,7 @@ export default function BoardList() {
       navigate(`${currentPath}/detail/${article.id}`);
     }
   };
-  useEffect(() => {
-    const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-    setPosts(storedPosts);
-  }, []);
+
 
   // ✅ 비밀번호 확인
   const handleCheckPassword = () => {

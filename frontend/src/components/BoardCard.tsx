@@ -6,8 +6,8 @@ import LockIcon from "@mui/icons-material/Lock";
 interface Article {
   id: number;
   title: string;
-  authors: { name: string; avatar: string }[];
-  date: string;
+  authors?: { name: string; avatar: string }[]; // authors가 undefined일 수 있음
+  date?: string; // date가 undefined일 수 있음
   views: number;
   tag: string;
   locked?: boolean; // 🔒 비밀번호 잠금 여부
@@ -17,9 +17,9 @@ interface BoardCardProps {
   article: Article;
 }
 
-const formatDate = (dateString: string) => {
+const formatDate = (dateString?: string) => {
   if (!dateString) return "날짜 없음";
-  
+
   // ✅ 저장된 ISO 날짜를 변환
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return "Invalid Date"; // 오류 방지
@@ -30,11 +30,12 @@ const formatDate = (dateString: string) => {
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
   });
 };
 
 const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
+  const author = article.authors?.[0] || { name: "작성자 없음" };
+
   return (
     <Card
       sx={{
@@ -59,7 +60,7 @@ const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
       {/* 작성자 및 날짜, 조회수 */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
         <Typography variant="caption" color="text.primary" fontWeight="bold">
-          {article.authors[0].name}
+          {author.name}
         </Typography>
         <Typography variant="caption" color="text.secondary">
           {formatDate(article.date)} • 조회수 {article.views}
@@ -68,4 +69,5 @@ const BoardCard: React.FC<BoardCardProps> = ({ article }) => {
     </Card>
   );
 };
+
 export default BoardCard;

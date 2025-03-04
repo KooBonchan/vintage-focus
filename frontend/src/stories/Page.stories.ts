@@ -15,7 +15,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const LoggedOut: Story = {};
+export const C: Story = {};
 
 // More on component testing: https://storybook.js.org/docs/writing-tests/component-testing
 export const LoggedIn: Story = {

@@ -123,12 +123,13 @@ export default function HeaderBar() {
                   </IconButton>
                 </Box>
 
-                <MenuItem>Features</MenuItem>
-                <MenuItem>Testimonials</MenuItem>
-                <MenuItem>Highlights</MenuItem>
-                <MenuItem>Pricing</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-                <MenuItem>Blog</MenuItem>
+                <MenuItem>홈</MenuItem>
+                <MenuItem>상품</MenuItem>
+                <MenuItem>공지사항</MenuItem>
+                <MenuItem>매각문의</MenuItem>
+                <MenuItem>구매문의</MenuItem>
+                <MenuItem>대여문의</MenuItem>
+                <MenuItem>구매후기</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
                   <Button color="primary" variant="contained" fullWidth>

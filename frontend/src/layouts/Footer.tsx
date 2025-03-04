@@ -48,23 +48,14 @@ export function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Product
+            홈
           </Typography>
           {/* TODO: NavLink 써서 프로젝트 내부 링크로 변경 필요 */}
           <Link color="text.secondary" variant="body2" href="#">
-            Features
+            공지사항
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Testimonials
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Highlights
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Pricing
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            FAQs
+            구매후기
           </Link>
         </Box>
         <Box
@@ -75,17 +66,17 @@ export function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Company
+           상품
           </Typography>
           {/* TODO: NavLink 써서 프로젝트 내부 링크로 변경 필요 */}
           <Link color="text.secondary" variant="body2" href="#">
-            About us
+          제조사
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Careers
+          년식
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Press
+          가격
           </Link>
         </Box>
         <Box
@@ -96,17 +87,17 @@ export function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Legal
+            문의
           </Typography>
           {/* TODO: NavLink 써서 프로젝트 내부 링크로 변경 필요 */}
           <Link color="text.secondary" variant="body2" href="#">
-            Terms
+            구매문의
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Privacy
+            대여문의
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Contact
+            구매후기
           </Link>
         </Box>
       </Box>

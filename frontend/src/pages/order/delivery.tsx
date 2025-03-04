@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Paper, Box, Typography, TextField, Button, Grid } from "@mui/material";
+import PortOne from "@portone/browser-sdk"
 
 const DeliveryPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const orderItems = location.state?.orderItems || [];
 
   const [form, setForm] = useState({
@@ -32,6 +34,49 @@ const DeliveryPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  
+// 🛒 **결제 기능 추가 - 수정예정**
+const handlePayment = () => {
+  if (!window.IMP) {
+    alert("결제 모듈을 불러오는 데 실패했습니다. 페이지를 새로고침해 주세요.");
+    return;
+  }
+
+  const IMP = window.IMP;
+  IMP.init("imp00000000"); // PortOne(아임포트) 테스트 가맹점 코드
+
+  // 배송 정보 확인
+  if (!form.recipient || !form.phone || !form.address) {
+    alert("배송 정보를 모두 입력해주세요.");
+    return;
+  }
+
+  IMP.request_pay(
+    {
+      pg: "kakaopay.TC0ONETIME", // 카카오페이 테스트 PG 설정
+      pay_method: "card", // 카드 결제 방식 (테스트 모드)
+      merchant_uid: `order_${new Date().getTime()}`, // 주문번호 (고유한 값 필요)
+      name: "Vintage Focus 상품 결제 (테스트)", // 결제창에 표시될 이름
+      amount: 100, // 테스트 결제는 100원 이하로 설정하면 자동 승인됨
+      buyer_email: form.email,
+      buyer_name: form.recipient,
+      buyer_tel: form.phone,
+      buyer_addr: form.address,
+      buyer_postcode: form.postalCode,
+    },
+    (rsp: any) => {
+      if (rsp.success) {
+        alert("테스트 결제가 완료되었습니다. 실제 결제는 이루어지지 않습니다.");
+        navigate("/order/complete", { state: { orderItems, paymentInfo: rsp } }); // 결제 완료 페이지로 이동
+      } else {
+        alert(`테스트 결제 실패: ${rsp.error_msg}`);
+      }
+    }
+  );
+};
+
+
 
   return (
     <Container maxWidth="md" sx={{ py: 4, bgcolor: "#f8f8f8", minHeight: "100vh" }}>
@@ -162,14 +207,22 @@ const DeliveryPage = () => {
         </Typography>
       </Paper>
 
+
+      
+
       {/* 결제 버튼 */}
-      <Box sx={{ textAlign: "center", mt: 2 }}>
-        <Button variant="outlined" sx={{ bgcolor: "#333", color: "#fff", width: "50%", fontWeight: "bold", fontSize: "16px", ":hover": { bgcolor: "#555" } }}>
+      <Box sx={{ textAlign: "center", mt: 3 }}>
+        <Button variant="outlined" sx={{ bgcolor: "#333", color: "#fff", width: "50%", fontWeight: "bold", fontSize: "16px", ":hover": { bgcolor: "#555" } }}onClick={handlePayment}>
           결제하기
         </Button>
       </Box>
     </Container>
   );
 };
+
+
+
+
+
 
 export default DeliveryPage;

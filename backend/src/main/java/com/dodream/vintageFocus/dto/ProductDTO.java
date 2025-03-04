@@ -27,7 +27,8 @@ public class ProductDTO {
   private String category3;
 
   // 상품상세
-  private String condition; // mapped by Enum ProductCondition
+  private String condition; // "POOR";"FAIR";"GOOD";"EXCELLENT";"MINT";
+
   private Integer stock;    // if necessary, else -1
   private Integer consumerPrice;
   private Integer sellingPrice;

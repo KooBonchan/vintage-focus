@@ -36,3 +36,10 @@ logging.level:
   org:
     springframework:
       data.r2dbc: TRACE
+
+# PortOne(아임포트) API 설정 추가
+portone:
+  api-key: "YOUR_PORTONE_API_KEY"
+  api-secret: "YOUR_PORTONE_API_SECRET"
+
+

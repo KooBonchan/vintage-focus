@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalOperator;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -21,10 +22,14 @@ import static com.dodream.vintageFocus.util.ListUtils.*;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl {
+public class ProductServiceImpl implements ProductService{
   private final ProductRepository productRepository;
   private final TransactionalOperator transactionalOperator;
 
+
+  public Flux<ProductDTO> getAllProducts(){
+    return productRepository.findAll().map(this::mapToDTO);
+  }
   public Mono<ProductDTO> getProductById(Long id){
     return productRepository.findById(id)
       .map(this::mapToDTO);

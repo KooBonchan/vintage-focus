@@ -57,17 +57,17 @@ const BoardCard: React.FC<BoardCardProps> = ({
   onUnlock,
   isManager = false,
 }) => {
-  const [open, setOpen] = useState(false); // 모달 상태 관리
-  const [password, setPassword] = useState(""); // 비밀번호 입력 상태
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleUnlock = () => {
     if (article?.id && onUnlock) {
-      onUnlock(article.id, password); // 부모 컴포넌트로 비밀번호 전달
-      setPassword(""); // 입력 필드 초기화
-      handleClose(); // 모달 닫기
+      onUnlock(article.id, password);
+      setPassword("");
+      handleClose();
     }
   };
 
@@ -83,33 +83,30 @@ const BoardCard: React.FC<BoardCardProps> = ({
           flexDirection: "column",
           gap: 1,
           position: "relative",
-          backgroundColor: isManager ? "#2E3B4E" : (highlighted ? "#f0f8ff" : backgroundColor),
-          color: isManager ? "#fff" : "inherit",
+          backgroundColor: isManager ? "#445366" : (highlighted ? "#f0f8ff" : backgroundColor),
+          color: isManager ? "#FFFFFF" : "inherit",
           transition: "box-shadow 0.3s ease-in-out",
           "&:hover": {
             boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.3)" : "0 4px 10px rgba(161, 161, 161, 0.2)",
           },
         }}
       >
-
-        {/* 제목 & 잠금 아이콘 */}
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography
             variant="subtitle1"
             fontWeight="bold"
-            sx={{ fontSize, color: isManager ? "#fff" : "inherit" }}
+            sx={{ fontSize, color: isManager ? "#FFFFFF" : "inherit" }}
           >
             {article?.title}
           </Typography>
           {article?.locked && (
             <LockIcon
-              sx={{ cursor: "pointer", color: isManager ? "#fff" : "inherit", fontSize: 28 }}
+              sx={{ cursor: "pointer", color: isManager ? "#FFFFFF" : "inherit", fontSize: 28 }}
               onClick={handleOpen}
             />
           )}
         </Box>
 
-        {/* 작성자 및 날짜, 조회수 */}
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Avatar
@@ -118,7 +115,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
             />
             <Typography
               variant="caption"
-              color={isManager ? "#fff" : "text.primary"}
+              color={isManager ? "#FFFFFF" : "text.primary"}
               fontWeight="bold"
             >
               {article?.author.name}
@@ -126,20 +123,18 @@ const BoardCard: React.FC<BoardCardProps> = ({
           </Box>
           <Typography
             variant="caption"
-            color={isManager ? "#fff" : "text.secondary"}
-            sx={{ color: isManager ? "#fff" : "inherit" }}
+            sx={{ color: isManager ? "#FFFFFF" : "text.secondary" }}
           >
             {formatDate(article?.date)} • 조회수{" "}
-            <span style={{ color: viewsCountColor }}>{article?.views}</span>
+            <span style={{ color: isManager ? "#FFFFFF" : viewsCountColor }}>{article?.views}</span>
           </Typography>
         </Box>
 
-        {/* 태그 표시 */}
         {tagVisible && article?.tag && (
           <Box sx={{ mt: 1 }}>
             <Typography
               variant="caption"
-              color={isManager ? "#fff" : "text.primary"}
+              color={isManager ? "#FFFFFF" : "text.primary"}
             >
               #{article.tag}
             </Typography>
@@ -147,7 +142,6 @@ const BoardCard: React.FC<BoardCardProps> = ({
         )}
       </Card>
 
-      {/* 비밀번호 입력 모달 */}
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
@@ -165,7 +159,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
             gap: 2,
           }}
         >
-          <Typography variant="h6" color={isManager ? "#fff" : "inherit"}>비밀번호 입력</Typography>
+          <Typography variant="h6" color={isManager ? "#FFFFFF" : "inherit"}>비밀번호 입력</Typography>
           <TextField
             label="비밀번호"
             type="password"

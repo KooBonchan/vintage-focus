@@ -31,48 +31,53 @@
 .storybook-button--small {
   padding: 9px 16px;
   font-size: 12px;
+  border: 1px solid  #445366;  /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--medium {
   padding: 10px 20px;
   font-size: 14px;
+  border: 1px solid  #445366;  /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--large {
   padding: 11px 24px;
   font-size: 16px;
+  border: 1px solid  #445366;  /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--biglarge {
   width: 250px;
   padding: 12px 24px;
   font-size: 16px;
+  border: 1px solid  #445366;  /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--kingbiglarge {
   width: 400px;
   padding: 12px 24px;
   font-size: 16px;
+  border: 1px solid  #445366;  /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--colorsmall {
   padding: 9px 16px;
   font-size: 12px;
-  background-color: #333;
+  background-color: #445366;
   color: white;
 }
 
 .storybook-button--colormedium {
   padding: 10px 20px;
   font-size: 14px;
-  background-color:#333;
+  background-color: #445366;
   color: white;
 }
 
 .storybook-button--colorlarge {
   padding: 11px 24px;
   font-size: 16px;
-  background-color:#333;
+  background-color: #445366;
   color: white;
 }
 
@@ -80,7 +85,7 @@
   width: 250px;
   padding: 12px 24px;
   font-size: 16px;
-  background-color: #333;
+  background-color: #445366;
   color: white;
 }
 
@@ -88,6 +93,6 @@
   width: 400px;
   padding: 12px 24px;
   font-size: 16px;
-  background-color: #333; 
+  background-color: #445366;
   color: white;
 }

@@ -1,23 +1,24 @@
-import { MiscellaneousServicesRounded, PlusOne } from "@mui/icons-material";
+import { Add, Remove } from "@mui/icons-material";
 import { styled } from "@mui/material";
 
+// 버튼 속성 타입 정의
 export interface ButtonProps {
-  type: 'p+' | 'm-';  // Only plus or minus sizes allowed
+  type: 'p+' | 'm-';  // 플러스와 마이너스 버튼 타입
   backgroundColor?: string;
   borderColor?: string;
   onClick?: () => void;
 }
 
+// 커스텀 버튼 스타일
 const CustomButton = styled('button')<ButtonProps>(({
   type, backgroundColor, borderColor 
 }) => {
-
-  const size = '40px';  // 고정된 크기 설정
+  const size = '30px';  // 버튼 크기 설정 (작은 크기)
 
   return {
     backgroundColor,
     borderColor,
-    borderRadius: '50%',
+    borderRadius: '50%',  // 원형 버튼
     width: size,
     height: size,
     display: 'flex',
@@ -25,20 +26,18 @@ const CustomButton = styled('button')<ButtonProps>(({
     alignItems: 'center',
     border: '2px solid',
     cursor: 'pointer',
-    fontSize: '20px',
-    fontWeight: 'bold',
+    fontSize: '14px',  // 글자 크기 줄이기
     transition: 'background-color 0.3s, border-color 0.3s',
     '&:hover': {
-      backgroundColor: backgroundColor ? darken(backgroundColor, 0.1) : '#f0f0f0', // optional: darken the background on hover
+      backgroundColor: backgroundColor ? darken(backgroundColor, 0.1) : '#f0f0f0',  // hover시 배경색 변화
     },
     '&:active': {
-      backgroundColor: backgroundColor ? darken(backgroundColor, 0.2) : '#e0e0e0', // optional: darken the background on active
+      backgroundColor: backgroundColor ? darken(backgroundColor, 0.2) : '#e0e0e0',  // active 상태에서 배경색 변화
     },
   };
 });
 
-
-
+// 색상 어두운 처리 함수
 const darken = (color: string, amount: number) => {
   const hex = color.replace('#', '');
   let r = parseInt(hex.slice(0, 2), 16);
@@ -52,8 +51,7 @@ const darken = (color: string, amount: number) => {
   return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
 };
 
-
-/** Primary UI component for user interaction */
+// 기본 UI 컴포넌트 (플러스/마이너스 버튼)
 export const ActionButton = ({
   type,
   backgroundColor = '#ffffff',
@@ -62,15 +60,15 @@ export const ActionButton = ({
 }: ButtonProps) => {
   let buttonContent;
 
-  // Set button content for "+" and "-" buttons
+  // "+" 버튼일 경우 Add 아이콘 사용, "-" 버튼일 경우 Remove 아이콘 사용
   if (type === 'p+') {
-    buttonContent = <PlusOne />;  // For plus buttons
+    buttonContent = <Add sx={{ fontSize: '18px' }} />;  // 아이콘 크기 줄이기
   } else {
-    buttonContent = <MiscellaneousServicesRounded />;  // For minus buttons
+    buttonContent = <Remove sx={{ fontSize: '18px' }} />;  // 아이콘 크기 줄이기
   }
 
   return (
-    <CustomButton type={type} backgroundColor={backgroundColor} borderColor={borderColor}>
+    <CustomButton type={type} backgroundColor={backgroundColor} borderColor={borderColor} {...props}>
       {buttonContent}
     </CustomButton>
   );

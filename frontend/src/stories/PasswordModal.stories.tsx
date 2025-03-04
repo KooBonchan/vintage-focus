@@ -1,30 +1,52 @@
-// src/stories/PasswordModal.stories.js
-import React, { useState } from 'react';
-import PasswordModal from '../components/PasswordModal';  // 모달 컴포넌트 경로에 맞게 수정
+import React, { useState } from "react";
+import PasswordModal from "../components/PasswordModal"; // 경로 확인
+import { Meta, Story } from '@storybook/react';  // Storybook 메타 및 스토리
 
-export default {
-  title: 'Components/PasswordModal',  // 스토리북에서의 제목
+// 기본 설정 및 문서화
+const meta: Meta<typeof PasswordModal> = {
+  title: 'Components/PasswordModal', // 스토리북에서 표시될 제목
   component: PasswordModal,
   argTypes: {
-    open: { control: 'boolean' },  // open을 boolean 타입으로 제어
+    open: { control: 'boolean' },
     selectedArticle: { 
-      control: 'object',  // selectedArticle을 object 타입으로 제어
-      defaultValue: { id: 1, password: '1234' }, // 기본값 설정
+      control: 'object',
+      defaultValue: { id: 1, password: '1234' },
     },
     modalWidth: { 
-      control: 'text',  // modalWidth를 텍스트로 제어 (사이즈를 px 단위로 입력)
-      defaultValue: '300px', // 기본값 300px
+      control: 'text', 
+      defaultValue: '300px',
+    },
+  },
+  parameters: {
+    docs: {
+      page: () => (
+        <>
+          <h1>비밀번호 입력 모달 (Password Modal)</h1>
+          <p>이 모달은 비밀번호를 입력받고 확인하는 기능을 제공합니다.</p>
+          <h3>사용 방법</h3>
+          <pre>{`<PasswordModal open={true} onClose={onClose} onPasswordCheck={onPasswordCheck} selectedArticle={article} />`}</pre>
+          <h3>Props</h3>
+          <ul>
+            <li><strong>open</strong>: 모달의 열림 상태 (boolean)</li>
+            <li><strong>onClose</strong>: 모달을 닫을 때 호출되는 함수</li>
+            <li><strong>onPasswordCheck</strong>: 비밀번호 확인 시 호출되는 함수</li>
+            <li><strong>selectedArticle</strong>: 선택된 기사 (id, password 등)</li>
+            <li><strong>modalWidth</strong>: 모달의 너비 (string, px 단위)</li>
+          </ul>
+        </>
+      ),
     },
   },
 };
 
-// 기본 사용 예시
-const Template = (args) => {
-  const [open, setOpen] = useState(args.open || false);
-  const [selectedArticle, setSelectedArticle] = useState(args.selectedArticle || { id: 1, password: '1234' });
+export default meta; // 여기에서 meta를 export default로 해야 함
 
-  // 비밀번호 확인 시 처리
-  const handlePasswordCheck = (articleId) => {
+// 기본 사용 예시
+const Template: Story<typeof PasswordModal> = (args) => {
+  const [open, setOpen] = useState(args.open || false);
+  const [selectedArticle, setSelectedArticle] = useState(args.selectedArticle || { id: 1, password: "1234" });
+
+  const handlePasswordCheck = (articleId: number) => {
     alert(`비밀번호 확인 성공! 상세 페이지로 이동합니다. (ID: ${articleId})`);
     setOpen(false);
   };
@@ -36,7 +58,7 @@ const Template = (args) => {
       onPasswordCheck={handlePasswordCheck}
       selectedArticle={selectedArticle}
       {...args}
-      sx={{ width: args.modalWidth }}  // 모달의 너비를 dynamic하게 적용
+      sx={{ width: args.modalWidth }}  // modalWidth를 sx prop으로 전달
     />
   );
 };
@@ -44,23 +66,15 @@ const Template = (args) => {
 // 기본 상태의 PasswordModal
 export const Default = Template.bind({});
 Default.args = {
-  open: true,  // 기본적으로 모달이 열리도록 설정
-  selectedArticle: { id: 1, password: '1234' },  // 기본 article 설정
-  modalWidth: '300px',  // 기본 모달 너비 설정
+  open: true,
+  selectedArticle: { id: 1, password: '1234' },
+  modalWidth: '300px',
 };
 
-// 모달 너비를 500px로 설정한 예시
+// 추가 예시 (너비 변경)
 export const LargeModal = Template.bind({});
 LargeModal.args = {
   open: true,
   selectedArticle: { id: 1, password: '1234' },
-  modalWidth: '500px',  // 모달 너비를 500px로 설정
-};
-
-// 모달 너비를 600px로 설정한 예시
-export const ExtraLargeModal = Template.bind({});
-ExtraLargeModal.args = {
-  open: true,
-  selectedArticle: { id: 1, password: '1234' },
-  modalWidth: '600px',  // 모달 너비를 600px로 설정
+  modalWidth: '500px',
 };

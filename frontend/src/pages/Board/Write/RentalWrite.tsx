@@ -1,144 +1,120 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Typography, TextField, Button, Switch, FormControlLabel } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import React from "react";
+import { Box, Typography, Card, Avatar } from "@mui/material";
+import LockIcon from '@mui/icons-material/Lock';
 
-export default function RentalWrite() {
-  const navigate = useNavigate();
-  
-  // ✅ 게시글 데이터 상태 관리
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [content, setContent] = useState("");
-  const [isPublic, setIsPublic] = useState(true); // 공개/비공개 상태
-  const [password, setPassword] = useState(""); // 비밀번호 (비공개 시 필수)
+// `article` prop을 받아서 사용하는 컴포넌트
+export interface Author {
+  name: string;
+  avatar?: string;
+}
 
-  // ✅ 게시글 등록 함수
-  const handleSubmit = () => {
-    if (!title.trim() || !content.trim()) {
-      alert("제목과 내용을 입력해주세요!");
-      return;
-    }
-  
-    if (!isPublic && password.length !== 4) {
-      alert("비밀번호는 4자리 숫자로 입력해주세요.");
-      return;
-    }
-  
-    // ✅ 현재 시간 (KST) 기준으로 저장
-    const now = new Date();
-    const formattedDate = now.toISOString();
-  
-    const newPost = {
-      id: Date.now(),
-      title,
-      price,
-      content,
-      date: formattedDate, // ✅ 한국 시간 기준으로 저장
-      views: 0,
-      authors: [{ name: "판매자", avatar: "/static/images/avatar/default.png" }],
-      tag: "대여문의",
-      locked: !isPublic,
-      password: isPublic ? null : password,
-    };
-  
-    const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-    sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
-  
-    alert("게시글이 등록되었습니다.");
-    navigate("/rental-inquiry");
-  };
-  
-  
+export interface Article {
+  id?: number;
+  title: string;
+  author: Author; // 단일 저자
+  date?: string;
+  views?: number;
+  tag?: string;
+  locked?: boolean; // 🔒 비밀번호 잠금 여부
+}
 
+export interface BoardCardProps {
+  article?: Article; // article prop을 정의
+  highlighted?: boolean; // 강조된 카드 여부
+  iconVisible?: boolean; // 잠금 아이콘 표시 여부
+  tagVisible?: boolean; // 태그 표시 여부
+  backgroundColor?: string; // 카드 배경 색상
+  borderColor?: string; // 카드 테두리 색상
+  fontSize?: string; // 제목 폰트 크기
+  authorAvatarSize?: number; // 작성자 아바타 크기
+  viewsCountColor?: string; // 조회수 색상
+}
+
+// 날짜 포맷 함수
+const formatDate = (dateString: string) => {
+  if (!dateString) return "날짜 없음";
+  
+  // ✅ 저장된 ISO 날짜를 변환
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "Invalid Date"; // 오류 방지
+
+  return date.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
+const BoardCard: React.FC<BoardCardProps> = ({
+  article,
+  highlighted = false,
+  tagVisible = true,
+  backgroundColor = "#fff",
+  borderColor = "#ddd",
+  fontSize = "1rem",
+  authorAvatarSize = 40,
+  viewsCountColor = "text.secondary",
+}) => {
   return (
-    <Box
+    <Card
       sx={{
-        width: "100%",
-        maxWidth: 900,
-        margin: "0 auto",
-        backgroundColor: "#F8F8F8",
-        padding: 3,
+        p: 2,
+        border: `1px solid ${borderColor}`,
         borderRadius: "8px",
+        boxShadow: "none",
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
+        position: "relative",
+        backgroundColor: highlighted ? "#f0f8ff" : backgroundColor, // 강조된 카드는 배경 색상 변경
+        transition: "box-shadow 0.3s ease-in-out", // 부드러운 전환
+        "&:hover": {
+          boxShadow: "0 4px 10px rgba(161, 161, 161, 0.2)", // 마우스 오버 시 그림자 효과
+        },
       }}
     >
-      {/* ✅ 제품 정보 */}
-      <Box sx={{ display: "flex", flexDirection: "row", gap: 3, mb: 3 }}>
-        <Box
-          sx={{
-            width: 120,
-            height: 120,
-            backgroundColor: "#E0E0E0",
-            borderRadius: "8px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-          }}
-        >
-          <FavoriteBorderIcon sx={{ position: "absolute", top: 8, left: 8 }} />
-          <Typography variant="body2" color="textSecondary">이미지</Typography>
+      {/* 제목 & 잠금 아이콘 */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography variant="subtitle1" fontWeight="bold" sx={{ fontSize }}>
+          {article?.title}
+        </Typography>
+        {article?.locked && <LockIcon /> /* 잠금 아이콘 표시 */}
+      </Box>
+
+      {/* 작성자 및 날짜, 조회수 */}
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
+        {/* 단일 저자 표시 */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Avatar 
+            src={article?.author.avatar ?? "https://avatar.iran.liara.run/public"}
+            sx={{
+              width: authorAvatarSize,
+              height: authorAvatarSize,
+            }}
+          />
+          <Typography variant="caption" color="text.primary" fontWeight="bold">
+            {article?.author.name}
+          </Typography>
         </Box>
+        <Typography variant="caption" color="text.secondary">
+          {formatDate(article?.date)} • 조회수{" "}
+          <span style={{ color: viewsCountColor }}>{article?.views}</span>
+        </Typography>
+      </Box>
 
-        <Box sx={{ flex: 1 }}>
-          <TextField
-            label="제목"
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            sx={{ mb: 1 }}
-          />
-          <TextField
-            label="상품 가격 (원)"
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            sx={{ mb: 1 }}
-          />
+      {/* 태그 표시 */}
+      {tagVisible && (
+        <Box sx={{ mt: 1 }}>
+          <Typography variant="caption" color="text.primary">
+            #{article?.tag}
+          </Typography>
         </Box>
-      </Box>
-
-      {/* ✅ 문의 내용 */}
-      <Box sx={{ backgroundColor: "white", p: 2, borderRadius: "8px", mb: 3 }}>
-        <TextField
-          label="문의 내용"
-          multiline
-          rows={4}
-          variant="outlined"
-          fullWidth
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-      </Box>
-
-      {/* ✅ 게시물 공개 설정 */}
-      <Box sx={{ backgroundColor: "white", p: 2, borderRadius: "8px", mb: 3 }}>
-        <FormControlLabel
-          control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
-          label="공개/비공개"
-        />
-        {!isPublic && (
-          <TextField
-            label="비밀번호 (4자리 숫자)"
-            type="password"
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            sx={{ mt: 1 }}
-          />
-        )}
-      </Box>
-
-      {/* ✅ 등록 버튼 */}
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        게시글 등록하기
-      </Button>
-    </Box>
+      )}
+    </Card>
   );
-}
+};
+
+export default BoardCard;

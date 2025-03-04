@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import * as React from 'react';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';  // 수정: react-router-dom 사용
 import ColorModeIconDropdown from '../components/ColorModeIconDropdown';
 import Logo from '../components/Logo';
 
@@ -21,9 +21,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  // borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
   backdropFilter: 'blur(24px)',
-  // border: '1px solid',
   borderColor: theme.palette.divider,
   backgroundColor: `rgba(${theme.palette.background.default} / 0.4)`,
   boxShadow: theme.shadows[1],
@@ -36,13 +34,13 @@ type RouteMetadata = {
 };
 
 const routes: RouteMetadata[] = [
- { name: "홈", route: "/" },
+  { name: "홈", route: "/" },
   { name: "상품", route: "/product" },
-  { name: "공지사항", route: "/notice" }, // ✅ 변경됨
-  { name: "매각문의", route: "/sell-inquiry" }, // ✅ 변경됨
-  { name: "구매문의", route: "/buy-inquiry" }, // ✅ 변경됨
-  { name: "대여문의", route: "/rental-inquiry" }, // ✅ 변경됨
-  { name: "구매후기", route: "/reviews" }, // ✅ 변경됨
+  { name: "공지사항", route: "/notice" },
+  { name: "매각문의", route: "/sell-inquiry" },
+  { name: "구매문의", route: "/buy-inquiry" },
+  { name: "대여문의", route: "/rental-inquiry" },
+  { name: "구매후기", route: "/reviews" },
 ];
 
 export default function HeaderBar() {
@@ -69,7 +67,7 @@ export default function HeaderBar() {
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <Logo />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {routes.map(({name, route}) => (
+              {routes.map(({ name, route }) => (
                 <NavLink to={route} key={name}>
                   <Button variant="text" color="info" size="small">
                     {name}
@@ -78,13 +76,8 @@ export default function HeaderBar() {
               ))}
             </Box>
           </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', md: 'flex' },
-              gap: 1,
-              alignItems: 'center',
-            }}
-          >
+          
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
             <NavLink to="/signin">
               <Button color="primary" variant="text" size="small">
                 Sign in
@@ -111,18 +104,13 @@ export default function HeaderBar() {
               }}
             >
               <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                  }}
-                >
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <IconButton onClick={toggleDrawer(false)}>
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
 
-                {routes.map(({name, route}) => (
+                {routes.map(({ name, route }) => (
                   <NavLink to={route} key={name}>
                     <MenuItem>{name}</MenuItem>
                   </NavLink>

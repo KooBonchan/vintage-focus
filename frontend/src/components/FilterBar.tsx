@@ -23,7 +23,7 @@ function FilterBar() {
     >
       
       {/* 제조사 선택 */}
-      <FormControl sx={{ minWidth: 100 }} size="small">
+      <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
         <InputLabel sx={{ opacity: manufacturer ? 0 : 1 }}>제조사</InputLabel>
         <Select
           value={manufacturer}
@@ -43,7 +43,7 @@ function FilterBar() {
       </FormControl>
 
       {/* 년식 선택 */}
-      <FormControl sx={{ minWidth: 100 }} size="small">
+      <FormControl variant="filled"  sx={{ minWidth: 100 }} size="small">
         <InputLabel sx={{ opacity: year ? 0 : 1 }}>년식</InputLabel>
         <Select
           value={year}
@@ -64,7 +64,7 @@ function FilterBar() {
       </FormControl>
 
       {/* 가격 필터 */}
-      <FormControl sx={{ minWidth: 100 }} size="small">
+      <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
         <InputLabel sx={{ opacity: price ? 0 : 1 }}>가격</InputLabel>
         <Select
           value={price}
@@ -82,7 +82,7 @@ function FilterBar() {
       </FormControl>
 
       {/* 정렬 기준 */}
-      <FormControl sx={{ minWidth: 100 }} size="small">
+      <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
         <InputLabel sx={{ opacity: sortBy ? 0 : 1 }}>필터</InputLabel>
         <Select
           value={sortBy}

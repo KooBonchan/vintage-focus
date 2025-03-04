@@ -266,14 +266,14 @@ export const navigationCustomizations: Components<Theme> = {
       }),
     },
   },
-  MuiStepLabel: {
-    styleOverrides: {
-      label: ({ theme }) => ({
-        '&.Mui-completed': {
-          opacity: 0.6,
-          ...theme.applyStyles('dark', { opacity: 0.5 }),
-        },
-      }),
-    },
-  },
+  // MuiStepLabel: {
+  //   styleOverrides: {
+  //     label: ({ theme }) => ({
+  //       '&.Mui-completed': {
+  //         opacity: 0.6,
+  //         ...theme.applyStyles('dark', { opacity: 0.5 }),
+  //       },
+  //     }),
+  //   },
+  // },
 };

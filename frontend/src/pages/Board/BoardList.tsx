@@ -1,4 +1,3 @@
-// BoardList.js
 import * as React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -13,7 +12,6 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
 import BoardCard from "../../components/BoardCard";
-import PasswordModal from "./PasswordModal"; // 비밀번호 모달 컴포넌트 가져오기
 
 const categoryRoutes = {
   "/sell-inquiry": "매각문의",
@@ -28,8 +26,6 @@ export default function BoardList() {
   const [page, setPage] = useState(1);
   const itemsPerPage = 8;
 
-  const [selectedArticle, setSelectedArticle] = useState(null);
-
   const currentPath = location.pathname;
   const selectedTab = categoryRoutes[currentPath] || "매각문의";
 
@@ -42,14 +38,10 @@ export default function BoardList() {
 
   const handleArticleClick = (article) => {
     if (article.locked) {
-      setSelectedArticle(article);
+      console.log("This article is locked and requires a password.");
     } else {
       navigate(`${currentPath}/detail/${article.id}`);
     }
-  };
-
-  const handlePasswordCheck = (articleId) => {
-    navigate(`${currentPath}/detail/${articleId}`);
   };
 
   return (
@@ -94,14 +86,6 @@ export default function BoardList() {
           color="primary"
         />
       </Box>
-
-      {/* 비밀번호 모달 컴포넌트 사용 */}
-      <PasswordModal
-        open={!!selectedArticle}
-        onClose={() => setSelectedArticle(null)}
-        onPasswordCheck={handlePasswordCheck}
-        selectedArticle={selectedArticle}
-      />
     </Box>
   );
 }

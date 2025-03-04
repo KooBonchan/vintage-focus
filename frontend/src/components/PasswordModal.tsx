@@ -160,7 +160,7 @@ export const meta = {
     },
     modalWidth: {
       control: "text",
-      defaultValue: "300px",
+      defaultValue: "350px",
     },
   },
   parameters: {
@@ -195,5 +195,5 @@ export const Default = Template.bind({});
 Default.args = {
   open: true,
   selectedArticle: { id: 1, password: "1234" },
-  modalWidth: "300px",
+  modalWidth: "350px",
 };

@@ -26,7 +26,7 @@ export default {
     },
     sx: {
       control: "object",
-      defaultValue: { width: "300px" },
+      defaultValue: { width: "450px" },
     },
   },
   parameters: {
@@ -98,7 +98,7 @@ export const Default: StoryObj<typeof PasswordModal> = {
   args: {
     open: true,
     selectedArticle: { id: 1, password: "1234" },
-    sx: { width: "300px" },
+    sx: { width: "350px" },
   },
 };
 

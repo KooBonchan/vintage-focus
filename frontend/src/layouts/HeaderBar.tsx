@@ -85,9 +85,12 @@ export default function HeaderBar() {
               alignItems: 'center',
             }}
           >
-            <Button color="primary" variant="text" size="small">
-              Sign in
-            </Button>
+            <NavLink to="/signin">
+              <Button color="primary" variant="text" size="small">
+                Sign in
+              </Button>
+            </NavLink>
+            
             <Button color="primary" variant="contained" size="small">
               Sign up
             </Button>
@@ -123,23 +126,25 @@ export default function HeaderBar() {
                   </IconButton>
                 </Box>
 
-                <MenuItem>Features</MenuItem>
-                <MenuItem>Testimonials</MenuItem>
-                <MenuItem>Highlights</MenuItem>
-                <MenuItem>Pricing</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-                <MenuItem>Blog</MenuItem>
+                {routes.map(({name, route}) => (
+                  <NavLink to={route} key={name}>
+                    <MenuItem>{name}</MenuItem>
+                  </NavLink>
+                ))}
+                
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
                   <Button color="primary" variant="contained" fullWidth>
                     Sign up
                   </Button>
                 </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
-                  </Button>
-                </MenuItem>
+                <NavLink to="/signin">
+                  <MenuItem>
+                    <Button color="primary" variant="outlined" fullWidth>
+                      Sign in
+                    </Button>
+                  </MenuItem>
+                </NavLink>
               </Box>
             </Drawer>
           </Box>

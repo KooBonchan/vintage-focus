@@ -3,7 +3,6 @@ import { Outlet } from "react-router";
 
 const StyledAuthContainer = styled(Container)({
   maxWidth: 600,
-  marginTop: 100,
 })
 
 

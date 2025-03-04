@@ -6,7 +6,6 @@ import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import About from './pages/About';
-import { Login } from './pages/auth/Login';
 import { Register } from './pages/auth/Register';
 import BuyWrite from './pages/Board/Write/BuyWrite';
 import RentalWrite from './pages/Board/Write/RentalWrite';
@@ -20,6 +19,7 @@ import NoticePage from './pages/Board/Notice/NoticePage';
 import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 import DeliveryPage from './pages/order/delivery';
 import OrderCompletePage from './pages/order/complete';
+import SignIn from '@/pages/auth/SignIn';
 
 
 
@@ -101,9 +101,9 @@ function Router(){
   return (
     
     <Routes>
+      {/* Fast Onboarding strategy */}
       <Route element={<AuthLayout />}>
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+        <Route path="signin" element={<SignIn />} />
       </Route>
 
       <Route element={<HeaderFooterLayout />}>

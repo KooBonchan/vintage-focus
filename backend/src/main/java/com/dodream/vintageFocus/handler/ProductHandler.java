@@ -2,6 +2,10 @@ package com.dodream.vintageFocus.handler;
 
 import com.dodream.vintageFocus.dto.ProductDTO;
 import com.dodream.vintageFocus.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -14,6 +18,14 @@ import reactor.core.publisher.Mono;
 public class ProductHandler {
 
   private final ProductService productService;
+
+  public Mono<ServerResponse> getAllProducts(ServerRequest request){
+    return productService.getAllProducts()
+      .collectList()
+      .flatMap(product -> ServerResponse.ok().bodyValue(product))
+      .switchIfEmpty(ServerResponse.notFound().build());
+  }
+
 
   public Mono<ServerResponse> getProductById(ServerRequest request) {
     String idParam = request.pathVariable("id");

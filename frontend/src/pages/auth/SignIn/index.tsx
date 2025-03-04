@@ -9,6 +9,8 @@ import { Facebook, GitHub, Google } from '@mui/icons-material';
 import Logo from '@/components/Logo';
 import FooterLogo from '@/components/FooterLogo';
 import { Container } from '@mui/material';
+import ColorModeIconDropdown from '@/components/ColorModeIconDropdown';
+import { useNavigate } from 'react-router';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -53,68 +55,21 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-
-  const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
-
-    return isValid;
-  };
-
+  const navigate = useNavigate();
   const theme = useTheme();
   const logoSrc = theme.palette.mode === "dark" ? "/image/logo-white.png" : "/image/logo.png";
   
-
   return (
     <SignInContainer direction="column" justifyContent="space-between">
       <Card variant="outlined">
-        <Container>
-        <img src={logoSrc} alt="Vintage Focus" style={{width:'auto', maxWidth:'200px', marginBottom:'1rem'}}/>
+        <Container sx={{position:'relative'}}>
+          <img src={logoSrc} alt="Vintage Focus"
+            style={{
+              width:'auto', maxWidth:'200px', marginBottom:'1rem', cursor:"pointer",
+            }}
+            onClick={()=>navigate("/")}/>
+
+          <ColorModeIconDropdown sx={{position:'absolute', right:0, top:0}}/>
         </Container>
         <Typography
           component="h1"

@@ -90,10 +90,6 @@ export default function HeaderBar() {
                 Sign in
               </Button>
             </NavLink>
-            
-            <Button color="primary" variant="contained" size="small">
-              Sign up
-            </Button>
             <ColorModeIconDropdown />
           </Box>
           {/* md size end */}
@@ -133,11 +129,6 @@ export default function HeaderBar() {
                 ))}
                 
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
-                    Sign up
-                  </Button>
-                </MenuItem>
                 <NavLink to="/signin">
                   <MenuItem>
                     <Button color="primary" variant="outlined" fullWidth>

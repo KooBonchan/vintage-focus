@@ -1,6 +1,8 @@
 import { Box, Grid, Pagination, Typography } from "@mui/material";
 import { useState } from "react";
 import WeeklyBestItem from "./WeeklyBestItem";  // WeeklyBestItem 컴포넌트를 import
+import Button from "../../components/Button";  // 상대경로로 Button 임포트
+
 
 const ITEMS_PER_PAGE = 16;
 
@@ -65,6 +67,13 @@ const WeeklyBestGallery = () => {
   return (
     <WeeklyBestContainer>
       <WeeklyBestTitle>Weekly Best</WeeklyBestTitle>
+
+      {/* 버튼 추가 */}
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, marginTop: 3 }}>
+        <Button size="small" label="버튼 1" />
+        <Button size="small" label="버튼 2" />
+        <Button size="small" label="버튼 3" />
+      </Box>
 
       <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
         {currentPageProducts.map((product, index) => (

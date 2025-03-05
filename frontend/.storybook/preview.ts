@@ -4,19 +4,16 @@ const preview: Preview = {
   parameters: {
     controls: {
       matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
+        color: /(background|color)$/i,
+        date: /Date$/i,
       },
     },
+    docs: {
+      source: {
+        state: 'open',
+      }
+    }
   },
 };
-
-export const parameters = {
-  docs: {
-    source: {
-      state: 'open',
-    }
-  }
-}
 
 export default preview;

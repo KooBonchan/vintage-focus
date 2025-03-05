@@ -10,7 +10,6 @@ public class MemberRepositoryTest extends AbstractRepositoryTest<Member, Long, M
   Member getTestEntity() {
     Member member = Member.builder()
       .username("TESTER")
-      .password("TEST PASSWORD NOT ENCRYPTED")
       .address("Seoul Hanbok-Fan")
       .detailAddress("Dosim Han-Gaunde")
       .phone("1231234545")

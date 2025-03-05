@@ -1,4 +1,12 @@
 spring:
+  profiles:
+    active: common, secret
+
+---
+
+spring.config.activate.on-profile: common
+
+spring:
 #  Metadata
   application.name: junggo
   resources:

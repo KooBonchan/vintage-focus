@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS `member` (
     `id` Long NOT NULL AUTO_INCREMENT,
+    `oauthProvider` VARCHAR(63) NULL,
+    `oauthId` VARCHAR(63) NULL,
+    `email` VARCHAR(63) NULL,
     `username` VARCHAR(63) NULL,
-    `password` VARCHAR(127) NULL,
     `phone` VARCHAR(20) NULL,
     `address` VARCHAR(255) NULL,
     `detail_address` VARCHAR(255) NULL,

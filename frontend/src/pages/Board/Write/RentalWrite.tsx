@@ -1,214 +1,194 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Box,
-  Typography,
-  TextField,
   Button,
-  Switch,
   FormControlLabel,
-  Modal,
+  Switch,
+  TextField,
+  Typography,
+  MenuItem
 } from "@mui/material";
-import { DatePicker, TimePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import { Post } from "../../../types/post";
 
 export default function RentalWrite() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [content, setContent] = useState("");
-  const [rentalDetails, setRentalDetails] = useState(""); // 추가된 상태
-  const [isPublic, setIsPublic] = useState(true);
+  const [isPublic, setIsPublic] = useState(false);
   const [password, setPassword] = useState("");
-  const [rentalLocation, setRentalLocation] = useState("");
-  const [startDate, setStartDate] = useState(null);
-  const [startTime, setStartTime] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [map, setMap] = useState(null);
-  
-  const rentalLocations = [
-    { name: "강남역점", lat: 37.4979, lng: 127.0276 },
-    { name: "홍대점", lat: 37.5574, lng: 126.9236 },
-    { name: "잠실점", lat: 37.5133, lng: 127.1009 },
-    { name: "김포공항점", lat: 37.5621, lng: 126.8018 },
-    { name: "인천국제공항점", lat: 37.4692, lng: 126.451 },
-    { name: "제주공항점", lat: 33.507, lng: 126.4929 },
-  ];
 
-  useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      if (window.google && document.getElementById("map")) {
-        initMap();
-        return;
-      }
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDzgYdB1jOKENQRfUqjJ6OEkPLmAR15HPo&callback=initMap`;
-      script.async = true;
-      document.body.appendChild(script);
-      script.onload = initMap;
-    };
+  // 사용자 정보 상태
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [rentalDate, setRentalDate] = useState(null);
+  const [rentalTime, setRentalTime] = useState(null);
+  const [returnDate, setReturnDate] = useState(null);
+  const [returnTime, setReturnTime] = useState(null);
+  const [pickupLocation, setPickupLocation] = useState("");
 
-    const initMap = () => {
-      const mapInstance = new window.google.maps.Map(document.getElementById("map"), {
-        zoom: 12,
-        center: { lat: 37.5665, lng: 126.9780 },
-      });
-      setMap(mapInstance);
-      loadMarkers(mapInstance);
-    };
+  const defaultNotice = `● 대여하실 날짜와 시간, 반납하실 날짜와 시간을 선택해주세요.
+● 대여와 반납은 반드시 같은 지점에서 해 주셔야 합니다.
+● 일반카메라용 메모리카드는 기본으로 제공되지 않습니다.\n\n`;
 
-    if (open) {
-      setTimeout(loadGoogleMapsScript, 500);
-    }
-  }, [open]);
+  const [content, setContent] = useState(defaultNotice);
 
-  const loadMarkers = (mapInstance) => {
-    rentalLocations.forEach((location) => {
-      new window.google.maps.Marker({
-        position: { lat: location.lat, lng: location.lng },
-        map: mapInstance,
-        title: location.name,
-      });
-    });
-  };
-
-  const handleLocationChange = (event) => {
-    const selectedName = event.target.value;
-    setRentalLocation(selectedName);
-    const selectedLocation = rentalLocations.find((loc) => loc.name === selectedName);
-    if (selectedLocation && map) {
-      map.setCenter({ lat: selectedLocation.lat, lng: selectedLocation.lng });
-
-      if (window.selectedMarker) {
-        window.selectedMarker.setMap(null);
-      }
-      window.selectedMarker = new window.google.maps.Marker({
-        position: { lat: selectedLocation.lat, lng: selectedLocation.lng },
-        map: map,
-        title: selectedName,
-        icon: {
-          url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-        },
-      });
-    }
-  };
-
-  const handleConfirm = () => {
-    if (!rentalLocation || !startDate || !startTime) {
-      alert("대여 지점과 날짜/시간을 선택해주세요.");
+  // 문의 내용 자동 업데이트
+  const updateContent = () => {
+    if (!name || !phone || !rentalDate || !rentalTime || !returnDate || !returnTime || !pickupLocation) {
       return;
     }
-    const formattedDate = startDate.format("YYYY-MM-DD");
-    const formattedTime = startTime.format("HH:mm");
-    setRentalDetails(`대여 지점: ${rentalLocation}\n대여 날짜: ${formattedDate}\n대여 시간: ${formattedTime}`);
-    setOpen(false);
+
+    const rentalDateTime = dayjs(rentalDate).format("YYYY-MM-DD") + " " + dayjs(rentalTime).format("HH:mm");
+    const returnDateTime = dayjs(returnDate).format("YYYY-MM-DD") + " " + dayjs(returnTime).format("HH:mm");
+
+    setContent(
+      `${defaultNotice}\n👤 성함: ${name}\n📞 전화번호: ${phone}\n📅 대여기간: ${rentalDateTime} ~ ${returnDateTime}\n📍 희망 수령 지점: ${pickupLocation}\n🔒 공개 여부: ${isPublic ? "비공개" : "공개"}\n`
+    );
   };
 
+  // 게시글 등록
   const handleSubmit = () => {
-    const finalContent = content.trim() ? content : rentalDetails.trim();
-  
-    if (!title.trim() || !finalContent) {
+    if (!title.trim() || content.trim() === defaultNotice.trim()) {
       alert("제목과 내용을 입력해주세요!");
       return;
     }
-  
-    if (!isPublic && password.length !== 4) {
-      alert("비밀번호는 4자리 숫자로 입력해주세요.");
+
+    if (returnDate && rentalDate && dayjs(returnDate).isBefore(dayjs(rentalDate))) {
+      alert("반납 날짜는 대여 날짜보다 이후여야 합니다.");
       return;
     }
-  
-    // ✅ 기존 게시글 목록 불러오기
+
+    const now = new Date().toISOString();
     const existingPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-  
-    const newPost = {
+
+    const newPost: Post = {
       id: Date.now(),
       title,
-      price,
-      content: finalContent,
-      rental: {
-        rentalLocation,
-        startDate: startDate?.toISOString(),
-        startTime: startTime?.toISOString(),
-      },
-      locked: !isPublic,
-      password: isPublic ? null : password,
+      content,
+      author: { name: name || "익명", avatar: "/static/images/avatar/default.png" },
+      locked: isPublic, // 공개 상태 반영
+      password: isPublic ? password : undefined,
       tag: "대여문의",
+      date: now,
+      views: 0,
     };
-  
-    // ✅ 새 게시글을 기존 데이터에 추가
-    const updatedPosts = [...existingPosts, newPost];
-  
-     
-    const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-    sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
-  
+
+    sessionStorage.setItem("posts", JSON.stringify([newPost, ...existingPosts]));
     alert("게시글이 등록되었습니다.");
     navigate("/rental-inquiry");
   };
-  
+
+  // 구글 맵에서 위치 선택 함수
+  const openGoogleMaps = () => {
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=인천국제공항`;
+    window.open(googleMapsUrl, "_blank");
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3, backgroundColor: "#F8F8F8", borderRadius: "8px" }}>
-        <Typography variant="h5" sx={{ mb: 2 }}>대여 문의</Typography>
-        <Button variant="outlined" fullWidth sx={{ mb: 2 }} onClick={() => setOpen(true)}>
-          대여 지점 및 날짜 선택
-        </Button>
-        <TextField 
-          label="제목" 
-          variant="outlined" 
-          fullWidth 
-          value={title} 
-          onChange={(e) => setTitle(e.target.value)} 
-          sx={{ mb: 2 }} 
+      <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3, backgroundColor: "#FFFFFF", borderRadius: "12px", boxShadow: 2 }}>
+        <Typography variant="h4" sx={{ mb: 3, fontWeight: "bold", color: "#333", textAlign: "center" }}>대여 문의</Typography>
+
+        <TextField
+          label="제목"
+          variant="filled"
+          fullWidth
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{ mb: 2 }}
         />
-        <TextField 
-          label="문의 내용" 
-          multiline 
-          rows={2} 
-          variant="outlined" 
-          fullWidth 
-          value={content} 
-          onChange={(e) => setContent(e.target.value)} 
-          sx={{ mb: 2 }} 
+
+        <TextField
+          label="필독 사항"
+          multiline
+          variant="filled"
+          fullWidth
+          value={content}
+          sx={{
+            mb: 2,
+            "& .MuiInputBase-root": {
+              textAlign: "left",
+              display: "flex",
+              alignItems: "flex-start",
+              height: "200px",
+              padding: "30px",
+            },
+          }}
         />
-        <FormControlLabel 
-          control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />} 
-          label="공개/비공개" 
-        />
-        {!isPublic && (
-          <TextField 
-            label="비밀번호 (4자리 숫자)" 
-            type="password" 
-            variant="outlined" 
-            size="small" 
-            fullWidth 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            sx={{ mt: 1 }} 
+
+        <TextField label="성함" fullWidth value={name} onChange={(e) => { setName(e.target.value); updateContent(); }} sx={{ mb: 2 }} />
+        <TextField label="전화번호" fullWidth value={phone} onChange={(e) => { setPhone(e.target.value); updateContent(); }} sx={{ mb: 2 }} />
+
+        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+          <DatePicker label="대여 날짜" value={rentalDate} onChange={(date) => { setRentalDate(date); updateContent(); }} minDate={dayjs()} />
+          <TimePicker label="대여 시간" value={rentalTime} onChange={(time) => { setRentalTime(time); updateContent(); }} />
+        </Box>
+
+        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+          <DatePicker label="반납 날짜" value={returnDate} onChange={(date) => { setReturnDate(date); updateContent(); }} minDate={rentalDate || dayjs()} />
+          <TimePicker label="반납 시간" value={returnTime} onChange={(time) => { setReturnTime(time); updateContent(); }} />
+        </Box>
+
+        <TextField
+          select
+          label="희망 수령 지점"
+          value={pickupLocation}
+          onChange={(e) => { setPickupLocation(e.target.value); updateContent(); }}
+          fullWidth
+          onClick={openGoogleMaps}
+        >
+          <MenuItem value="인천국제공항">인천국제공항</MenuItem>
+          <MenuItem value="김포공항">김포공항</MenuItem>
+        </TextField>
+
+       
+        {/* 공개 여부 및 비밀번호 입력 컨테이너 */}
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", minHeight: "80px" }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
+          <FormControlLabel
+            control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
+            label=""
+            sx={{ m: 0 }}
+          />
+
+                {/* 공개(ON, 파란색)일 때 비밀번호 입력창 표시 */}
+        {isPublic && ( 
+          <TextField
+            label="비밀번호 (4자리 숫자)"
+            type="password"
+            variant="filled"
+            fullWidth
+            value={password}
+            onChange={(e) => {
+              const input = e.target.value.replace(/\D/g, ""); // 숫자만 허용
+              if (e.target.value !== input) {
+                alert("숫자만 입력 가능합니다."); // 🔹 경고창 추가
+              }
+              if (input.length <= 4) setPassword(input);
+            }}
+            inputProps={{
+              maxLength: 4,
+              pattern: "[0-9]*",
+            }}
+            sx={{ mt: 1, maxWidth: "300px" }}
           />
         )}
-        <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-          게시글 등록하기
-        </Button>
 
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <Box sx={{ width: 600, margin: "100px auto", padding: 3, backgroundColor: "white", borderRadius: "8px" }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>대여 지점 및 날짜 선택</Typography>
-            <div id="map" style={{ height: "300px", width: "100%", marginBottom: "10px" }}></div>
-            <select onChange={handleLocationChange} value={rentalLocation} style={{ width: "100%", padding: "8px", marginBottom: "10px" }}>
-              <option value="">대여 지점을 선택하세요</option>
-              {rentalLocations.map((loc) => (
-                <option key={loc.name} value={loc.name}>{loc.name}</option>
-              ))}
-            </select>
-            <DatePicker label="대여 날짜" value={startDate} onChange={setStartDate} />
-            <TimePicker label="대여 시간" value={startTime} onChange={setStartTime} minutesStep={30} />
-            <Button variant="contained" fullWidth sx={{ mt: 2 }} onClick={handleConfirm}>선택 완료</Button>
-          </Box>
-        </Modal>
+
+
+</Box>
+
+
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+          <Button variant="contained" sx={{ fontSize: "16px", padding: "12px", width: "200px" }} onClick={handleSubmit}>
+            게시글 등록하기
+          </Button>
+        </Box>
       </Box>
     </LocalizationProvider>
   );

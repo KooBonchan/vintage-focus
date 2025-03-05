@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Switch, FormControlLabel } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Post } from "../../../types/post";
 
 export default function SellDetail() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function SellDetail() {
     const now = new Date();
     const formattedDate = now.toISOString();
 
-    const newPost = {
+    const newPost :Post ={
       id: Date.now(),
       title,
       price,
@@ -39,7 +40,7 @@ export default function SellDetail() {
       author: { name: "판매자", avatar: "/static/images/avatar/default.png" },
       tag: "매각문의",
       locked: !isPublic,
-      password: isPublic ? null : password,
+      password: isPublic ? undefined : password,
     };
 
     const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");

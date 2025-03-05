@@ -2,7 +2,6 @@ import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
 
 function FilterBar() {
-  // 선택된 필터 상태 관리
   const [manufacturer, setManufacturer] = useState("");
   const [year, setYear] = useState("");
   const [price, setPrice] = useState("");
@@ -18,21 +17,20 @@ function FilterBar() {
         p: 2,
         borderRadius: "25px",
         width: "fit-content",
-        mx: "auto", 
+        mx: "auto",
       }}
     >
-      
       {/* 제조사 선택 */}
       <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
-        <InputLabel sx={{ opacity: manufacturer ? 0 : 1 }}>제조사</InputLabel>
+        <InputLabel>제조사</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={manufacturer}
           onChange={(e) => setManufacturer(e.target.value)}
           sx={{
-            border: "1px solid #bdbdbd", // ✅ 테두리 추가
-            borderRadius: "15px", // ✅ 둥글게
-            fontWeight: 600, // ✅ 글자 굵게
-            backgroundColor: "transparent", // ✅ 배경 없앰
+            border: "1px solid #bdbdbd",
+            borderRadius: "15px",
+            fontWeight: 600,
+            backgroundColor: "transparent",
           }}
         >
           <MenuItem value="all">All</MenuItem>
@@ -43,8 +41,8 @@ function FilterBar() {
       </FormControl>
 
       {/* 년식 선택 */}
-      <FormControl variant="filled"  sx={{ minWidth: 100 }} size="small">
-        <InputLabel sx={{ opacity: year ? 0 : 1 }}>년식</InputLabel>
+      <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
+        <InputLabel>년식</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={year}
           onChange={(e) => setYear(e.target.value)}
@@ -65,7 +63,7 @@ function FilterBar() {
 
       {/* 가격 필터 */}
       <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
-        <InputLabel sx={{ opacity: price ? 0 : 1 }}>가격</InputLabel>
+        <InputLabel>가격</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={price}
           onChange={(e) => setPrice(e.target.value)}
@@ -83,7 +81,7 @@ function FilterBar() {
 
       {/* 정렬 기준 */}
       <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
-        <InputLabel sx={{ opacity: sortBy ? 0 : 1 }}>필터</InputLabel>
+        <InputLabel>필터</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}

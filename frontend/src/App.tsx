@@ -14,7 +14,7 @@ import { Home } from './pages/Home';
 import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
-import BoardDetail from './pages/Board/Detail/BoardDetail';
+import BoardDetail from './pages/Board/Detail/RentalDetail';
 import NoticePage from './pages/Board/Notice/NoticePage';
 import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 import DeliveryPage from './pages/order/delivery';

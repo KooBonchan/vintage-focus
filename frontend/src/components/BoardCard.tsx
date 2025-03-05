@@ -28,7 +28,7 @@ export interface BoardCardProps {
   authorAvatarSize?: number;
   viewsCountColor?: string;
   onUnlock?: (id: number, password: string) => void;
-  isManager?: boolean;  // Manager card prop
+  isManager?: boolean;
 }
 
 const formatDate = (dateString: string) => {
@@ -71,6 +71,12 @@ const BoardCard: React.FC<BoardCardProps> = ({
     }
   };
 
+  const handleClick = () => {
+    if (article?.locked) {
+      handleOpen();
+    }
+  };
+
   return (
     <>
       <Card
@@ -89,7 +95,9 @@ const BoardCard: React.FC<BoardCardProps> = ({
           "&:hover": {
             boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.3)" : "0 4px 10px rgba(161, 161, 161, 0.2)",
           },
+          cursor: "pointer",
         }}
+        onClick={handleClick}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography
@@ -101,8 +109,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
           </Typography>
           {article?.locked && (
             <LockIcon
-              sx={{ cursor: "pointer", color: isManager ? "#FFFFFF" : "inherit", fontSize: 28 }}
-              onClick={handleOpen}
+              sx={{ color: isManager ? "#FFFFFF" : "inherit", fontSize: 28 }}
             />
           )}
         </Box>
@@ -142,7 +149,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
         )}
       </Card>
 
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} BackdropProps={{ style: { backgroundColor: 'transparent' } }}>
         <Box
           sx={{
             position: "absolute",
@@ -152,7 +159,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
             width: 300,
             bgcolor: "background.paper",
             borderRadius: 2,
-            boxShadow: 24,
+            boxShadow: "0 4px 8px rgba(83, 83, 83, 0.15)", // 그림자 강도 조절
             p: 4,
             display: "flex",
             flexDirection: "column",

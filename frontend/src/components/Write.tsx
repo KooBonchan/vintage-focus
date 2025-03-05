@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Switch, FormControlLabel } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import ImageIcon from "@mui/icons-material/Image";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 export default function Write({
   title: initialTitle,
@@ -57,16 +60,15 @@ export default function Write({
   };
 
   return (
-    <Box sx={{ 
-      ...styles.container, 
-      backgroundColor: isPublic ? 'transparent' : '#f0f0f0', 
-      display: "flex", 
-      flexDirection: "column", 
-      alignItems: "center" 
+    <Box sx={{
+      ...styles.container,
+      backgroundColor: isPublic ? 'transparent' : '#f0f0f0',
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center"
     }}>
-      <Typography variant="h5" component="h5" sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
-        문의 남기기
-        {!isPublic && <LockIcon sx={{ ml: 1 }} />}
+      <Typography variant="h5" component="h5" sx={{ mb: 3, display: "flex", alignItems: "center" }}>
+        문의 남기기 <EditNoteIcon sx={{ ml: 0.5 }} /> { !isPublic && <LockIcon sx={{ ml: 0.5 }} /> }
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 3, mb: 3, width: "100%", maxWidth: "860px" }}>
         <ProductInfo title={title} price={price} setTitle={setTitle} setPrice={setPrice} />
@@ -83,9 +85,9 @@ export default function Write({
         color="primary"
         fullWidth
         onClick={handleSubmit}
-        sx={{ backgroundColor: '#445366' }}
+        sx={{ backgroundColor: '#445366', display: "flex", alignItems: "center", justifyContent: "center" }}
       >
-        게시글 등록하기
+        게시글 등록하기 <CheckCircleIcon sx={{ ml: 0.5 }} />
       </Button>
     </Box>
   );
@@ -113,9 +115,9 @@ const styles = {
 
 const ProductInfo = ({ title, price, setTitle, setPrice }) => (
   <Box sx={{ display: "flex", flexDirection: "row", gap: 3, flex: 1 }}>
-    <Box sx={{ ...styles.imageBox, width: 90, height: 90 }}>
+    <Box sx={{ ...styles.imageBox, width: 90, height: 90, display: "flex", alignItems: "center", justifyContent: "center" }}>
       <FavoriteBorderIcon sx={{ position: "absolute", top: 8, left: 8 }} />
-      <Typography variant="body2" color="textSecondary">이미지</Typography>
+      <ImageIcon />
     </Box>
     <Box sx={{ flex: 1 }}>
       <TextField
@@ -141,13 +143,13 @@ const ProductInfo = ({ title, price, setTitle, setPrice }) => (
 );
 
 const ContentInput = ({ content, setContent, isPublic }) => (
-  <Box sx={{ 
-    backgroundColor: isPublic ? "white" : "transparent", 
-    p: 2, 
-    borderRadius: "8px", 
-    mb: 0, 
-    width: "100%", 
-    maxWidth: "860px" 
+  <Box sx={{
+    backgroundColor: isPublic ? "white" : "transparent",
+    p: 2,
+    borderRadius: "8px",
+    mb: 0,
+    width: "100%",
+    maxWidth: "860px"
   }}>
     <TextField
       label="문의 내용"
@@ -162,12 +164,12 @@ const ContentInput = ({ content, setContent, isPublic }) => (
 );
 
 const PrivacySettings = ({ isPublic, setIsPublic, password, setPassword }) => (
-  <Box sx={{ 
-    backgroundColor: isPublic ? "white" : "transparent", 
-    p: 2, 
-    borderRadius: "8px", 
-    mb: 3, 
-    mt: 1 
+  <Box sx={{
+    backgroundColor: isPublic ? "white" : "transparent",
+    p: 2,
+    borderRadius: "8px",
+    mb: 3,
+    mt: 1
   }}>
     <FormControlLabel
       control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}

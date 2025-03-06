@@ -16,18 +16,18 @@ FROM dual WHERE NOT EXISTS (SELECT 1 FROM product WHERE id = 5);
 
 -- All users have password: "password123"
 -- Using BCrypt hash of "password123" for all users
-INSERT INTO member (id, username, password, phone, address, detail_address, zipcode, role)
-select 1, 'john_doe', '$2a$10$AOhHhzSVhGFTACqjqjasG.bj4QB8qSq1zJZRWBc3oHKYOAB7T7Jde', '123-456-7890', '123 Main St', 'Apt 4B', '12345', 'USER'
+INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
+select 1, 'john_doe', '123-456-7890', '123 Main St', 'Apt 4B', '12345', 'USER'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 1);
-INSERT INTO member (id, username, password, phone, address, detail_address, zipcode, role)
-select 2, 'jane_smith', '$2a$10$yQ2/NsB1KEb1rxZVqD.zD.ZeZCG5YvPXmX6Ke/HDvJ5HqfHX5omy.', '987-654-3210', '456 Oak Ave', 'Suite 301', '67890', 'USER'
+INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
+select 2, 'jane_smith', '987-654-3210', '456 Oak Ave', 'Suite 301', '67890', 'USER'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 2);
-INSERT INTO member (id, username, password, phone, address, detail_address, zipcode, role)
-select 3, 'admin_user', '$2a$10$zP3/NsB1KEb1rxZVqD.zD.ZeZCG5YvPXmX6Ke/HDvJ5HqfHX5omy.', '555-555-5555', '789 Admin Rd', 'Floor 5', '11111', 'ADMIN'
+INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
+select 3, 'admin_user', '555-555-5555', '789 Admin Rd', 'Floor 5', '11111', 'ADMIN'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 3);
-INSERT INTO member (id, username, password, phone, address, detail_address, zipcode, role)
-select 4, 'mary_johnson', '$2a$10$wP3/NsB1KEb1rxZVqD.zD.ZeZCG5YvPXmX6Ke/HDvJ5HqfHX5omy.', '444-444-4444', '321 Pine Ln', 'Unit 2C', '22222', 'USER'
+INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
+select 4, 'mary_johnson', '444-444-4444', '321 Pine Ln', 'Unit 2C', '22222', 'USER'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 4);
-INSERT INTO member (id, username, password, phone, address, detail_address, zipcode, role)
-select 5, 'support_team', '$2a$10$vP3/NsB1KEb1rxZVqD.zD.ZeZCG5YvPXmX6Ke/HDvJ5HqfHX5omy.', '666-666-6666', '159 Support Blvd', 'Room 100', '33333', 'SUPPORT'
+INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
+select 5, 'support_team', '666-666-6666', '159 Support Blvd', 'Room 100', '33333', 'SUPPORT'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 5);

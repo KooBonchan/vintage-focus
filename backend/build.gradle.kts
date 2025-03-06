@@ -50,8 +50,8 @@ dependencies {
 
 //	Spring Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
-
 	implementation("org.springframework.security:spring-security-oauth2-client:6.4.3")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.4.3")
 
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")

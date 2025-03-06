@@ -26,6 +26,8 @@ import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableWebFluxSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig implements WebFluxConfigurer {
   private final OAuth2SuccessHandler oAuth2SuccessHandler;
   private final JwtTokenProvider jwtTokenProvider;
 
@@ -55,7 +57,6 @@ public class SecurityConfig {
     ).build();
   }
 
-
   @Bean
   public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity security){
     return security
@@ -66,6 +67,7 @@ public class SecurityConfig {
         .pathMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**", "/favicon.ico").permitAll()
         .pathMatchers("/login/oauth2/**").permitAll()
         .pathMatchers("/oauth2/authorization/**").permitAll()
+        .pathMatchers("/api/auth/**").permitAll()
         .anyExchange().authenticated()
       )
       .oauth2Login(oauth2 -> oauth2
@@ -115,5 +117,13 @@ public class SecurityConfig {
       // Log the exception
       return Collections.emptyList();
     }
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+      .allowedOrigins("http://localhost:3000")
+      .allowedMethods("GET", "POST", "PUT", "DELETE")
+      .allowedHeaders("*");
   }
 }

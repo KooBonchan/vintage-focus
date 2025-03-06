@@ -20,6 +20,7 @@ import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 import DeliveryPage from './pages/order/delivery';
 import OrderCompletePage from './pages/order/complete';
 import SignIn from '@/pages/auth/SignIn';
+import Callback from './pages/auth/SignIn/components/Callback';
 
 
 
@@ -101,9 +102,9 @@ function Router(){
   return (
     
     <Routes>
-      {/* Fast Onboarding strategy */}
       <Route element={<AuthLayout />}>
         <Route path="signin" element={<SignIn />} />
+        <Route path="callback" element={<Callback />} />
       </Route>
 
       <Route element={<HeaderFooterLayout />}>

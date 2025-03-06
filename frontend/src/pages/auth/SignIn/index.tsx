@@ -1,16 +1,16 @@
+import ColorModeIconDropdown from '@/components/ColorModeIconDropdown';
+import { Facebook, GitHub, Google } from '@mui/icons-material';
+import { Container } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
-import { Facebook, GitHub, Google } from '@mui/icons-material';
-import Logo from '@/components/Logo';
-import FooterLogo from '@/components/FooterLogo';
-import { Container } from '@mui/material';
-import ColorModeIconDropdown from '@/components/ColorModeIconDropdown';
 import { useNavigate } from 'react-router';
+import LoginButtons from './components/LoginButtons';
+
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -78,33 +78,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         >
           Sign in or Register
         </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={() => alert('Sign in with Google')}
-            startIcon={<Google />}
-          >
-            Sign in with Google
-          </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={() => alert('Sign in with Facebook')}
-            startIcon={<Facebook />}
-          >
-            Sign in with Facebook
-            
-          </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={() => alert('Sign in with Facebook')}
-            startIcon={<GitHub />}
-          >
-            Sign in with Github
-          </Button>
-        </Box>
+        <LoginButtons />
       </Card>
     </SignInContainer>
 

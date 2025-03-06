@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,14 +29,6 @@ public class Member {
   private String zipcode;
   private String role;
 
-  // Custom validation method example
-  public boolean isValidZipcode() {
-    return zipcode != null && zipcode.matches("\\d{5}");
-  }
-
-  private String maskPhone(String phone) {
-    if (phone == null || phone.length() < 8) return phone;
-    return phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4);
-  }
-
+  private Instant createdAt;
+  private Instant updatedAt;
 }

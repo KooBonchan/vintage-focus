@@ -1,21 +1,16 @@
-// src/stories/ProductInfo.stories.tsx
-
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react'; // Meta와 StoryObj를 가져옵니다.
-import { ProductInfo } from '../components/ProductInfo'; // 컴포넌트 파일의 경로를 설정합니다.
+import { Meta, StoryObj } from '@storybook/react';
+import { ProductInfo } from '../components/ProductInfo';
 
-// Meta 설정 (컴포넌트의 메타데이터 정의)
 const meta: Meta<typeof ProductInfo> = {
-  title: 'Components/ProductInfo',  // 스토리북에서 보여질 컴포넌트의 이름
-  component: ProductInfo,           // 이 스토리의 컴포넌트 설정
-  tags: ['autodocs'],               // 자동 문서화 활성화
+  title: 'Components/ProductInfo',
+  component: ProductInfo,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
         component: `
-          **ProductInfo** 
-          
-          ## 기본 사용 예시
+          **ProductInfo** ## 기본 사용 예시
 
           ## Props
           - **title** (string): 상품 제목. 기본값은 \`어쩌구 저쩌구\`입니다.
@@ -29,18 +24,35 @@ const meta: Meta<typeof ProductInfo> = {
     title: { control: 'text', description: '상품 제목을 설정합니다.' },
     price: { control: 'text', description: '상품 가격을 설정합니다.' },
     description: { control: 'text', description: '상품에 대한 설명을 설정합니다.' },
+    buttonBackgroundColor: { control: 'color', description: '버튼 배경색을 설정합니다.' },
   },
 };
 
-export default meta; // Meta 객체를 default로 export
+export default meta;
 
-type Story = StoryObj<typeof meta>; // Story 타입을 설정
+type Story = StoryObj<typeof meta>;
 
-// 기본 스토리 정의
 export const Default: Story = {
   args: {
-    title: '어쩌구 저쩌구', // 기본 상품 제목
-    price: '1,000,000원',    // 기본 상품 가격
-    description: '내용을 짧게 적어주세요', // 기본 상품 설명
+    title: '어쩌구 저쩌구',
+    price: '1,000,000원',
+    description: '내용을 짧게 적어주세요',
+  },
+};
+
+export const Colored: Story = {
+  args: {
+    title: '특별한 상품',
+    price: '500,000원',
+    description: '색상이 추가된 상품 정보입니다.',
+    buttonBackgroundColor: '#445366', // 버튼 배경색 변경
+  },
+  parameters: {
+    backgrounds: {
+      values: [
+        { name: 'light', value: '#f0f0f0' },
+        { name: 'dark', value: '#333333' },
+      ],
+    },
   },
 };

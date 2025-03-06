@@ -75,7 +75,7 @@ export default function Write({
         mb: 3,
       }}>
         <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center" }}>
-          문의 남기기 <EditNoteIcon sx={{ ml: 0.5 }} />
+          문의 <EditNoteIcon sx={{ ml: 0.5 }} />
         </Typography>
         <Box>
           <FormControlLabel

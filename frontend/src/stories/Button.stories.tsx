@@ -17,3 +17,20 @@ export const Default: Story = {
     size: "small"
   },
 };
+
+export const Colored: Story = {
+  args: {
+    label: "Submit",
+    size: "medium",
+    backgroundColor: "primary", // 또는 "secondary", "success", "error" 등 Material UI 색상 테마 사용 가능
+    color: "white", // 텍스트 색상
+  },
+  parameters: {
+    backgrounds: {
+      values: [
+        { name: 'light', value: '#f0f0f0' },
+        { name: 'dark', value: '#333333' },
+      ],
+    },
+  },
+};

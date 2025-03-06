@@ -1,14 +1,44 @@
 import { Box, Typography, Divider, IconButton, Button, Grid } from "@mui/material";
 import { ChatBubbleOutline, FavoriteBorder, Add } from "@mui/icons-material";
 
-export function ProductInfo() {
+export function ProductInfo({ buttonBackgroundColor }) {
+  const buttonStyle = {
+    borderRadius: "3em",
+    color: "#445366",
+    padding: "5px 16px",
+    fontSize: "12px",
+    fontWeight: 700,
+    border: "1px solid #445366",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.7)",
+      color: "#aa1f3e",
+      border: "1px solid #aa1f3e",
+    },
+  };
+
+  const coloredButtonStyle = {
+    borderRadius: "3em",
+    color: "#ffffff",
+    padding: "5px 16px",
+    fontSize: "12px",
+    fontWeight: 700,
+    border: "1px solid #445366",
+    backgroundColor: "#445366",
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.3)", // 흰색 30% 투명도
+    color: "#aa1f3e",
+      border: "1px solid #aa1f3e"
+    },
+  };
+
   return (
     <Box
       sx={{
-        width: "100%",          // 화면 전체에 맞게 확장
-        maxWidth: "1200px",     // 최대 폭을 1200px로 제한
-        margin: "0 auto",       // 중앙 정렬
-        padding: "0 16px",      // 양옆에 패딩 추가
+        width: "100%",
+        maxWidth: "1200px",
+        margin: "0 auto",
+        padding: "0 16px",
       }}
     >
       <Grid container spacing={4} alignItems="center">
@@ -16,9 +46,9 @@ export function ProductInfo() {
         <Grid item xs={12} md={6}>
           <div
             style={{
-              width: "100%",  // 화면 크기에 맞춰서 반응형으로 설정
-              maxWidth: "500px",  // 최대 500px로 제한
-              height: "500px", // 세로 크기 고정
+              width: "100%",
+              maxWidth: "500px",
+              height: "500px",
               backgroundColor: "#ddd",
               borderRadius: "8px",
               display: "flex",
@@ -26,13 +56,12 @@ export function ProductInfo() {
               alignItems: "center",
             }}
           >
-            {/* 이미지가 들어갈 자리 */}
             <img
-              src="https://via.placeholder.com/400x400" // 테스트용 이미지 URL (필요에 맞게 수정)
+              src="https://via.placeholder.com/400x400"
               alt="상품 이미지"
               style={{
-                width: "100%",  // 가로 크기를 100%로 설정하여 부모 div에 맞게 크기 조정
-                height: "100%", // 세로 크기를 고정하여 이미지 비율 유지
+                width: "100%",
+                height: "100%",
                 borderRadius: "8px",
               }}
             />
@@ -54,8 +83,8 @@ export function ProductInfo() {
                   margin: "0 4px",
                   border: "none",
                   "&:hover": {
-                    backgroundColor: "#e0e0e0",  // Hover 배경색
-                  }
+                    backgroundColor: "#e0e0e0",
+                  },
                 }}
               >
                 <ChatBubbleOutline />
@@ -67,7 +96,7 @@ export function ProductInfo() {
                   border: "none",
                   "&:hover": {
                     backgroundColor: "#e0e0e0",
-                  }
+                  },
                 }}
               >
                 <FavoriteBorder />
@@ -79,7 +108,7 @@ export function ProductInfo() {
                   border: "none",
                   "&:hover": {
                     backgroundColor: "#e0e0e0",
-                  }
+                  },
                 }}
               >
                 <Add />
@@ -131,39 +160,13 @@ export function ProductInfo() {
           <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "32px" }}>
             <Button
               variant="text"
-              sx={{
-                borderRadius: "3em", // Rounded corners
-                bgcolor: "#ffffff",
-                color: "#445366",
-                padding: "5px 16px", // Small size
-                fontSize: "12px",
-                fontWeight: 700,
-                border: "1px solid #445366", // Border for small size
-                "&:hover": {
-                  backgroundColor: "white",
-                  color: "#aa1f3e",
-                  border: "1px solid #aa1f3e",
-                },
-              }}
+              sx={buttonBackgroundColor ? coloredButtonStyle : buttonStyle}
             >
               구매하기
             </Button>
             <Button
               variant="text"
-              sx={{
-                borderRadius: "3em", // Rounded corners
-                bgcolor: "#fffff",
-                color: "#445366",
-                padding: "5px 16px", // Small size
-                fontSize: "12px",
-                fontWeight: 700,
-                border: "1px solid #445366", // Border for small size
-                "&:hover": {
-                  backgroundColor: "white",
-                  color: "#aa1f3e",
-                  border: "1px solid #aa1f3e",
-                },
-              }}
+              sx={buttonBackgroundColor ? coloredButtonStyle : buttonStyle}
             >
               장바구니
             </Button>

@@ -42,7 +42,6 @@ export function ProductDetail() {
                   border: "none",
                   "&:hover": {
                     backgroundColor: "#e0e0e0",  // Hover 배경색
-                    borderRadius: "50%",  // 동그라미 형태로
                   }
                 }}
               >
@@ -55,7 +54,6 @@ export function ProductDetail() {
                   border: "none",
                   "&:hover": {
                     backgroundColor: "#e0e0e0",
-                    borderRadius: "50%",
                   }
                 }}
               >
@@ -68,7 +66,6 @@ export function ProductDetail() {
                   border: "none",
                   "&:hover": {
                     backgroundColor: "#e0e0e0",
-                    borderRadius: "50%",
                   }
                 }}
               >
@@ -151,7 +148,7 @@ export function ProductDetail() {
             <Typography variant="h5" fontWeight="bold">
               상품
             </Typography>
-            
+
             {/* 상품 이름과 설명을 감싸는 div 추가 및 위쪽 마진 추가 */}
             <div style={{ marginTop: "20px" }}>
               <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
@@ -159,7 +156,6 @@ export function ProductDetail() {
               </Typography>
             </div>
           </Grid>
-
         </Grid>
       </Box>
 
@@ -173,12 +169,12 @@ export function ProductDetail() {
           </Button>
         </Box>
         <List>
-          {[
+          {[ 
             { id: 1, name: "빈티지 카메라", desc: "고급 필름 카메라", img: "https://placehold.co/50x50" },
             { id: 2, name: "DSLR 카메라", desc: "전문가용 DSLR", img: "https://placehold.co/50x50" },
             { id: 3, name: "미러리스 카메라", desc: "가벼운 미러리스", img: "https://placehold.co/50x50" },
             { id: 4, name: "즉석 카메라", desc: "즉석에서 인화", img: "https://placehold.co/50x50" },
-            { id: 5, name: "액션 카메라", desc: "스포츠용 캠", img: "https://placehold.co/50x50" },
+            { id: 5, name: "액션 카메라", desc: "스포츠용 캠", img: "https://placehold.co/50x50" }
           ].map((product, index, array) => (
             <Box key={product.id}>
               {/* 리스트 아이템 */}

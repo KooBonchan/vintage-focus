@@ -6,30 +6,40 @@ export function ProductInfo() {
     <Grid container spacing={4} alignItems="center">
       {/* 상품 이미지 */}
       <Grid item xs={12} md={6}>
-        <Box
-          sx={{
-            width: "500px",  // 너비 고정
-            height: "450px", // 높이 고정
-            bgcolor: "#ddd",
-            borderRadius: 2,
+        <div
+          style={{
+            width: "100%",  // 화면 크기에 맞춰서 반응형으로 설정
+            maxWidth: "500px",  // 최대 500px로 제한
+            height: "500px", // 세로 크기 고정
+            backgroundColor: "#ddd",
+            borderRadius: "8px",
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           {/* 이미지가 들어갈 자리 */}
-        </Box>
+          <img
+            src="https://via.placeholder.com/400x400" // 테스트용 이미지 URL (필요에 맞게 수정)
+            alt="상품 이미지"
+            style={{
+              width: "100%",  // 가로 크기를 100%로 설정하여 부모 div에 맞게 크기 조정
+              height: "100%", // 세로 크기를 고정하여 이미지 비율 유지
+              borderRadius: "8px",
+            }}
+          />
+        </div>
       </Grid>
 
       {/* 상품 정보 */}
       <Grid item xs={12} md={6}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography variant="h5" fontWeight="bold">
             어쩌구 저쩌구
           </Typography>
 
           {/* 아이콘 버튼들 */}
-          <Box>
+          <div>
             <IconButton
               sx={{
                 padding: 0,
@@ -66,31 +76,31 @@ export function ProductInfo() {
             >
               <Add />
             </IconButton>
-          </Box>
-        </Box>
+          </div>
+        </div>
 
         <Divider sx={{ my: 1 }} />
 
         {/* 가격 */}
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "16px" }}>
           <Typography variant="body1">가격</Typography>
           <Typography variant="h6" fontWeight="bold" sx={{ color: "#027af2" }}>
             1,000,000원
           </Typography>
-        </Box>
+        </div>
 
         <Divider sx={{ my: 2 }} />
 
         {/* 추가 정보 */}
-        <Box sx={{ textAlign: "left", mt: 5, mb: 5 }}>
+        <div style={{ textAlign: "left", marginTop: "40px", marginBottom: "40px" }}>
           <Typography variant="h6" fontWeight="bold">
             Title
           </Typography>
-          <Typography sx={{ color: "gray", fontSize: "14px", mt: 1 }}>
+          <Typography sx={{ color: "gray", fontSize: "14px", marginTop: "8px" }}>
             내용을 짧게 <br />
             적어주세요 <br />
           </Typography>
-        </Box>
+        </div>
 
         <Divider sx={{ my: 2 }} />
 
@@ -110,14 +120,46 @@ export function ProductInfo() {
         <Divider sx={{ my: 2 }} />
 
         {/* 버튼 영역 */}
-        <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
-          <Button variant="text" sx={{ borderRadius: 2, bgcolor: "#ccc", color: "black", px: 4 }}>
+        <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "32px" }}>
+          <Button
+            variant="text"
+            sx={{
+              borderRadius: "3em", // Rounded corners
+              bgcolor: "#ffffff",
+              color: "#445366",
+              padding: "5px 16px", // Small size
+              fontSize: "12px",
+              fontWeight: 700,
+              border: "1px solid #445366", // Border for small size
+              "&:hover": {
+                backgroundColor: "white",
+                color: "#aa1f3e",
+                border: "1px solid #aa1f3e",
+              },
+            }}
+          >
             구매하기
           </Button>
-          <Button variant="text" sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}>
+          <Button
+            variant="text"
+            sx={{
+              borderRadius: "3em", // Rounded corners
+              bgcolor: "#fffff",
+              color: "#445366",
+              padding: "5px 16px", // Small size
+              fontSize: "12px",
+              fontWeight: 700,
+              border: "1px solid #445366", // Border for small size
+              "&:hover": {
+                backgroundColor: "white",
+                color: "#aa1f3e",
+                border: "1px solid #aa1f3e",
+              },
+            }}
+          >
             장바구니
           </Button>
-        </Box>
+        </div>
       </Grid>
     </Grid>
   );

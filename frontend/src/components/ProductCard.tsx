@@ -40,11 +40,15 @@ const ProductCard = ({
     }}
   >
     <CardMedia
-      component="img"
-      image={product.image}
-      alt={product.name}
-      sx={{ width: "100%", height: "auto" }} // 이미지 크기도 자동 조정
-    />
+    component="img"
+    image={product.image}
+    alt={product.name}
+    sx={{
+      width: "100%",
+      height: "auto",
+      borderRadius: 2,  // 라운드 처리
+    }}
+  />
     <CardContent>
       <Typography variant="body1" fontWeight="bold">
         {product.name}

@@ -53,7 +53,7 @@ export default function Write({
     };
 
     if (process.env.NODE_ENV !== 'test') {
-      const posts = JSON.parse(sessionStorage.getItem("posts") || "");
+      const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
       sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
       navigate("/rental-inquiry");
     }
@@ -67,25 +67,44 @@ export default function Write({
       flexDirection: "column",
       alignItems: "center"
     }}>
-      <Typography variant="h5" component="h5" sx={{ mb: 3, display: "flex", alignItems: "center" }}>
-        문의 남기기 <EditNoteIcon sx={{ ml: 0.5 }} /> { !isPublic && <LockIcon sx={{ ml: 0.5 }} /> }
-      </Typography>
+      <Box sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        width: "100%",
+        maxWidth: "860px",
+        mb: 3,
+      }}>
+        <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center", fontWeight: 'bold' }}>
+          문의남기기 <EditNoteIcon sx={{ ml: 0.5 }} />
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {!isPublic && <LockIcon sx={{ mr: 0.5 }} />}
+          <FormControlLabel
+            control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
+            label={isPublic ? "공개" : "비공개"}
+          />
+        </Box>
+      </Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 3, mb: 3, width: "100%", maxWidth: "860px" }}>
         <ProductInfo title={title} price={price} setTitle={setTitle} setPrice={setPrice} />
       </Box>
       <ContentInput content={content} setContent={setContent} isPublic={isPublic} />
-      <PrivacySettings
-        isPublic={isPublic}
-        setIsPublic={setIsPublic}
-        password={password}
-        setPassword={setPassword}
-      />
+      {!isPublic && (
+        <PrivacySettings password={password} setPassword={setPassword} />
+      )}
       <Button
         variant="contained"
         color="primary"
-        fullWidth
         onClick={handleSubmit}
-        sx={{ backgroundColor: '#445366', display: "flex", alignItems: "center", justifyContent: "center" }}
+        sx={{
+          backgroundColor: '#445366',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: '250px',
+          padding: '8px 24px',
+          borderRadius: '12px',
+        }}
       >
         게시글 등록하기 <CheckCircleIcon sx={{ ml: 0.5 }} />
       </Button>
@@ -163,29 +182,23 @@ const ContentInput = ({ content, setContent, isPublic }) => (
   </Box>
 );
 
-const PrivacySettings = ({ isPublic, setIsPublic, password, setPassword }) => (
+const PrivacySettings = ({ password, setPassword }) => (
   <Box sx={{
-    backgroundColor: isPublic ? "white" : "transparent",
+    backgroundColor: "transparent",
     p: 2,
     borderRadius: "8px",
     mb: 3,
     mt: 1
   }}>
-    <FormControlLabel
-      control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
-      label="공개/비공개"
+    <TextField
+      label="비밀번호 (4자리 숫자)"
+      type="password"
+      variant="outlined"
+      size="small"
+      fullWidth
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      sx={{ mt: 1 }}
     />
-    {!isPublic && (
-      <TextField
-        label="비밀번호 (4자리 숫자)"
-        type="password"
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ mt: 1 }}
-      />
-    )}
   </Box>
 );

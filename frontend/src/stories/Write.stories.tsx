@@ -47,17 +47,6 @@ export const Default: Story = {
   },
 };
 
-export const PublicPost: Story = {
-  args: {
-    isPublic: true,
-    title: "공개 게시글",
-    price: "1000",
-    content: "이것은 공개 게시글입니다.",
-    buttonColor: "#AA1F3E",
-    backgroundColor: "#FFFFFF",
-    textColor: "text.secondary",
-  },
-};
 
 export const PrivatePost: Story = {
   args: {

@@ -74,15 +74,15 @@ export default function Write({
         maxWidth: "860px",
         mb: 3,
       }}>
-        <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center" }}>
-          문의 <EditNoteIcon sx={{ ml: 0.5 }} />
+        <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center", fontWeight: 'bold' }}>
+          문의남기기 <EditNoteIcon sx={{ ml: 0.5 }} />
         </Typography>
-        <Box>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {!isPublic && <LockIcon sx={{ mr: 0.5 }} />}
           <FormControlLabel
             control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
             label={isPublic ? "공개" : "비공개"}
           />
-          {!isPublic && <LockIcon sx={{ ml: 0.5 }} />}
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 3, mb: 3, width: "100%", maxWidth: "860px" }}>

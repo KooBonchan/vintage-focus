@@ -14,20 +14,19 @@ INSERT INTO product (id, code, product_name, model_name, company, country, categ
 SELECT 5, 'TEST-46464', '재즈용 Yamaha 5현', 'Yamaha TRBX505', 'Yamaha', 'Japan', 'Musical Instruments', 'Electric Guitar', 'Electric Bass', 4, 15, 1549999, 1200000, 7000, 60, 450, 8000
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM product WHERE id = 5);
 
--- All users have password: "password123"
--- Using BCrypt hash of "password123" for all users
-INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
-select 1, 'john_doe', '123-456-7890', '123 Main St', 'Apt 4B', '12345', 'USER'
+
+INSERT INTO member (`id`, `oauth_provider`, `oauth_id`, `email`, `username`, `phone`, `address`, `detail_address`, `zipcode`, `role`)
+select 1, 'google', 'google-sub-123', 'john.doe@gmail.com', 'john_doe', '123-456-7890', '123 Main St', 'Apt 4B', '12345', 'USER'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 1);
-INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
-select 2, 'jane_smith', '987-654-3210', '456 Oak Ave', 'Suite 301', '67890', 'USER'
+INSERT INTO member (`id`, `oauth_provider`, `oauth_id`, `email`, `username`, `phone`, `address`, `detail_address`, `zipcode`, `role`)
+select 2, 'google', 'google-sub-456', 'jane.smith@gmail.com', 'jane_smith', '987-654-3210', '456 Oak Ave', 'Suite 301', '67890', 'USER'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 2);
-INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
-select 3, 'admin_user', '555-555-5555', '789 Admin Rd', 'Floor 5', '11111', 'ADMIN'
+INSERT INTO member (`id`, `oauth_provider`, `oauth_id`, `email`, `username`, `phone`, `address`, `detail_address`, `zipcode`, `role`)
+select 3, 'google', 'google-sub-789', 'admin.user@gmail.com', 'admin_user', '555-555-5555', '789 Admin Rd', 'Floor 5', '11111', 'ADMIN'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 3);
-INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
-select 4, 'mary_johnson', '444-444-4444', '321 Pine Ln', 'Unit 2C', '22222', 'USER'
+INSERT INTO member (`id`, `oauth_provider`, `oauth_id`, `email`, `username`, `phone`, `address`, `detail_address`, `zipcode`, `role`)
+select 4, 'google', 'google-sub-012', 'mary.johnson@gmail.com', 'mary_johnson', '444-444-4444', '321 Pine Ln', 'Unit 2C', '22222', 'USER'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 4);
-INSERT INTO member (id, username, phone, address, detail_address, zipcode, role)
-select 5, 'support_team', '666-666-6666', '159 Support Blvd', 'Room 100', '33333', 'SUPPORT'
+INSERT INTO member (`id`, `oauth_provider`, `oauth_id`, `email`, `username`, `phone`, `address`, `detail_address`, `zipcode`, `role`)
+select 5, 'google', 'google-sub-345', 'support.team@gmail.com', 'support_team', '666-666-6666', '159 Support Blvd', 'Room 100', '33333', 'SUPPORT'
 FROM dual WHERE NOT EXISTS (SELECT 1 FROM member WHERE id = 5);

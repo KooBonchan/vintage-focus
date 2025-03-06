@@ -77,6 +77,20 @@ const NoticePage = () => {
         공지사항
       </Typography>
 
+      {/* 이미지 추가 - 공지사항 목록 위에 배치 */}
+      <Box sx={{ mb: 3, textAlign: "center" }}>
+        <img
+          src="/image/notice/notice02.jpg" // 상대 경로로 이미지 불러오기
+          alt="공지사항 이미지"
+          style={{
+            width: "800px", // 이미지 크기를 800px로 설정
+            height: "auto",
+            borderRadius: "8px",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          }}
+        />
+      </Box>
+
       {/* 공지사항 리스트 */}
       {notices.map((notice) => (
         <Card
@@ -100,6 +114,38 @@ const NoticePage = () => {
                 {notice.title}
               </Typography>
             </Box>
+
+            {/* ID 1번에 이미지 추가 */}
+            {notice.id === 1 && (
+              <Box sx={{ mt: 2, textAlign: "center" }}>
+                <img
+                  src="/image/notice/notice00.jpg" // 상대 경로로 이미지 불러오기
+                  alt="공지사항 이미지"
+                  style={{
+                    width: "800px", // 이미지 크기를 800px로 설정
+                    height: "auto",
+                    borderRadius: "8px",
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
+              </Box>
+            )}
+
+            {/* ID 2번에 이미지 추가 */}
+            {notice.id === 2 && (
+              <Box sx={{ mt: 2, textAlign: "center" }}>
+                <img
+                  src="/image/notice/notice01.jpg" // 상대 경로로 이미지 불러오기
+                  alt="공지사항 이미지"
+                  style={{
+                    width: "800px", // 이미지 크기를 800px로 설정
+                    height: "auto",
+                    borderRadius: "8px",
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
+              </Box>
+            )}
 
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
               <Typography variant="caption" color="text.primary" fontWeight="bold">

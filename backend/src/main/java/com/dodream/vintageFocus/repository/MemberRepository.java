@@ -6,4 +6,5 @@ import reactor.core.publisher.Mono;
 
 public interface MemberRepository extends ReactiveCrudRepository<Member, Long> {
   Mono<Member> findByUsername(String username);
+  Mono<Member> findByOauthProviderAndOauthId(String oauthProvider, String oauthId);
 }

@@ -1,8 +1,7 @@
-import { Box, Grid, Pagination, Typography } from "@mui/material";
+import { Box, Grid, Pagination, Typography, useTheme } from "@mui/material";  // useTheme 추가
 import { useState } from "react";
-import WeeklyBestItem from "./WeeklyBestItem";  // WeeklyBestItem 컴포넌트를 import
-import Button from "../../components/Button";  // 상대경로로 Button 임포트
-
+import WeeklyBestItem from "./WeeklyBestItem";  // WeeklyBestItem 컴포넌트 임포트
+import Button from "../../components/Button";  // Button 임포트
 
 const ITEMS_PER_PAGE = 16;
 
@@ -56,6 +55,7 @@ const WeeklyBestTitle = (props: any) => {
 };
 
 const WeeklyBestGallery = () => {
+  const theme = useTheme();  // useTheme 훅을 통해 theme 객체를 가져옴
   const [page, setPage] = useState(1);
 
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -66,7 +66,17 @@ const WeeklyBestGallery = () => {
 
   return (
     <WeeklyBestContainer>
-      <WeeklyBestTitle>Weekly Best</WeeklyBestTitle>
+    
+      {/* New Item 제목 */}
+      <Typography
+        variant="h3"
+        sx={{
+          color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dynamically change the color based on theme mode
+          fontWeight: 'bold',
+        }}
+      >
+       Best Item
+      </Typography>
 
       {/* 버튼 추가 */}
       <Box sx={{ display: "flex", justifyContent: "center", gap: 2, marginTop: 3 }}>

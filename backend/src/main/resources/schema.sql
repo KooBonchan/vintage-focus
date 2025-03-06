@@ -1,18 +1,20 @@
 CREATE TABLE IF NOT EXISTS `member` (
-    `id` Long NOT NULL AUTO_INCREMENT,
-    `oauthProvider` VARCHAR(63) NULL,
-    `oauthId` VARCHAR(63) NULL,
-    `email` VARCHAR(63) NULL,
-    `username` VARCHAR(63) NULL,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `oauth_provider` VARCHAR(50) NOT NULL,
+    `oauth_id` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `username` VARCHAR(100) NULL,
     `phone` VARCHAR(20) NULL,
     `address` VARCHAR(255) NULL,
     `detail_address` VARCHAR(255) NULL,
     `zipcode` CHAR(5) NULL,
-    `role` VARCHAR(20) NULL
+    `role` VARCHAR(20) NULL DEFAULT 'USER',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS `product` (
-    `id` Long NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `code` VARCHAR(63) NULL,
     `model_name` VARCHAR(63) NULL,
     `product_name` VARCHAR(255) NULL,
@@ -34,8 +36,8 @@ CREATE TABLE IF NOT EXISTS `product` (
 );
 
 CREATE TABLE IF NOT EXISTS `rental` (
-    `id` Long NOT NULL AUTO_INCREMENT,
-    `member_id` Long NULL,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `member_id` BIGINT NULL,
     `rental_fee` Int NULL,
     `delivery_fee` Int NULL,
     `total_price` Int NULL,
@@ -43,68 +45,68 @@ CREATE TABLE IF NOT EXISTS `rental` (
     `rental_timestamp` Timestamp NULL,
     `return_timestamp` Timestamp NULL,
     `is_delayed` Boolean NULL,
-    `product_id` Long NOT NULL
+    `product_id` BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `board` (
-    `id` Long NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `category` VARCHAR(63) NULL,
     `write_date` Date NULL,
     `update_date` Date NULL,
     `secured` Boolean NULL,
     `content` TEXT NULL,
     `title` VARCHAR(255) NULL,
-    `member_id` Long NOT NULL,
+    `member_id` BIGINT NOT NULL,
     `writer` VARCHAR(255) NULL
 );
 
 CREATE TABLE IF NOT EXISTS `Review` (
-    `id` Long NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `content` TEXT NULL,
     `write_date` Date NULL,
     `update_date` Date NULL,
     `secured` Boolean NULL,
     `title` VARCHAR(255) NULL,
-    `member_id` Long NOT NULL,
-    `product_id` Long NOT NULL,
+    `member_id` BIGINT NOT NULL,
+    `product_id` BIGINT NOT NULL,
     `writer` VARCHAR(255) NULL
 );
 
 
 CREATE TABLE IF NOT EXISTS `product_image` (
-    `id` Long NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
     `upload_timestamp` Timestamp NULL,
-    `product_id` Long NOT NULL
+    `product_id` BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `product_detail_image` (
-    `id` Long NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
     `upload_timestamp` Timestamp NULL,
-    `product_id` Long NOT NULL
+    `product_id` BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `board_image` (
-    `id` Long NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
     `upload_timestamp` Timestamp NULL,
-    `board_id` Long NOT NULL
+    `board_id` BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `review_image` (
-    `id` Long NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
     `upload_timestamp` Timestamp NULL,
-    `review_id` Long NOT NULL
+    `review_id` BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `Payment` (
@@ -115,11 +117,11 @@ CREATE TABLE IF NOT EXISTS `Payment` (
     `total_price` Int NULL,
     `is_canceled` Boolean NULL,
     `payment_date` Timestamp NULL,
-    `member_id` Long NOT NULL
+    `member_id` BIGINT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS `Delivery` (
     `id` BINARY(16) NOT NULL PRIMARY KEY,
-    `member_id` Long NOT NULL,
+    `member_id` BIGINT NOT NULL,
     `status` VARCHAR(50) NULL COMMENT 'pending, shipped, delivered',
     `order_date` Timestamp NULL,
     `address` VARCHAR(255) NULL,
@@ -135,12 +137,12 @@ CREATE TABLE IF NOT EXISTS `Cart` (
     `delivery_fee` Int NULL,
     `total_price` Int NULL,
     `expire_date` VARCHAR(255) NULL,
-    `member_id` Long NOT NULL
+    `member_id` BIGINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `product_cart` (
-  `id` Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `product_id` Long NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `product_id` BIGINT NOT NULL,
   `cart_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` Int NULL,
@@ -148,8 +150,8 @@ CREATE TABLE IF NOT EXISTS `product_cart` (
 );
 
 CREATE TABLE IF NOT EXISTS `rental_payment` (
-  `id` Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `rental_id` Long NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `rental_id` BIGINT NOT NULL,
   `payment_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` int NULL,
@@ -157,8 +159,8 @@ CREATE TABLE IF NOT EXISTS `rental_payment` (
 );
 
 CREATE TABLE IF NOT EXISTS `product_payment` (
-  `id` Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `product_id` Long NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `product_id` BIGINT NOT NULL,
   `payment_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` int NULL,
@@ -166,8 +168,8 @@ CREATE TABLE IF NOT EXISTS `product_payment` (
 );
 
 CREATE TABLE IF NOT EXISTS `rental_cart` (
-  `id` Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `rental_id` Long NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `rental_id` BIGINT NOT NULL,
   `cart_id` BINARY(16) NOT NULL,
   `quantity` Int NULL,
   `price` int NULL,

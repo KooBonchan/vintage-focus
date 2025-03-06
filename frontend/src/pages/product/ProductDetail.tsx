@@ -35,13 +35,43 @@ export function ProductDetail() {
 
             {/* 아이콘 버튼들 */}
             <Box>
-              <IconButton sx={{ padding: 0, margin: "0 4px", border: "none" }}>
+              <IconButton
+                sx={{
+                  padding: 0,
+                  margin: "0 4px",
+                  border: "none",
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0",  // Hover 배경색
+                    borderRadius: "50%",  // 동그라미 형태로
+                  }
+                }}
+              >
                 <ChatBubbleOutline />
               </IconButton>
-              <IconButton sx={{ padding: 0, margin: "0 4px", border: "none" }}>
+              <IconButton
+                sx={{
+                  padding: 0,
+                  margin: "0 4px",
+                  border: "none",
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0",
+                    borderRadius: "50%",
+                  }
+                }}
+              >
                 <FavoriteBorder />
               </IconButton>
-              <IconButton sx={{ padding: 0, margin: "0 4px", border: "none" }}>
+              <IconButton
+                sx={{
+                  padding: 0,
+                  margin: "0 4px",
+                  border: "none",
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0",
+                    borderRadius: "50%",
+                  }
+                }}
+              >
                 <Add />
               </IconButton>
             </Box>
@@ -52,7 +82,7 @@ export function ProductDetail() {
           {/* 가격 */}
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
             <Typography variant="body1">가격</Typography>
-            <Typography variant="h6" fontWeight="bold">
+            <Typography variant="h6" fontWeight="bold" sx={{ color: "#027af2" }}>
               1,000,000원
             </Typography>
           </Box>
@@ -121,10 +151,15 @@ export function ProductDetail() {
             <Typography variant="h5" fontWeight="bold">
               상품
             </Typography>
-            <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
-              상품이름과 설명
-            </Typography>
+            
+            {/* 상품 이름과 설명을 감싸는 div 추가 및 위쪽 마진 추가 */}
+            <div style={{ marginTop: "20px" }}>
+              <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
+                상품이름과 설명
+              </Typography>
+            </div>
           </Grid>
+
         </Grid>
       </Box>
 

@@ -74,14 +74,18 @@ export default function Write({
       backgroundColor: isPublic ? 'transparent' : '#f0f0f0',
       display: "flex",
       flexDirection: "column",
-      alignItems: "center"
+      alignItems: "center",  // 수직 중앙 정렬
+      justifyContent: "center",  // 수평 중앙 정렬
+      margin: "0 auto",  // auto로 좌우 마진 설정
+      padding: 3,  // 패딩을 적절하게 설정
+      width: "100%",  // 최대 너비 설정
     }}>
       <Box sx={{
         display: "flex",
         justifyContent: "space-between",
         width: "100%",
         maxWidth: "860px",
-        mb: 3,
+        mb: 1, // 마진 값 수정
       }}>
         <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center", fontWeight: 'bold' }}>
           문의남기기 <EditNoteIcon sx={{ ml: 0.5 }} />
@@ -94,7 +98,7 @@ export default function Write({
           />
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "row", gap: 3, mb: 3, width: "100%", maxWidth: "860px" }}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: 2, mb: 2, width: "100%", maxWidth: "860px" }}>
         <ProductInfo title={title} price={price} setTitle={setTitle} setPrice={setPrice} />
       </Box>
       <ContentInput content={content} setContent={setContent} isPublic={isPublic} />
@@ -113,6 +117,7 @@ export default function Write({
           width: '250px',
           padding: '8px 24px',
           borderRadius: '12px',
+          marginTop: 2, // 버튼 위쪽 마진
         }}
       >
         게시글 등록하기 <CheckCircleIcon sx={{ ml: 0.5 }} />
@@ -123,11 +128,14 @@ export default function Write({
 
 const styles = {
   container: {
-    width: "100%",
     maxWidth: 900,
-    margin: "0 auto",
+    margin: "0 auto", // 자동으로 좌우 마진을 추가하여 가운데 정렬
     padding: 3,
     borderRadius: "8px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center", // 세로 가운데 정렬
+    justifyContent: "center", // 가로 가운데 정렬
   },
   imageBox: {
     width: 120,

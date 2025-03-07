@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 
-// PasswordModal 컴포넌트 먼저 정의
+// PasswordModal 컴포넌트
 interface PasswordModalProps {
   open: boolean;
   onClose: () => void;
@@ -33,21 +33,14 @@ const PasswordModal = ({
     }
   }, [open]);
 
-  useEffect(() => {
-    if (open) {
-      localStorage.setItem("modalState", "open");
-    } else {
-      localStorage.setItem("modalState", "closed");
-    }
-  }, [open]);
-
   const handleClose = () => {
     setPassword("");
     onClose();
   };
 
   const handleCheckPassword = () => {
-    if (selectedArticle && selectedArticle.password === password) {
+    if (selectedArticle.password === password) {
+      // 비밀번호가 맞으면 페이지를 리디렉션
       onPasswordCheck(selectedArticle.id);
       setPassword("");
     } else {
@@ -147,11 +140,11 @@ const PasswordModal = ({
 
 export default PasswordModal;
 
-// 이제 Meta 설정을 작성합니다.
+// Meta 설정
 export const meta = {
   title: "Components/PasswordModal",
   component: PasswordModal,
-  tags: ["autodocs"], // AutoDocs 활성화
+  tags: ["autodocs"],
   argTypes: {
     open: { control: "boolean" },
     selectedArticle: {

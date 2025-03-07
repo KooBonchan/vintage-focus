@@ -26,7 +26,7 @@ export default {
     },
     sx: {
       control: "object",
-      defaultValue: { width: "450px" },
+      defaultValue: { width: "350px" },
     },
   },
   parameters: {
@@ -62,7 +62,7 @@ export default {
               <strong>selectedArticle</strong>: 선택된 기사 (id, password 등)
             </li>
             <li>
-              <strong>sx</strong>: 모달 스타일링을 위한 MUI sx 객체 (예: {'{'} width: '300px' {'}'})
+              <strong>sx</strong>: 모달 스타일링을 위한 MUI sx 객체 (예: {'{'} width: '300px' {'}'} )
             </li>
           </ul>
         </>

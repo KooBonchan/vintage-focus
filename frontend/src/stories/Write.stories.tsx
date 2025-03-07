@@ -20,6 +20,11 @@ const meta: Meta<typeof Write> = {
     backgroundColor: { control: "color", description: "배경 색상을 변경할 수 있습니다." },
     textColor: { control: "color", description: "텍스트 색상을 변경할 수 있습니다." },
     link: { control: "text", description: "버튼 클릭 시 이동할 URL을 설정할 수 있습니다." }, // 추가된 부분
+    title: { control: "text", description: "게시글 제목을 설정할 수 있습니다." },
+    price: { control: "text", description: "상품 가격을 설정할 수 있습니다." },
+    content: { control: "text", description: "게시글 내용을 설정할 수 있습니다." },
+    isPublic: { control: "boolean", description: "게시글 공개 여부를 설정할 수 있습니다." },
+    password: { control: "text", description: "비공개 설정 시 필요한 비밀번호를 설정할 수 있습니다." },
   },
   decorators: [
     (Story) => (

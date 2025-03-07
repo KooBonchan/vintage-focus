@@ -1,9 +1,11 @@
 import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List } from "@mui/material";
 import { ChatBubbleOutline, FavoriteBorder, Add, MoreVert } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate  } from "react-router-dom";
+
 
 export function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   return (
     <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 0" }}>
@@ -122,6 +124,15 @@ export function ProductDetail() {
             <Button variant="text" sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}>
               장바구니
             </Button>
+
+            <Button
+              variant="text"
+              sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
+              onClick={() => navigate("/rental-inquiry/write")} // 버튼 클릭 시 이동
+            >
+              대여문의
+            </Button>
+
           </Box>
         </Grid>
       </Grid>

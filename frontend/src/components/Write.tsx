@@ -25,14 +25,14 @@ export default function Write({
   const [content, setContent] = useState(initialContent || "");
   const [isPublic, setIsPublic] = useState(initialIsPublic !== undefined ? initialIsPublic : true);
   const [password, setPassword] = useState(initialPassword || "");
-  const [image, setImage] = useState(null); // 이미지 상태 추가
-  const [imagePreview, setImagePreview] = useState(null); // 이미지 미리보기 상태 추가
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file)); // 이미지 미리보기 URL 생성
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
@@ -61,7 +61,7 @@ export default function Write({
       tag: "대여문의",
       locked: !isPublic,
       password: isPublic ? null : password,
-      image: image ? URL.createObjectURL(image) : null, // 이미지 URL 추가
+      image: image ? URL.createObjectURL(image) : null,
     };
 
     if (process.env.NODE_ENV !== 'test') {
@@ -98,8 +98,8 @@ export default function Write({
         maxWidth: "860px",
         mb: 1,
       }}>
-        <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center", fontWeight: 'bold' }}>
-          문의남기기 <EditNoteIcon sx={{ ml: 0.5 }} />
+        <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center", fontWeight: 'bold', marginBottom: 2 }}> {/* marginBottom 추가 */}
+          문의 <EditNoteIcon sx={{ ml: 0.5 }} />
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {!isPublic && <LockIcon sx={{ mr: 0.5 }} />}
@@ -110,13 +110,13 @@ export default function Write({
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 2, mb: 2, width: "100%", maxWidth: "860px" }}>
-        <ProductInfo 
-          title={title} 
-          price={price} 
-          setTitle={setTitle} 
-          setPrice={setPrice} 
-          imagePreview={imagePreview} 
-          handleImageChange={handleImageChange} 
+        <ProductInfo
+          title={title}
+          price={price}
+          setTitle={setTitle}
+          setPrice={setPrice}
+          imagePreview={imagePreview}
+          handleImageChange={handleImageChange}
         />
       </Box>
       <ContentInput content={content} setContent={setContent} isPublic={isPublic} />
@@ -143,7 +143,6 @@ export default function Write({
     </Box>
   );
 }
-
 const styles = {
   container: {
     maxWidth: 900,

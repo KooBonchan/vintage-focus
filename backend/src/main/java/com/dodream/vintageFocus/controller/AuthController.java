@@ -1,8 +1,11 @@
 package com.dodream.vintageFocus.controller;
 
 import com.dodream.vintageFocus.config.OAuth2Config;
+import com.dodream.vintageFocus.security.ProviderTokenHandler;
 import com.dodream.vintageFocus.security.TokenRequest;
 import com.dodream.vintageFocus.security.TokenResponse;
+import com.dodream.vintageFocus.security.UserInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -17,44 +20,16 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RestController
 @RequestMapping("api/auth")
+@RequiredArgsConstructor
 public class AuthController {
-  private final WebClient webClient;
-  private final OAuth2Config config;
+  private final ProviderTokenHandler providerTokenHandler;
 
-  public AuthController(WebClient.Builder webClientBuilder, OAuth2Config config) {
-    this.webClient = webClientBuilder.build();
-    this.config = config;
-  }
-
-  @PostMapping("/exchange")
-  public Mono<TokenResponse> exchangeCodeForTokens(@RequestBody TokenRequest request) {
-
+  @PostMapping("/signin")
+  public Mono<UserInfo> signIn(@RequestBody TokenRequest request) {
     String provider = request.provider();
-    OAuth2Config.Provider providerConfig = config.getProvider(provider);
 
-    if(providerConfig == null){
-      return Mono.error(new IllegalArgumentException("Unknown provider: " + provider));
-    }
-
-    String requestBody = new StringBuilder()
-      .append("client_id=").append(providerConfig.clientId())
-      .append("&client_secret=").append(providerConfig.clientSecret())
-      .append("&code=").append(request.code())
-      .append("&redirect_uri=").append(config.redirectUri())
-      .append("&code_verifier=").append(request.codeVerifier())
-      .append("&grant_type=authorization_code")
-      .toString();
-
-    return webClient.post()
-      .uri(providerConfig.tokenUrl())
-      .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-      .header("Accept", "application/json;charset=utf-8")
-      .bodyValue(requestBody)
-      .retrieve()
-      .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
-        clientResponse.bodyToMono(String.class)
-          .flatMap(errorBody -> Mono.error(new RuntimeException("Token exchange failed for " + provider + ": " + errorBody))))
-      .bodyToMono(TokenResponse.class);
+    return providerTokenHandler.exchange(request)
+      .flatMap(response -> providerTokenHandler.extractUserInfo(provider, response));
   }
 
 }

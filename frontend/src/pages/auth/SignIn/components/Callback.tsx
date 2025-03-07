@@ -31,7 +31,7 @@ const Callback = () => {
 
       try {
         const response = await axios.post(
-          'http://localhost:8094/api/auth/exchange', // proxying with server request
+          'http://localhost:8094/api/auth/signin', // proxying with server request
           {
             provider,
             code,

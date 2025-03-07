@@ -35,13 +35,18 @@ spring:
 
 oauth2:
   google:
-    client-id: 258128970331-b27sucjs4damtokr699gbl3k1m6ca85s.apps.googleusercontent.com
     token-url: https://oauth2.googleapis.com/token
   kakao:
-    client-id: 40238f34fbc22b3068fce125cae3aad3
+    user-info:
+      url: https://kapi.kakao.com/v2/user/me
+      column-username: properties.nickname
+      column-profile: properties.thumbnail_image
     token-url: https://kauth.kakao.com/oauth/token
   github:
-    client-id: Ov23ctXu2evZUSK3lHVV
+    user-info:
+      url: https://api.github.com/user
+      column-username: login
+      column-profile: avatar_url
     token-url: https://github.com/login/oauth/access_token
   redirect-uri: http://localhost:3000/callback
 

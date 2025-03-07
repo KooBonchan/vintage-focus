@@ -12,8 +12,15 @@ public record OAuth2Config (
   public record Provider(
     String clientId,
     String clientSecret,
-    String tokenUrl
-  ) {}
+    String tokenUrl,
+    UserInfo userInfo
+  ) {
+    public record UserInfo(
+      String url,
+      String columnUsername,
+      String columnProfile
+    ) {}
+  }
 
   public Provider getProvider(String provider){
     return switch(provider) {

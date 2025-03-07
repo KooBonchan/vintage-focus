@@ -1,7 +1,6 @@
-// Write.stories.tsx
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { BrowserRouter } from "react-router-dom"; // 추가
+import { BrowserRouter } from "react-router-dom";
 import Write from "../components/Write";
 
 const meta: Meta<typeof Write> = {
@@ -20,6 +19,7 @@ const meta: Meta<typeof Write> = {
     buttonColor: { control: "color", description: "버튼 색상을 변경할 수 있습니다." },
     backgroundColor: { control: "color", description: "배경 색상을 변경할 수 있습니다." },
     textColor: { control: "color", description: "텍스트 색상을 변경할 수 있습니다." },
+    link: { control: "text", description: "버튼 클릭 시 이동할 URL을 설정할 수 있습니다." }, // 추가된 부분
   },
   decorators: [
     (Story) => (
@@ -27,13 +27,14 @@ const meta: Meta<typeof Write> = {
         <Story />
       </BrowserRouter>
     ),
-  ], // 데코레이터 추가
+  ],
 };
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+// 기본적인 공개 게시글 예시
 export const Default: Story = {
   args: {
     title: "제목",
@@ -44,10 +45,11 @@ export const Default: Story = {
     buttonColor: "#435265",
     backgroundColor: "#F8F8F8",
     textColor: "text.primary",
+    link: "/rental-inquiry", // 버튼 클릭 시 이동할 URL 설정
   },
 };
 
-
+// 비공개 게시글 예시
 export const PrivatePost: Story = {
   args: {
     isPublic: false,
@@ -58,5 +60,6 @@ export const PrivatePost: Story = {
     buttonColor: "#D32F2F",
     backgroundColor: "#EEEEEE",
     textColor: "text.primary",
+    link: "/private-post", // 버튼 클릭 시 이동할 URL 설정
   },
 };

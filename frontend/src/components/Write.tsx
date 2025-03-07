@@ -16,6 +16,7 @@ export default function Write({
   buttonColor,
   backgroundColor,
   textColor,
+  link, // 추가된 link 프롭
 }) {
   const navigate = useNavigate();
 
@@ -59,6 +60,14 @@ export default function Write({
     }
   };
 
+  const handleClick = () => {
+    if (link) {
+      navigate(link); // link 프롭을 사용하여 네비게이션
+    } else {
+      handleSubmit(); // link가 없으면 기본 submit 처리
+    }
+  };
+
   return (
     <Box sx={{
       ...styles.container,
@@ -95,7 +104,7 @@ export default function Write({
       <Button
         variant="contained"
         color="primary"
-        onClick={handleSubmit}
+        onClick={handleClick} // 클릭 시 handleClick 호출
         sx={{
           backgroundColor: '#445366',
           display: "flex",

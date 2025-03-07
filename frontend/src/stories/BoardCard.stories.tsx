@@ -84,7 +84,7 @@ export const Manager: Story = {
     },
     highlighted: false,
     tagVisible: true,
-    backgroundColor: "#d3dbe4",
+    backgroundColor: "#dce2e9",
   },
 };
 

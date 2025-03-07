@@ -111,8 +111,8 @@ const BoardCard: React.FC<BoardCardProps> = ({
   article,
   highlighted = false,
   tagVisible = true,
-  backgroundColor = "#fff",
-  borderColor = "#ddd",
+  backgroundColor = "#fff", // 기본 배경색 흰색
+  borderColor = "#909eb0", // 기본 테두리 색상 #909eb0
   fontSize = "1rem",
   authorAvatarSize = 40,
   viewsCountColor = "text.secondary",
@@ -154,18 +154,18 @@ const BoardCard: React.FC<BoardCardProps> = ({
     <Card
       sx={{
         p: 2,
-        border: `1px solid ${borderColor}`,
+        border: `1px solid ${borderColor}`, // 테두리 색상 적용
         borderRadius: "8px",
-        boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.3)" : "none", // 매니저 모드 그림자 강화
+        boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.3)" : "none", // 매니저 모드 그림자 유지
         display: "flex",
         flexDirection: "column",
         gap: 1,
         position: "relative",
-        backgroundColor: isManager ? "#374151" : (highlighted ? "#f0f8ff" : backgroundColor), // 매니저 모드 배경색 변경
-        color: isManager ? "#FFFFFF" : "inherit", // 매니저 모드 폰트 색상 변경
+        backgroundColor: highlighted ? "#f0f8ff" : backgroundColor, // 매니저 모드에서도 기본 배경색(#fff) 사용
+        color: isManager ? "#FFFFFF" : "inherit", // 매니저 모드 글자색 유지
         transition: "box-shadow 0.3s ease-in-out",
         "&:hover": {
-          boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.4)" : "0 4px 10px rgba(161, 161, 161, 0.2)", // 매니저 모드 호버 효과 강화
+          boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.4)" : "0 4px 10px rgba(161, 161, 161, 0.2)", // 호버 효과 유지
         },
         cursor: "pointer",
       }}
@@ -202,7 +202,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
         </Box>
         <Typography
           variant="caption"
-          sx={{ color: isManager ? "#B0BEC5" : "text.secondary" }} // 매니저 모드 조회수 색상 변경
+          sx={{ color: isManager ? "#B0BEC5" : "text.secondary" }}
         >
           {formatDate(article?.date)} • 조회수{" "}
           <span style={{ color: isManager ? "#B0BEC5" : viewsCountColor }}>{article?.views}</span>
@@ -213,7 +213,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
         <Box sx={{ mt: 1 }}>
           <Typography
             variant="caption"
-            color={isManager ? "#B0BEC5" : "text.primary"} // 매니저 모드 태그 색상 변경
+            color={isManager ? "#B0BEC5" : "text.primary"}
           >
             #{article.tag}
           </Typography>

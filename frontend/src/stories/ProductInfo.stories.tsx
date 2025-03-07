@@ -56,7 +56,7 @@ export const Colored: Story = {
     buttonBackgroundColor: '#445366',
     buyLink: 'https://example.com/buy',
     cartLink: 'https://example.com/cart',
-    imageSrc: '/image/special-item.jpg', // 특별한 상품 이미지 경로
+    imageSrc: '/image/imsi.jpg', // 특별한 상품 이미지 경로
     inquiryLink: 'https://example.com/inquiry', // 문의하기 링크
   },
 };

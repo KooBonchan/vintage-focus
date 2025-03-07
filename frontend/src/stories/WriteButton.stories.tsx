@@ -35,3 +35,4 @@ export const BuyInquiry = Template.bind({});
 BuyInquiry.args = {
   currentPath: '/buy-inquiry',
 };
+

@@ -31,6 +31,68 @@ export interface BoardCardProps {
   isManager?: boolean;
 }
 
+interface PasswordModalProps {
+  open: boolean;
+  onClose: () => void;
+  onUnlock: (password: string) => void;
+  isManager?: boolean;
+  modalRef: React.RefObject<HTMLDivElement>;
+}
+
+const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose, onUnlock, isManager = false, modalRef }) => {
+  const [password, setPassword] = useState("");
+
+  const handleUnlockClick = () => {
+    onUnlock(password);
+    setPassword("");
+    onClose();
+  };
+
+  return (
+    <Modal open={open} onClose={onClose}>
+      <Box
+        ref={modalRef}
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 300,
+          bgcolor: "background.paper",
+          borderRadius: 2,
+          boxShadow: "0 4px 8px rgba(133, 133, 133, 0.15)",
+          p: 4,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Typography variant="h6" color={isManager ? "#FFFFFF" : "inherit"}>비밀번호 입력</Typography>
+        <TextField
+          label="비밀번호"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+        />
+        <Button
+          variant="contained"
+          onClick={handleUnlockClick}
+          sx={{
+            backgroundColor: "#445366",
+            color: "#FFFFFF",
+            "&:hover": {
+              backgroundColor: "#334050",
+            },
+          }}
+        >
+          확인
+        </Button>
+      </Box>
+    </Modal>
+  );
+};
+
 const formatDate = (dateString: string) => {
   if (!dateString) return "날짜 없음";
   const date = new Date(dateString);
@@ -58,17 +120,14 @@ const BoardCard: React.FC<BoardCardProps> = ({
   isManager = false,
 }) => {
   const [open, setOpen] = useState(false);
-  const [password, setPassword] = useState("");
   const modalRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleUnlock = () => {
+  const handleUnlock = (password: string) => {
     if (article?.id && onUnlock) {
       onUnlock(article.id, password);
-      setPassword("");
-      handleClose();
     }
   };
 
@@ -97,16 +156,16 @@ const BoardCard: React.FC<BoardCardProps> = ({
         p: 2,
         border: `1px solid ${borderColor}`,
         borderRadius: "8px",
-        boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.2)" : "none",
+        boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.3)" : "none", // 매니저 모드 그림자 강화
         display: "flex",
         flexDirection: "column",
         gap: 1,
         position: "relative",
-        backgroundColor: isManager ? "#445366" : (highlighted ? "#f0f8ff" : backgroundColor),
-        color: isManager ? "#FFFFFF" : "inherit",
+        backgroundColor: isManager ? "#374151" : (highlighted ? "#f0f8ff" : backgroundColor), // 매니저 모드 배경색 변경
+        color: isManager ? "#FFFFFF" : "inherit", // 매니저 모드 폰트 색상 변경
         transition: "box-shadow 0.3s ease-in-out",
         "&:hover": {
-          boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.3)" : "0 4px 10px rgba(161, 161, 161, 0.2)",
+          boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.4)" : "0 4px 10px rgba(161, 161, 161, 0.2)", // 매니저 모드 호버 효과 강화
         },
         cursor: "pointer",
       }}
@@ -143,10 +202,10 @@ const BoardCard: React.FC<BoardCardProps> = ({
         </Box>
         <Typography
           variant="caption"
-          sx={{ color: isManager ? "#FFFFFF" : "text.secondary" }}
+          sx={{ color: isManager ? "#B0BEC5" : "text.secondary" }} // 매니저 모드 조회수 색상 변경
         >
           {formatDate(article?.date)} • 조회수{" "}
-          <span style={{ color: isManager ? "#FFFFFF" : viewsCountColor }}>{article?.views}</span>
+          <span style={{ color: isManager ? "#B0BEC5" : viewsCountColor }}>{article?.views}</span>
         </Typography>
       </Box>
 
@@ -154,7 +213,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
         <Box sx={{ mt: 1 }}>
           <Typography
             variant="caption"
-            color={isManager ? "#FFFFFF" : "text.primary"}
+            color={isManager ? "#B0BEC5" : "text.primary"} // 매니저 모드 태그 색상 변경
           >
             #{article.tag}
           </Typography>
@@ -162,37 +221,13 @@ const BoardCard: React.FC<BoardCardProps> = ({
       )}
 
       {article?.locked && (
-        <Modal open={open} onClose={handleClose}>
-          <Box
-            ref={modalRef}
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 300,
-              bgcolor: "background.paper",
-              borderRadius: 2,
-              boxShadow: "0 4px 8px rgba(83, 83, 83, 0.15)",
-              p: 4,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
-          >
-            <Typography variant="h6" color={isManager ? "#FFFFFF" : "inherit"}>비밀번호 입력</Typography>
-            <TextField
-              label="비밀번호"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              fullWidth
-            />
-            <Button variant="contained" onClick={handleUnlock}>
-              확인
-            </Button>
-          </Box>
-        </Modal>
+        <PasswordModal
+          open={open}
+          onClose={handleClose}
+          onUnlock={handleUnlock}
+          isManager={isManager}
+          modalRef={modalRef}
+        />
       )}
     </Card>
   );

@@ -88,28 +88,3 @@ export const Manager: Story = {
   },
 };
 
-// 강조된 게시글: 하이라이트 스타일 테스트
-export const HighlightedCard: Story = {
-  args: {
-    article: {
-      ...defaultArticle,
-      locked: false, // 잠금 해제 상태
-    },
-    highlighted: true,
-  },
-};
-
-// 잠긴 강조된 게시글: 잠금 + 하이라이트 조합 테스트
-export const LockedHighlighted: Story = {
-  args: {
-    article: {
-      ...defaultArticle,
-      id: 3,
-      title: "Locked & Highlighted Article",
-      locked: true, // 잠금 상태
-    },
-    highlighted: true,
-    tagVisible: true,
-    onUnlock: (id, password) => console.log(`Unlocked ID: ${id}, Password: ${password}`),
-  },
-};

@@ -35,8 +35,3 @@ export const BuyInquiry = Template.bind({});
 BuyInquiry.args = {
   currentPath: '/buy-inquiry',
 };
-
-export const RentalInquiry = Template.bind({});
-RentalInquiry.args = {
-  currentPath: '/rental-inquiry',
-};

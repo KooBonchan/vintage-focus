@@ -68,7 +68,7 @@ const WeeklyBestGallery = () => {
         Best Item
       </Typography>
 
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, marginTop: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", width: '100%', gap: 2, marginTop: 3 }}>
         <Button size="small" label="버튼 1" />
         <Button size="small" label="버튼 2" />
         <Button size="small" label="버튼 3" />
@@ -76,8 +76,10 @@ const WeeklyBestGallery = () => {
 
       <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
         {currentPageProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-            <ProductCard product={product} />
+          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'inline-block' }}>
+              <ProductCard product={product} />
+            </Box>
           </Grid>
         ))}
       </Grid>

@@ -4,7 +4,7 @@ import { Box, Typography, TextField, Button, Switch, FormControlLabel } from "@m
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Post } from "../../../types/post";
 
-export default function SellDetail() {
+export default function SellWrite() {
   const navigate = useNavigate();
 
   // ✅ 게시글 데이터 상태 관리

@@ -16,7 +16,7 @@ export default function Write({
   buttonColor,
   backgroundColor,
   textColor,
-  link, // 추가된 link 프롭
+  link,
 }) {
   const navigate = useNavigate();
 
@@ -25,6 +25,16 @@ export default function Write({
   const [content, setContent] = useState(initialContent || "");
   const [isPublic, setIsPublic] = useState(initialIsPublic !== undefined ? initialIsPublic : true);
   const [password, setPassword] = useState(initialPassword || "");
+  const [image, setImage] = useState(null); // 이미지 상태 추가
+  const [imagePreview, setImagePreview] = useState(null); // 이미지 미리보기 상태 추가
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file)); // 이미지 미리보기 URL 생성
+    }
+  };
 
   const handleSubmit = () => {
     if (!title.trim() || !content.trim()) {
@@ -51,6 +61,7 @@ export default function Write({
       tag: "대여문의",
       locked: !isPublic,
       password: isPublic ? null : password,
+      image: image ? URL.createObjectURL(image) : null, // 이미지 URL 추가
     };
 
     if (process.env.NODE_ENV !== 'test') {
@@ -62,9 +73,9 @@ export default function Write({
 
   const handleClick = () => {
     if (link) {
-      navigate(link); // link 프롭을 사용하여 네비게이션
+      navigate(link);
     } else {
-      handleSubmit(); // link가 없으면 기본 submit 처리
+      handleSubmit();
     }
   };
 
@@ -74,18 +85,18 @@ export default function Write({
       backgroundColor: isPublic ? 'transparent' : '#f0f0f0',
       display: "flex",
       flexDirection: "column",
-      alignItems: "center",  // 수직 중앙 정렬
-      justifyContent: "center",  // 수평 중앙 정렬
-      margin: "0 auto",  // auto로 좌우 마진 설정
-      padding: 3,  // 패딩을 적절하게 설정
-      width: "100%",  // 최대 너비 설정
+      alignItems: "center",
+      justifyContent: "center",
+      margin: "0 auto",
+      padding: 3,
+      width: "100%",
     }}>
       <Box sx={{
         display: "flex",
         justifyContent: "space-between",
         width: "100%",
         maxWidth: "860px",
-        mb: 1, // 마진 값 수정
+        mb: 1,
       }}>
         <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center", fontWeight: 'bold' }}>
           문의남기기 <EditNoteIcon sx={{ ml: 0.5 }} />
@@ -99,7 +110,14 @@ export default function Write({
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 2, mb: 2, width: "100%", maxWidth: "860px" }}>
-        <ProductInfo title={title} price={price} setTitle={setTitle} setPrice={setPrice} />
+        <ProductInfo 
+          title={title} 
+          price={price} 
+          setTitle={setTitle} 
+          setPrice={setPrice} 
+          imagePreview={imagePreview} 
+          handleImageChange={handleImageChange} 
+        />
       </Box>
       <ContentInput content={content} setContent={setContent} isPublic={isPublic} />
       {!isPublic && (
@@ -108,7 +126,7 @@ export default function Write({
       <Button
         variant="contained"
         color="primary"
-        onClick={handleClick} // 클릭 시 handleClick 호출
+        onClick={handleClick}
         sx={{
           backgroundColor: '#445366',
           display: "flex",
@@ -117,7 +135,7 @@ export default function Write({
           width: '250px',
           padding: '8px 24px',
           borderRadius: '12px',
-          marginTop: 2, // 버튼 위쪽 마진
+          marginTop: 2,
         }}
       >
         게시글 등록하기 <CheckCircleIcon sx={{ ml: 0.5 }} />
@@ -129,17 +147,17 @@ export default function Write({
 const styles = {
   container: {
     maxWidth: 900,
-    margin: "0 auto", // 자동으로 좌우 마진을 추가하여 가운데 정렬
+    margin: "0 auto",
     padding: 3,
     borderRadius: "8px",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center", // 세로 가운데 정렬
-    justifyContent: "center", // 가로 가운데 정렬
+    alignItems: "center",
+    justifyContent: "center",
   },
   imageBox: {
-    width: 120,
-    height: 120,
+    width: 90,
+    height: 90,
     backgroundColor: "#E0E0E0",
     borderRadius: "8px",
     display: "flex",
@@ -149,11 +167,23 @@ const styles = {
   },
 };
 
-const ProductInfo = ({ title, price, setTitle, setPrice }) => (
+const ProductInfo = ({ title, price, setTitle, setPrice, imagePreview, handleImageChange }) => (
   <Box sx={{ display: "flex", flexDirection: "row", gap: 3, flex: 1 }}>
-    <Box sx={{ ...styles.imageBox, width: 90, height: 90, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <FavoriteBorderIcon sx={{ position: "absolute", top: 8, left: 8 }} />
-      <ImageIcon />
+    <Box sx={{ ...styles.imageBox }}>
+      {imagePreview ? (
+        <img src={imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
+      ) : (
+        <>
+          <FavoriteBorderIcon sx={{ position: "absolute", top: 8, left: 8 }} />
+          <ImageIcon />
+        </>
+      )}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        style={{ position: "absolute", opacity: 0, width: "100%", height: "100%", cursor: "pointer" }}
+      />
     </Box>
     <Box sx={{ flex: 1 }}>
       <TextField

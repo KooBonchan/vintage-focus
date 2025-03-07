@@ -10,6 +10,8 @@ const DeliveryPage = () => {
   const navigate = useNavigate();
   const orderItems = location.state?.orderItems || [];
 
+  
+
   // 결제 상태 추가
   const [paymentStatus, setPaymentStatus] = useState<{ status: string; message?: string }>({
     status: "",

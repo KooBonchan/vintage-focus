@@ -39,17 +39,19 @@ const ProductCard = ({
     <Card
       sx={{
         width: width,
-        height: height,
+        height: height + 10,
         textAlign: "center",
         p: 2,
         borderRadius: 3,
-        transition: "all 0.3s ease",
+        transition: "transform 0.3s ease-in-out",
         "&:hover": {
-          transform: "translateY(-6px)",
+          transform: "translateY(-10px)",
           boxShadow: 6,
           cursor: 'pointer',
         },
+        backgroundColor: 'transparent',
       }}
+      onClick={handleProductClick} // 카드 클릭 시 상세정보 링크로 이동
     >
       <CardMedia
         component="img"
@@ -66,7 +68,7 @@ const ProductCard = ({
           {product.name}
         </Typography>
         <Typography
-          variant="h6"
+          variant="h5"
           color="primary"
           sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
         >
@@ -74,19 +76,25 @@ const ProductCard = ({
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 0.1, gap: 1 }}>
           <Typography variant="body2" sx={{ mr: 0, fontSize: "0.6rem" }}>
-           {product.manufacturer} {/*제조사*/}
+            {product.manufacturer}
           </Typography>
           <Typography variant="body2" sx={{ fontSize: "0.6rem" }}>
-            {product.year}{/*년도*/}
+            {product.year}
           </Typography>
         </Box>
         <Button
-          onClick={handleProductClick}
           variant="outlined"
-          size="small" // 버튼 크기 축소
-          sx={{ mt: 0.5, fontSize: '0.5rem' }} // 마진 탑 축소 및 폰트 사이즈 축소
+          size="small"
+          sx={{
+            mt: 0.5,
+            fontSize: '0.6rem',
+            width: '100%',
+            borderRadius: 2,
+            padding: '2px 4px',
+            // display: 'none', // 이 부분을 제거하여 버튼을 다시 표시
+          }}
         >
-         상세정보
+          상세정보
         </Button>
       </CardContent>
     </Card>

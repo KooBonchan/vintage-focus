@@ -64,7 +64,7 @@ const ProductCard = ({
         }}
       />
       <CardContent>
-        <Typography variant="body1" fontWeight="bold">
+        <Typography variant="body1" fontWeight="bold" sx={{ mt: 0.5 }}> {/* 타이틀 윗쪽 마진 추가 */}
           {product.name}
         </Typography>
         <Typography
@@ -84,14 +84,14 @@ const ProductCard = ({
         </Box>
         <Button
           variant="outlined"
-          size="small"
+          size='small'
           sx={{
             mt: 0.5,
-            fontSize: '0.6rem',
-            width: '100%',
-            borderRadius: 2,
+            fontSize: '0.7rem',
+            width: 'small',
+            borderRadius: 1.5,
             padding: '2px 4px',
-            // display: 'none', // 이 부분을 제거하여 버튼을 다시 표시
+            height: '20px',
           }}
         >
           상세정보

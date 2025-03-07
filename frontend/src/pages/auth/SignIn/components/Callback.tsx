@@ -1,13 +1,17 @@
 import { authConfig } from "@/types/auth";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 
 const Callback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const hasRun = useRef(false);
 
+  
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
     const exchangeCodeForTokens = async () => {
       const code = searchParams.get('code');
       if (!code) {
@@ -17,7 +21,6 @@ const Callback = () => {
       }
 
       const provider = sessionStorage.getItem('provider') || 'google';
-      const { clientId, redirectUri, tokenUrl } = authConfig[provider];
       const codeVerifier = sessionStorage.getItem(`${provider}_code_verifier`);
 
       if (!codeVerifier) {
@@ -27,16 +30,12 @@ const Callback = () => {
       }
 
       try {
-        // Exchange code for tokens
-
-
         const response = await axios.post(
-          'http://localhost:8094/api/auth/exchange',
+          'http://localhost:8094/api/auth/exchange', // proxying with server request
           {
             provider,
             code,
             codeVerifier,
-            redirectUri,
           },
           {
             headers: {

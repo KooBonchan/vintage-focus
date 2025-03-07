@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ public class OAuth2SuccessHandler implements ServerAuthenticationSuccessHandler 
   public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
     ServerWebExchange exchange = webFilterExchange.getExchange();
 
-    if(authentication instanceof OAuth2AuthenticationToken){
+    if(authentication != null){
       return jwtTokenProvider.generateToken(authentication)
         .flatMap(jwt -> {
           UriComponentsBuilder redirectUrlBuilder = UriComponentsBuilder

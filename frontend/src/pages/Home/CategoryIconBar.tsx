@@ -20,14 +20,14 @@ const hoverIconUrls = {
   rental: '/image/rental-icon2.png', // 대여 아이콘 hover 이미지 추가
 };
 
-const iconComponents = {
+const iconComponents: Record<string, any> = {
   camera: CameraAlt,
   dicam: Videocam,  // 예시로 다른 아이콘 사용
   lens: Camera,
   accessories: SdCard, // 다른 아이콘으로 변경
   rental: SupervisorAccount, // 다른 아이콘으로 변경
 };
-const hoverIconComponents = {
+const hoverIconComponents: Record<string, any> = {
   camera: CameraAltOutlined, // hover 시에 사용할 아이콘
   dicam: VideocamOutlined, // hover 아이콘 예시
   lens: CameraOutlined, // hover 시에 다른 아이콘
@@ -39,7 +39,7 @@ const hoverIconComponents = {
 
 
 // 아이템과 연결된 경로 설정
-const routes = {
+const routes: Record<string, string> = {
   camera: '/camera',
   dicam: '/dicam',
   lens: '/lens',
@@ -49,7 +49,7 @@ const routes = {
 
 const CategoryIconBar = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const theme = useTheme(); // 다크 모드 또는 라이트 모드를 확인하기 위한 테마 객체
+  const theme = useTheme();
 
   const handleMouseEnter = (id: string) => {
     setHoveredItem(id); // 마우스 오버 시 해당 아이템의 ID 설정
@@ -58,6 +58,14 @@ const CategoryIconBar = () => {
   const handleMouseLeave = () => {
     setHoveredItem(null); // 마우스가 아이템을 떠나면 null로 설정
   };
+
+  const iconLabels: {id:string, label:string}[] = [
+    { id: "camera", label: "중고카메라" },
+    { id: "dicam", label: "중고디카" },
+    { id: "lens", label: "중고렌즈" },
+    { id: "accessories", label: "카메라부속" },
+    { id: "rental", label: "대여" }, 
+  ]
 
   return (
     <Grid2
@@ -71,16 +79,10 @@ const CategoryIconBar = () => {
         flexWrap: 'wrap', // 화면 크기에 맞춰 항목들이 줄바꿈될 수 있게 함
       }}
     >
-      {[
-        { id: "camera", label: "중고카메라" },
-        { id: "dicam", label: "중고디카" },
-        { id: "lens", label: "중고렌즈" },
-        { id: "accessories", label: "카메라부속" },
-        { id: "rental", label: "대여" }, 
-      ].map((item) => {
+      {iconLabels.map((item) => {
         const Icon = hoveredItem === item.id ? hoverIconComponents[item.id] : iconComponents[item.id];
         return (
-        <Grid2 item xs={6} sm={6} md={2.4} key={item.id}>
+        <Grid2 size={{ xs:6, sm:6, md:2.4,}} key={item.id}>
           <Box
             sx={{
               width: "100%",

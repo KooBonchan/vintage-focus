@@ -12,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -43,15 +42,15 @@ public class JwtTokenProvider {
   public Mono<String> generateToken(Authentication authentication) {
     return Mono.fromSupplier(() -> {
       if (authentication != null) {
-        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+//        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         Map<String, Object> claims = new HashMap<>();
 
         // Extract user details from OAuth2 principal
-        Map<String, Object> attributes = oauthToken.getPrincipal().getAttributes();
+//        Map<String, Object> attributes = oauthToken.getPrincipal().getAttributes();
 
-        claims.put("sub", attributes.get("email")); // Using email as subject
-        claims.put("name", attributes.get("name"));
-        claims.put("picture", attributes.get("picture"));
+//        claims.put("sub", attributes.get("email")); // Using email as subject
+//        claims.put("name", attributes.get("name"));
+//        claims.put("picture", attributes.get("picture"));
 
         // Add roles/authorities if available
         claims.put("roles", authentication.getAuthorities().stream()

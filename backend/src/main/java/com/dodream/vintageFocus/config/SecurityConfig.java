@@ -6,6 +6,7 @@ import com.dodream.vintageFocus.security.OAuth2SuccessHandler;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -19,12 +20,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
@@ -34,11 +33,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebFluxSecurity
 @RequiredArgsConstructor
+@EnableConfigurationProperties(OAuth2Config.class)
 public class SecurityConfig implements WebFluxConfigurer {
   private final OAuth2SuccessHandler oAuth2SuccessHandler;
   private final JwtTokenProvider jwtTokenProvider;
@@ -70,8 +69,8 @@ public class SecurityConfig implements WebFluxConfigurer {
         .pathMatchers("/api/auth/**").permitAll()
         .anyExchange().authenticated()
       )
-      .oauth2Login(oauth2 -> oauth2
-        .authenticationSuccessHandler(oAuth2SuccessHandler))
+//      .oauth2Login(oauth2 -> oauth2
+//        .authenticationSuccessHandler(oAuth2SuccessHandler))
       .oauth2ResourceServer(oauth2 -> oauth2
         .jwt(jwt -> jwt
           .jwtAuthenticationConverter(jwtAuthenticationConverter()))

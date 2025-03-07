@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography, Card, Avatar, Modal, TextField, Button } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
 
@@ -59,6 +59,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [password, setPassword] = useState("");
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -77,109 +78,123 @@ const BoardCard: React.FC<BoardCardProps> = ({
     }
   };
 
-  return (
-    <>
-      <Card
-        sx={{
-          p: 2,
-          border: `1px solid ${borderColor}`,
-          borderRadius: "8px",
-          boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.2)" : "none",
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-          position: "relative",
-          backgroundColor: isManager ? "#445366" : (highlighted ? "#f0f8ff" : backgroundColor),
-          color: isManager ? "#FFFFFF" : "inherit",
-          transition: "box-shadow 0.3s ease-in-out",
-          "&:hover": {
-            boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.3)" : "0 4px 10px rgba(161, 161, 161, 0.2)",
-          },
-          cursor: "pointer",
-        }}
-        onClick={handleClick}
-      >
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography
-            variant="subtitle1"
-            fontWeight="bold"
-            sx={{ fontSize, color: isManager ? "#FFFFFF" : "inherit" }}
-          >
-            {article?.title}
-          </Typography>
-          {article?.locked && (
-            <LockIcon
-              sx={{ color: isManager ? "#FFFFFF" : "inherit", fontSize: 28 }}
-            />
-          )}
-        </Box>
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (open && modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleClose();
+      }
+    };
 
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Avatar
-              src={article?.author.avatar ?? "https://avatar.iran.liara.run/public"}
-              sx={{ width: authorAvatarSize, height: authorAvatarSize }}
-            />
-            <Typography
-              variant="caption"
-              color={isManager ? "#FFFFFF" : "text.primary"}
-              fontWeight="bold"
-            >
-              {article?.author.name}
-            </Typography>
-          </Box>
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open]);
+
+  return (
+    <Card
+      sx={{
+        p: 2,
+        border: `1px solid ${borderColor}`,
+        borderRadius: "8px",
+        boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.2)" : "none",
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
+        position: "relative",
+        backgroundColor: isManager ? "#445366" : (highlighted ? "#f0f8ff" : backgroundColor),
+        color: isManager ? "#FFFFFF" : "inherit",
+        transition: "box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.3)" : "0 4px 10px rgba(161, 161, 161, 0.2)",
+        },
+        cursor: "pointer",
+      }}
+      onClick={handleClick}
+    >
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography
+          variant="subtitle1"
+          fontWeight="bold"
+          sx={{ fontSize, color: isManager ? "#FFFFFF" : "inherit" }}
+        >
+          {article?.title}
+        </Typography>
+        {article?.locked && (
+          <LockIcon
+            sx={{ color: isManager ? "#FFFFFF" : "inherit", fontSize: 28 }}
+          />
+        )}
+      </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Avatar
+            src={article?.author.avatar ?? "https://avatar.iran.liara.run/public"}
+            sx={{ width: authorAvatarSize, height: authorAvatarSize }}
+          />
           <Typography
             variant="caption"
-            sx={{ color: isManager ? "#FFFFFF" : "text.secondary" }}
+            color={isManager ? "#FFFFFF" : "text.primary"}
+            fontWeight="bold"
           >
-            {formatDate(article?.date)} • 조회수{" "}
-            <span style={{ color: isManager ? "#FFFFFF" : viewsCountColor }}>{article?.views}</span>
+            {article?.author.name}
           </Typography>
         </Box>
-
-        {tagVisible && article?.tag && (
-          <Box sx={{ mt: 1 }}>
-            <Typography
-              variant="caption"
-              color={isManager ? "#FFFFFF" : "text.primary"}
-            >
-              #{article.tag}
-            </Typography>
-          </Box>
-        )}
-      </Card>
-
-      <Modal open={open} onClose={handleClose} BackdropProps={{ style: { backgroundColor: 'transparent' } }}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 300,
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: "0 4px 8px rgba(83, 83, 83, 0.15)", // 그림자 강도 조절
-            p: 4,
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-          }}
+        <Typography
+          variant="caption"
+          sx={{ color: isManager ? "#FFFFFF" : "text.secondary" }}
         >
-          <Typography variant="h6" color={isManager ? "#FFFFFF" : "inherit"}>비밀번호 입력</Typography>
-          <TextField
-            label="비밀번호"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            fullWidth
-          />
-          <Button variant="contained" onClick={handleUnlock}>
-            확인
-          </Button>
+          {formatDate(article?.date)} • 조회수{" "}
+          <span style={{ color: isManager ? "#FFFFFF" : viewsCountColor }}>{article?.views}</span>
+        </Typography>
+      </Box>
+
+      {tagVisible && article?.tag && (
+        <Box sx={{ mt: 1 }}>
+          <Typography
+            variant="caption"
+            color={isManager ? "#FFFFFF" : "text.primary"}
+          >
+            #{article.tag}
+          </Typography>
         </Box>
-      </Modal>
-    </>
+      )}
+
+      {article?.locked && (
+        <Modal open={open} onClose={handleClose}>
+          <Box
+            ref={modalRef}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 300,
+              bgcolor: "background.paper",
+              borderRadius: 2,
+              boxShadow: "0 4px 8px rgba(83, 83, 83, 0.15)",
+              p: 4,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
+            <Typography variant="h6" color={isManager ? "#FFFFFF" : "inherit"}>비밀번호 입력</Typography>
+            <TextField
+              label="비밀번호"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              fullWidth
+            />
+            <Button variant="contained" onClick={handleUnlock}>
+              확인
+            </Button>
+          </Box>
+        </Modal>
+      )}
+    </Card>
   );
 };
 

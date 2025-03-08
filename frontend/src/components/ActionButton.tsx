@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Add, Remove } from "@mui/icons-material";
 import { styled } from "@mui/material";
 
@@ -7,11 +8,12 @@ export interface ButtonProps {
   backgroundColor?: string;
   borderColor?: string;
   onClick?: () => void;
+  onChange?: (count: number) => void; // 카운트 변경 시 호출될 콜백 함수 추가
 }
 
 // 커스텀 버튼 스타일
 const CustomButton = styled('button')<ButtonProps>(({
-  type, backgroundColor, borderColor 
+  type, backgroundColor, borderColor
 }) => {
   const size = '30px';  // 버튼 크기 설정 (작은 크기)
 
@@ -43,11 +45,11 @@ const darken = (color: string, amount: number) => {
   let r = parseInt(hex.slice(0, 2), 16);
   let g = parseInt(hex.slice(2, 4), 16);
   let b = parseInt(hex.slice(4, 6), 16);
-  
+
   r = Math.max(0, Math.min(255, r - amount * 255));
   g = Math.max(0, Math.min(255, g - amount * 255));
   b = Math.max(0, Math.min(255, b - amount * 255));
-  
+
   return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
 };
 
@@ -56,6 +58,7 @@ export const ActionButton = ({
   type,
   backgroundColor = '#ffffff',
   borderColor = '#555ab9',
+  onChange, // onChange 프롭 추가
   ...props
 }: ButtonProps) => {
   let buttonContent;
@@ -71,5 +74,32 @@ export const ActionButton = ({
     <CustomButton type={type} backgroundColor={backgroundColor} borderColor={borderColor} {...props}>
       {buttonContent}
     </CustomButton>
+  );
+};
+
+// 카운터 컴포넌트
+export const Counter = ({ initialCount = 0 }: { initialCount?: number }) => {
+  const [count, setCount] = useState(initialCount);
+
+  const handleCountChange = (newCount: number) => {
+    setCount(newCount);
+  };
+
+  const handlePlusClick = () => {
+    handleCountChange(count + 1);
+  };
+
+  const handleMinusClick = () => {
+    if (count > 0) {
+      handleCountChange(count - 1);
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <ActionButton type="m-" onClick={handleMinusClick} />
+      <span style={{ margin: '0 10px' }}>{count}</span>
+      <ActionButton type="p+" onClick={handlePlusClick} />
+    </div>
   );
 };

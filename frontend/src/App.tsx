@@ -14,13 +14,16 @@ import { Home } from './pages/Home';
 import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
-import BoardDetail from './pages/Board/Detail/RentalDetail';
+
 import NoticePage from './pages/Board/Notice/NoticePage';
 import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 import DeliveryPage from './pages/order/delivery';
 import OrderCompletePage from './pages/order/complete';
 import SignIn from '@/pages/auth/SignIn';
 import Callback from './pages/auth/SignIn/components/Callback';
+import BuyDetail from './pages/Board/Detail/BuyDetail';
+import SellDetail from './pages/Board/Detail/SellDetail';
+import RentalDetail from './pages/Board/Detail/RentalDetail';
 
 
 
@@ -114,21 +117,21 @@ function Router(){
       <Route path="sell-inquiry">
         <Route index element={<About />} />
         <Route path="write" element={<SellWrite />} />
-        <Route path="detail/:id" element={<BoardDetail />} /> {/* ✅ 상세 페이지 추가 */}
+        <Route path="detail/:id" element={<SellDetail />} /> {/* ✅ 상세 페이지 추가 */}
       </Route>
 
       {/* 구매문의 라우트 그룹 */}
       <Route path="buy-inquiry">
         <Route index element={<About />} />
         <Route path="write" element={<BuyWrite />} />
-        <Route path="detail/:id" element={<BoardDetail />} /> {/* ✅ 상세 페이지 추가 */}
+        <Route path="detail/:id" element={<BuyDetail />} /> {/* ✅ 상세 페이지 추가 */}
       </Route>
 
       {/* 대여문의 라우트 그룹 */}
       <Route path="rental-inquiry">
         <Route index element={<About />} />
         <Route path="write" element={<RentalWrite />} />
-        <Route path="detail/:id" element={<BoardDetail />} /> {/* ✅ 상세 페이지 추가 */}
+        <Route path="detail/:id" element={<RentalDetail />} /> {/* ✅ 상세 페이지 추가 */}
       </Route>
 
 

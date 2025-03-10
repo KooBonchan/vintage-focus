@@ -181,8 +181,8 @@ CREATE TABLE IF NOT EXISTS `refresh_token` (
   `token` varchar(255) NOT NULL,
   `member_id` BIGINT NOT NULL,
   `issued_at` Timestamp NULL,
-  `expires_at` Timestamp NULL,
-)
+  `expires_at` Timestamp NULL
+);
 
 
 ALTER TABLE `rental` ADD CONSTRAINT `PK_RENTAL` PRIMARY KEY (`id`);

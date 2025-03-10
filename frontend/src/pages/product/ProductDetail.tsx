@@ -1,9 +1,10 @@
 import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List } from "@mui/material";
 import { ChatBubbleOutline, FavoriteBorder, Add, MoreVert } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // useNavigate 추가
 
 export function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate(); // useNavigate 훅 추가
 
   return (
     <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 0" }}>
@@ -13,8 +14,8 @@ export function ProductDetail() {
         <Grid item xs={12} md={6}>
           <Box
             sx={{
-              width: "500px",  // 너비 고정
-              height: "450px", // 높이 고정
+              width: "500px",
+              height: "450px",
               bgcolor: "#ddd",
               borderRadius: 2,
               display: "flex",
@@ -41,7 +42,7 @@ export function ProductDetail() {
                   margin: "0 4px",
                   border: "none",
                   "&:hover": {
-                    backgroundColor: "#e0e0e0",  // Hover 배경색
+                    backgroundColor: "#e0e0e0",
                   }
                 }}
               >
@@ -122,6 +123,14 @@ export function ProductDetail() {
             <Button variant="text" sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}>
               장바구니
             </Button>
+            {/* "제품 대여하기" 버튼 클릭 시 rental-inquiry 페이지로 이동 */}
+            <Button
+              variant="text"
+              sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
+              onClick={() => navigate("/rental-inquiry/write")} // rental-inquiry로 이동
+            >
+              제품 대여하기
+            </Button>
           </Box>
         </Grid>
       </Grid>
@@ -149,7 +158,6 @@ export function ProductDetail() {
               상품
             </Typography>
 
-            {/* 상품 이름과 설명을 감싸는 div 추가 및 위쪽 마진 추가 */}
             <div style={{ marginTop: "20px" }}>
               <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
                 상품이름과 설명
@@ -169,7 +177,7 @@ export function ProductDetail() {
           </Button>
         </Box>
         <List>
-          {[ 
+          {[
             { id: 1, name: "빈티지 카메라", desc: "고급 필름 카메라", img: "https://placehold.co/50x50" },
             { id: 2, name: "DSLR 카메라", desc: "전문가용 DSLR", img: "https://placehold.co/50x50" },
             { id: 3, name: "미러리스 카메라", desc: "가벼운 미러리스", img: "https://placehold.co/50x50" },
@@ -177,20 +185,15 @@ export function ProductDetail() {
             { id: 5, name: "액션 카메라", desc: "스포츠용 캠", img: "https://placehold.co/50x50" }
           ].map((product, index, array) => (
             <Box key={product.id}>
-              {/* 리스트 아이템 */}
               <ListItem sx={{ bgcolor: "#ffffff", py: 2, borderRadius: 2, position: "relative" }}>
                 <ListItemAvatar>
                   <Avatar src={product.img} sx={{ width: 50, height: 50 }} />
                 </ListItemAvatar>
                 <ListItemText primary={product.name} secondary={product.desc} />
-
-                {/* MoreVert 버튼 */}
                 <IconButton sx={{ position: "absolute", top: 8, right: 8 }}>
                   <MoreVert />
                 </IconButton>
               </ListItem>
-
-              {/* 구분선 */}
               {index < array.length - 1 && <Divider sx={{ my: 1 }} />}
             </Box>
           ))}

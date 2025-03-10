@@ -32,16 +32,22 @@ export default function BoardList() {
   const [inputPassword, setInputPassword] = useState("");
   const itemsPerPage = 8;
 
+  // 현재 경로 설정
   const currentPath = location.pathname;
+  // /rental-inquiry가 아닌 경우에만 "문의하기" 박스를 렌더링
+  const showInquiryBox = currentPath !== "/rental-inquiry";
   const selectedTab = categoryRoutes[currentPath] || "구매문의";
 
+  // 게시물 데이터 로드
   useEffect(() => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     setPosts(storedPosts);
   }, []);
 
+  // 선택된 탭에 맞는 게시물 필터링
   const filteredArticles = posts.filter((article) => article.tag === selectedTab);
 
+  // 게시물 클릭 핸들러
   const handleArticleClick = (article) => {
     if (article.locked) {
       setSelectedArticle(article);
@@ -51,6 +57,7 @@ export default function BoardList() {
     }
   };
 
+  // 비밀번호 제출 핸들러
   const handlePasswordSubmit = () => {
     if (selectedArticle && selectedArticle.password === inputPassword) {
       console.log("Password correct, navigating with unlocked=true");
@@ -63,12 +70,14 @@ export default function BoardList() {
     }
   };
 
+  // 모달 닫기 핸들러
   const handleModalClose = () => {
     setOpenPasswordModal(false);
     setInputPassword("");
     setSelectedArticle(null);
   };
 
+  // 비밀번호 입력 변경 핸들러
   const handlePasswordChange = (e) => {
     const input = e.target.value.replace(/\D/g, ""); // 숫자만 허용
     if (input.length <= 4) {
@@ -81,6 +90,7 @@ export default function BoardList() {
 
   return (
     <Box sx={{ width: "100%", maxWidth: 1000, margin: "0 auto", textAlign: "center", p: 2 }}>
+      {/* 탭 영역 */}
       <Tabs
         value={currentPath}
         onChange={(event, newValue) => {
@@ -96,29 +106,40 @@ export default function BoardList() {
         ))}
       </Tabs>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
-        <IconButton sx={{ mr: 1 }} onClick={() => navigate(`${currentPath}/write`)}>
-          <EditIcon />
-        </IconButton>
-        <Typography variant="body1" sx={{ cursor: "pointer" }} onClick={() => navigate(`${currentPath}/write`)}>
-          문의하기
-        </Typography>
-      </Box>
-
-      <Grid container spacing={2} sx={{ mt: 3 }}>
-        {filteredArticles.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((article) => (
-          <Grid
-            item
-            xs={12}
-            key={article.id}
-            sx={{ width: "100%", cursor: "pointer" }}
-            onClick={() => handleArticleClick(article)}
+      {/* 문의하기 박스 (조건부 렌더링) */}
+      {showInquiryBox && (
+        <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
+          <IconButton sx={{ mr: 1 }} onClick={() => navigate(`${currentPath}/write`)}>
+            <EditIcon />
+          </IconButton>
+          <Typography
+            variant="body1"
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate(`${currentPath}/write`)}
           >
-            <BoardCard article={article} />
-          </Grid>
-        ))}
+            문의하기
+          </Typography>
+        </Box>
+      )}
+
+      {/* 게시물 목록 */}
+      <Grid container spacing={2} sx={{ mt: 3 }}>
+        {filteredArticles
+          .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+          .map((article) => (
+            <Grid
+              item
+              xs={12}
+              key={article.id}
+              sx={{ width: "100%", cursor: "pointer" }}
+              onClick={() => handleArticleClick(article)}
+            >
+              <BoardCard article={article} />
+            </Grid>
+          ))}
       </Grid>
 
+      {/* 페이지네이션 */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
         <Pagination
           count={Math.ceil(filteredArticles.length / itemsPerPage)}
@@ -128,6 +149,7 @@ export default function BoardList() {
         />
       </Box>
 
+      {/* 비밀번호 입력 모달 */}
       <Modal open={openPasswordModal} onClose={handleModalClose}>
         <Box
           sx={{

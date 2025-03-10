@@ -11,21 +11,26 @@ import {
   ListItem,
   ListItemText,
   Alert,
+  Grid,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 export default function RentalWrite() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { productName = "제품이름", productImage = "https://via.placeholder.com/500x450" } = location.state || {};
+
   const [title, setTitle] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [password, setPassword] = useState("");
-  const [write, setWrite] = useState("");
+  const [write, setWrite] = useState(""); // 사용자 입력 문의 내용
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [rentalDate, setRentalDate] = useState(null);
@@ -37,7 +42,7 @@ export default function RentalWrite() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  const GOOGLE_MAPS_API_KEY = "AIzaSyDzgYdB1jOKENQRfUqjJ6OEkPLmAR15HPo"; // 실제 API 키로 교체
+  const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_API_KEY"; // 실제 API 키로 교체
 
   const locations = [
     { name: "인천국제공항점", lat: 37.44735, lng: 126.45052 },
@@ -51,7 +56,6 @@ export default function RentalWrite() {
   ];
 
   const defaultNotice = defaultNoticeItems.join("\n");
-  const [content, setContent] = useState(defaultNotice);
 
   const mapContainerStyle = {
     width: "100%",
@@ -60,11 +64,10 @@ export default function RentalWrite() {
 
   const updateContent = () => {
     if (!name || !phone || !rentalDate || !rentalTime || !returnDate || !returnTime || !pickupLocation) return;
-    const rentalDateTime = dayjs(rentalDate).format("YYYY-MM-DD") + " " + dayjs(rentalTime).format("HH:mm");
-    const returnDateTime = dayjs(returnDate).format("YYYY-MM-DD") + " " + dayjs(returnTime).format("HH:mm");
-    setContent(
-      `${defaultNotice}\n👤 성함: ${name}\n📞 전화번호: ${phone}\n📅 대여기간: ${rentalDateTime} ~ ${returnDateTime}\n📍 희망 수령 지점: ${pickupLocation}\n🔒 공개 여부: ${isPublic ? "비공개" : "공개"}`
-    );
+    const rentalDateTime = dayjs(rentalDate).format("YYYY-MM-DD HH:mm");
+    const returnDateTime = dayjs(returnDate).format("YYYY-MM-DD HH:mm");
+    // 사용자가 입력한 write 값은 유지하고, 다른 정보는 별도로 구조화
+    return `${defaultNotice}\n✍️ 문의 내용: ${write}\n👤 성함: ${name}\n📞 전화번호: ${phone}\n📅 대여 날짜/시간: ${rentalDateTime}\n📆 반납 날짜/시간: ${returnDateTime}\n📍 희망 수령 지점: ${pickupLocation}\n🔒 공개 여부: ${isPublic ? "비공개" : "공개"}`;
   };
 
   const isValidDateTime = () => {
@@ -75,17 +78,20 @@ export default function RentalWrite() {
   };
 
   const handleSubmit = () => {
-    if (!title.trim() || content.trim() === defaultNotice.trim()) {
-      alert("제목과 내용을 입력해주세요!");
+    if (!title.trim() || !write.trim()) {
+      alert("제목과 문의 내용을 입력해주세요!");
       return;
     }
 
     const now = new Date().toISOString();
+    const content = updateContent();
+    console.log("Saving content:", content); // 디버깅용 로그
     const existingPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const newPost = {
       id: Date.now(),
       title,
       content,
+      product: { name: productName, imageUrl: productImage },
       author: { name: name || "익명", avatar: "/static/images/avatar/default.png" },
       locked: isPublic,
       password: isPublic ? password : undefined,
@@ -120,7 +126,6 @@ export default function RentalWrite() {
   const handleConfirmSelection = () => {
     if (selectedLocation) {
       setPickupLocation(selectedLocation.name);
-      updateContent();
     }
     handleCloseModal();
   };
@@ -136,6 +141,19 @@ export default function RentalWrite() {
           대여 문의
         </Typography>
 
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid item xs={12} md={6}>
+            <Box sx={{ width: "100%", height: "300px", bgcolor: "#ddd", borderRadius: 2, overflow: "hidden" }}>
+              <img src={productImage} alt={productName} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h5" fontWeight="bold" sx={{ mb: 1 }}>
+              {productName}
+            </Typography>
+          </Grid>
+        </Grid>
+
         <Box sx={{ width: "100%", p: 2, mb: 2, borderRadius: "8px", bgcolor: "#e1f5fe", boxShadow: "0 2px 4px rgba(2, 136, 209, 0.2)" }}>
           <Typography variant="subtitle1" sx={{ color: "#0288d1", fontWeight: "bold", mb: 2, textAlign: "center" }}>
             필독 사항
@@ -147,18 +165,18 @@ export default function RentalWrite() {
           ))}
         </Box>
 
-        <TextField label="제목" fullWidth value={title} onChange={(e) => { setTitle(e.target.value); updateContent(); }} sx={{ mb: 2 }} />
-        <TextField label="문의 내용" fullWidth value={write} onChange={(e) => { setWrite(e.target.value); updateContent(); }} multiline minRows={8} maxRows={10} sx={{ mb: 2 }} />
-        <TextField label="성함" fullWidth value={name} onChange={(e) => { setName(e.target.value); updateContent(); }} sx={{ mb: 2 }} />
-        <TextField label="전화번호" fullWidth value={phone} onChange={(e) => { setPhone(e.target.value); updateContent(); }} sx={{ mb: 2 }} />
+        <TextField label="제목" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} sx={{ mb: 2 }} />
+        <TextField label="문의 내용" fullWidth value={write} onChange={(e) => setWrite(e.target.value)} multiline minRows={4} sx={{ mb: 2 }} />
+        <TextField label="성함" fullWidth value={name} onChange={(e) => setName(e.target.value)} sx={{ mb: 2 }} />
+        <TextField label="전화번호" fullWidth value={phone} onChange={(e) => setPhone(e.target.value)} sx={{ mb: 2 }} />
 
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <DatePicker label="대여 날짜" value={rentalDate} onChange={(date) => { setRentalDate(date); if (returnDate && dayjs(date).isAfter(returnDate)) { setReturnDate(null); setReturnTime(null); } updateContent(); }} minDate={dayjs()} sx={{ flex: 1 }} />
-          <TimePicker label="대여 시간" value={rentalTime} onChange={(time) => { setRentalTime(time); if (rentalDate && returnDate && dayjs(rentalDate).isSame(returnDate, "day") && returnTime && dayjs(time).isAfter(returnTime)) { setReturnTime(null); } updateContent(); }} sx={{ flex: 1 }} />
+          <DatePicker label="대여 날짜" value={rentalDate} onChange={(date) => setRentalDate(date)} minDate={dayjs()} sx={{ flex: 1 }} />
+          <TimePicker label="대여 시간" value={rentalTime} onChange={(time) => setRentalTime(time)} sx={{ flex: 1 }} />
         </Box>
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <DatePicker label="반납 날짜" value={returnDate} onChange={(date) => { setReturnDate(date); updateContent(); }} minDate={rentalDate || dayjs()} sx={{ flex: 1 }} />
-          <TimePicker label="반납 시간" value={returnTime} onChange={(time) => { setReturnTime(time); updateContent(); }} minTime={rentalDate && returnDate && dayjs(rentalDate).isSame(returnDate, "day") ? dayjs(rentalTime).add(3, "hour") : null} sx={{ flex: 1 }} />
+          <DatePicker label="반납 날짜" value={returnDate} onChange={(date) => setReturnDate(date)} minDate={rentalDate || dayjs()} sx={{ flex: 1 }} />
+          <TimePicker label="반납 시간" value={returnTime} onChange={(time) => setReturnTime(time)} sx={{ flex: 1 }} />
         </Box>
 
         <Alert severity="warning" sx={{ width: "100%", mb: 2, fontSize: "16px", textAlign: "center", "& .MuiAlert-icon": { color: "#e65100" } }}>
@@ -169,7 +187,7 @@ export default function RentalWrite() {
 
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 3 }}>
           <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
-          <FormControlLabel control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />} label="" sx={{ m: 0 }} />
+          <FormControlLabel control={<Switch checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />} label="" sx={{ m: 0 }} />
           {isPublic && (
             <TextField
               label="비밀번호 (4자리 숫자)"
@@ -208,15 +226,12 @@ export default function RentalWrite() {
           </Box>
           <Box sx={{ width: "30%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <Box>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold", color: "#1976d2", textAlign: "center" }}>지점 선택</Typography>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold", color: "#1976d2", textAlign: "center" }}>
+                지점 선택
+              </Typography>
               <List sx={{ maxHeight: "400px", overflowY: "auto" }}>
                 {locations.map((loc) => (
-                  <ListItem
-                    button
-                    key={loc.name}
-                    onClick={() => handleLocationSelect(loc)}
-                    sx={{ mb: 1, borderRadius: "8px", bgcolor: selectedLocation?.name === loc.name ? "#e3f2fd" : "#fff", transition: "all 0.3s ease", "&:hover": { bgcolor: "#f5f5f5", transform: "scale(1.02)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" } }}
-                  >
+                  <ListItem button key={loc.name} onClick={() => handleLocationSelect(loc)} sx={{ mb: 1, borderRadius: "8px", bgcolor: selectedLocation?.name === loc.name ? "#e3f2fd" : "#fff", transition: "all 0.3s ease", "&:hover": { bgcolor: "#f5f5f5", transform: "scale(1.02)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" } }}>
                     <ListItemText primary={loc.name} sx={{ "& .MuiListItemText-primary": { fontWeight: selectedLocation?.name === loc.name ? "bold" : "normal", color: selectedLocation?.name === loc.name ? "#1976d2" : "#333" } }} />
                   </ListItem>
                 ))}

@@ -24,8 +24,9 @@ public class MemberDTO {
   private String address;
   private String detailAddress;
   private String zipcode;
-  private String role;
 
-  private boolean isRegistered;
+  private String role;
+  private Boolean isRegistered;
+  private String refreshToken;
 
 }

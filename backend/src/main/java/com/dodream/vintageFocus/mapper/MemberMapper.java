@@ -44,7 +44,7 @@ public class MemberMapper {
       .build();
   }
 
-  private boolean isRegistered(Member member) {
+  private Boolean isRegistered(Member member) {
     return member.getPhone() != null && member.getAddress() != null && member.getDetailAddress() != null;
   }
 }

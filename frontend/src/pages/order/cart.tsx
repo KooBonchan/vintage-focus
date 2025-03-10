@@ -2,11 +2,43 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, 
-  Checkbox, Button, Typography, Box, IconButton 
+  Checkbox, Button, Typography, Box, IconButton, 
+  styled
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import './Cart.css';  // CSS 파일 임포트
+
+const CardTotalBox = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginTop: 24,
+  padding: 16,
+  border: '1px solid #ddd',
+  borderRadius: 16,
+  backgroundColor: {'light': '#f9f9f9', 'dark':'#000'},
+  fontWeight: 'bold',
+  // width: 1155,
+
+  flexShrink: 0,
+});
+
+
+// .cart-total-box {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin-top: 24px;
+//   padding: 16px;
+//   border: 1px solid #ddd;
+//   border-radius: 16px;
+//   background-color: #f9f9f9;
+//   font-weight: bold;
+//   width: 1155px; /* 고정된 너비 */
+
+//   flex-shrink: 0; /* 크기 축소 방지 */
+// }
 
 // 장바구니 샘플 데이터
 const sampleCartItems = [
@@ -19,6 +51,7 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState(sampleCartItems);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const navigate = useNavigate();
+  
 
   const handleSelectItem = (id: number) => {
     setSelectedItems((prev) =>
@@ -64,7 +97,7 @@ export default function Cart() {
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow sx={{ bgcolor: "#f5f5f5" }}>
+            <TableRow sx={{ bgcolor: {"light": "#f5f5f5", "dark": "#000"} }}>
               <TableCell padding="checkbox">
                 <Checkbox
                   indeterminate={selectedItems.length > 0 && selectedItems.length < cartItems.length}
@@ -117,12 +150,12 @@ export default function Cart() {
         </Table>
       </TableContainer>
 
-      <Box className="cart-total-box">
+      <CardTotalBox>
         <Typography>
           총 {totalPrice.toLocaleString()}원 + 배송비 {totalShipping.toLocaleString()}원 = 합계{" "}
           {(totalPrice + totalShipping).toLocaleString()}원
         </Typography>
-      </Box>
+      </CardTotalBox>
 
 
     {/* ✅ 장바구니 삭제 버튼 (왼쪽 하단) */}

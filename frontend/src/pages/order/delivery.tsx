@@ -49,7 +49,7 @@ const DeliveryPage = () => {
 
 
   // 주문한 상품의 가격 계산
-  useEffect(() => {
+ useEffect(() => {
     const totalPrice = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const totalShipping = orderItems.reduce((acc, item) => acc + item.shipping, 0);
     setForm((prev) => ({
@@ -58,12 +58,12 @@ const DeliveryPage = () => {
       shippingFee: `${totalShipping.toLocaleString()}원`,
       finalAmount: `${(totalPrice + totalShipping).toLocaleString()}원`,
     }));
-    
   }, [orderItems]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
 
 
    // Daum 우편번호 API가 로드되었는지 확인
@@ -180,10 +180,10 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
   return (
-    <Container maxWidth="md" sx={{ py: 4, bgcolor: "#f8f8f8", minHeight: "100vh" }}>
+    <Container maxWidth="md" sx={{ py: 4,bgcolor: "#f8f8f8", minHeight: "100vh" }}>
       {/* 주문 상세 내역 */}
       <Paper sx={{ p: 3, mb: 3, bgcolor: "#fff", boxShadow: "none", borderRadius: "8px", border: "1px solid #ddd" }}>
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" } }>
           주문 상세 내역
         </Typography>
         <Box sx={{ border: "1px solid #ddd", p: 2, borderRadius: "8px", bgcolor: "#fcfcfc" }}>

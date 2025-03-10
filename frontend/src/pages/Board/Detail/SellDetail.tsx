@@ -2,7 +2,7 @@ import { Box, Button, Typography, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function RentalDetail() {
+export default function SellDetail() {
   const navigate = useNavigate();
   const { id } = useParams(); // URL에서 게시글 ID 가져오기
   const [post, setPost] = useState(null);
@@ -20,7 +20,7 @@ export default function RentalDetail() {
     return (
       <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3, textAlign: "center" }}>
         <Typography variant="h5">게시글을 찾을 수 없습니다.</Typography>
-        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate("/sell-inquiry")}>
+        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate("/rental-inquiry")}>
           목록으로 돌아가기
         </Button>
       </Box>
@@ -39,7 +39,7 @@ export default function RentalDetail() {
     sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
 
     alert("게시글이 삭제되었습니다.");
-    navigate("/sell-inquiry");
+    navigate("/rental-inquiry");
   };
 
   return (
@@ -70,13 +70,7 @@ export default function RentalDetail() {
         </Box>
       )}
 
-      {post.rental && (
-        <Box sx={{ backgroundColor: "#F8F8F8", padding: 2, borderRadius: 2, mb: 2 }}>
-          <Typography variant="body1">📍 대여 지점: {post.rental.rentalLocation}</Typography>
-          <Typography variant="body1">📅 대여 날짜: {post.rental.startDate ? new Date(post.rental.startDate).toLocaleDateString() : "-"}</Typography>
-          <Typography variant="body1">⏰ 대여 시간: {post.rental.startTime ? new Date(post.rental.startTime).toLocaleTimeString() : "-"}</Typography>
-        </Box>
-      )}
+    
 
       <Button variant="outlined" color="error" sx={{ mt: 2 }} onClick={handleDelete}>
         삭제하기

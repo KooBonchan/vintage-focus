@@ -1,4 +1,3 @@
-import { authConfig } from "@/types/auth";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -43,8 +42,6 @@ const Callback = () => {
             },
           }
         );
-
-
 
         const tokens = response.data;
         console.log('Tokens received:', tokens);

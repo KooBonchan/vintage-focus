@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS `member` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `oauth_provider` VARCHAR(50) NOT NULL,
     `oauth_id` VARCHAR(255) NOT NULL,
-    `email` VARCHAR(255) NOT NULL,
-    `username` VARCHAR(100) NULL,
+    `username` VARCHAR(255) NOT NULL,
+    `profile_image` VARCHAR(511) NULL,
     `phone` VARCHAR(20) NULL,
     `address` VARCHAR(255) NULL,
     `detail_address` VARCHAR(255) NULL,
@@ -175,6 +175,14 @@ CREATE TABLE IF NOT EXISTS `rental_cart` (
   `price` int NULL,
   `subtotal` int NULL
 );
+
+CREATE TABLE IF NOT EXISTS `refresh_token` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `token` varchar(255) NOT NULL,
+  `member_id` BIGINT NOT NULL,
+  `issued_at` Timestamp NULL,
+  `expires_at` Timestamp NULL,
+)
 
 
 ALTER TABLE `rental` ADD CONSTRAINT `PK_RENTAL` PRIMARY KEY (`id`);

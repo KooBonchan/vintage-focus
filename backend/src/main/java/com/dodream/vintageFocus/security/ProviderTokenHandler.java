@@ -1,6 +1,10 @@
 package com.dodream.vintageFocus.security;
 
 import com.dodream.vintageFocus.config.OAuth2Config;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -8,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.Map;
 
 @Service
@@ -51,18 +56,33 @@ public class ProviderTokenHandler {
   }
 
   public Mono<UserInfo> extractUserInfo(String provider, TokenResponse tokenResponse) {
-    OAuth2Config.Provider providerConfig = config.getProvider(provider);
     if(provider.equals("google")) return decodeGoogleIdToken(tokenResponse.id_token());
-    return fetchUserInfo(tokenResponse.access_token(), provider);
+    return fetchUserInfo(provider, tokenResponse.access_token());
   }
 
   private Mono<UserInfo> decodeGoogleIdToken(String idToken){
-    return Mono.just(new UserInfo("google", "12345", "IAM", "about:blank"));
+    return Mono.fromCallable(() -> {
+      GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+        .setAudience(Collections.singletonList(config.getProvider("google").clientId()))
+        .build();
+      GoogleIdToken googleIdToken = verifier.verify(idToken);
+      if(googleIdToken == null) {
+        throw new IllegalArgumentException("Invalid Google ID Token");
+      }
+
+      GoogleIdToken.Payload payload = googleIdToken.getPayload();
+
+      String userId = payload.getSubject();
+      String username = (String) payload.get("name");
+      String profilePicture = (String) payload.get("picture");
+
+      return new UserInfo("google", userId, username, profilePicture);
+    }).doOnError(e -> log.error("Error decoding Google ID token", e))
+      .onErrorResume(IllegalArgumentException.class, e -> Mono.empty());
   }
 
-  private Mono<UserInfo> fetchUserInfo(String accessToken, String provider){
+  private Mono<UserInfo> fetchUserInfo(String provider, String accessToken){
     if(provider.equals("google")) return Mono.empty();
-    log.warn(accessToken);
     OAuth2Config.Provider providerConfig = config.getProvider(provider);
     if(providerConfig == null) return Mono.empty();
     OAuth2Config.Provider.UserInfo infoConfig = providerConfig.userInfo();
@@ -73,10 +93,29 @@ public class ProviderTokenHandler {
       .bodyToMono(Map.class)
       .map(response -> new UserInfo(provider,
         response.get("id").toString(),
-        (String) response.get(infoConfig.columnUsername()),
-        (String) response.get(infoConfig.columnProfile())
+        extractNestedField(response, infoConfig.columnUsername()),
+        extractNestedField(response, infoConfig.columnProfile())
       ))
-      .doOnSuccess(userInfo -> log.info("{}: {}",provider, userInfo));
+      .doOnSuccess(userInfo -> log.warn("{}: {}",provider, userInfo));
   }
 
+  private String extractNestedField(Map<String, Object> response, String fieldPath) {
+    if (fieldPath == null || fieldPath.isEmpty()) {
+      return null;
+    }
+
+    String[] parts = fieldPath.split("\\.");
+    Object current = response;
+    for (String part : parts) {
+      if (current instanceof Map) {
+        current = ((Map<?, ?>) current).get(part);
+        if (current == null) {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+    return current != null ? current.toString() : null;
+  }
 }

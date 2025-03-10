@@ -25,6 +25,7 @@ import BuyDetail from './pages/Board/Detail/BuyDetail';
 import SellDetail from './pages/Board/Detail/SellDetail';
 import RentalDetail from './pages/Board/Detail/RentalDetail';
 
+import '@/utils/axiosConfig';
 
 
 const baseTheme = createTheme({

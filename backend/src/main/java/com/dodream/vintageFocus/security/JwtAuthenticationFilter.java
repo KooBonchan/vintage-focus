@@ -4,6 +4,7 @@ import com.dodream.vintageFocus.JwtAuthenticationToken;
 import com.dodream.vintageFocus.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpCookie;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -14,7 +15,6 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter implements WebFilter {
-  private static final String BEARER_PREFIX = "Bearer ";
   @Autowired
   private JwtUtil jwtUtil;
 
@@ -46,10 +46,8 @@ public class JwtAuthenticationFilter implements WebFilter {
   }
 
   private String getTokenFromRequest(ServerWebExchange exchange) {
-    String bearerToken = exchange.getRequest().getHeaders().getFirst("Authorization");
-    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-      return bearerToken.substring(7); // Remove "Bearer " prefix
-    }
-    return null;
+    HttpCookie cookie = exchange.getRequest().getCookies().getFirst("accessToken");
+    if(cookie == null) return null;
+    return cookie.getValue();
   }
 }

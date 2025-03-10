@@ -42,7 +42,7 @@ public class AuthService {
   }
 
 
-  public Mono<MemberDTO> appendRefreshToken(MemberDTO memberDTO) {
+  public Mono<String> generateRefreshToken(MemberDTO memberDTO) {
     return Mono.fromCallable(() -> {
       Instant now = Instant.now();
       Instant expiration = now.plusSeconds(604800); // 7 days
@@ -55,10 +55,14 @@ public class AuthService {
       refreshToken.setExpiresAt(expiration);
       return refreshToken;
     }).flatMap(refreshTokenRepository::save)
-      .map(refreshToken -> {
-        memberDTO.setRefreshToken(refreshToken.getToken());
-        return memberDTO;
-      });
+      .map(RefreshToken::getToken);
+  }
+
+  public Mono<MemberDTO> validateRefreshToken(String refreshToken){
+    return refreshTokenRepository.findByToken(refreshToken)
+      .map(RefreshToken::getId)
+      .flatMap(memberRepository::findById)
+      .map(memberMapper::toMemberDTO);
   }
 
 }

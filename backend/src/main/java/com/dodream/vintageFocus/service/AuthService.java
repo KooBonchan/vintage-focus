@@ -1,5 +1,6 @@
 package com.dodream.vintageFocus.service;
 
+import com.dodream.vintageFocus.JwtAuthenticationToken;
 import com.dodream.vintageFocus.dto.MemberDTO;
 import com.dodream.vintageFocus.mapper.MemberMapper;
 import com.dodream.vintageFocus.repository.MemberRepository;
@@ -38,6 +39,27 @@ public class AuthService {
       .map(memberMapper::toMemberDTO)
       .doOnSuccess(memberDTO -> log.info("Extracted user info for provider {}: {}", provider, memberDTO))
       .doOnError(e -> log.error("Error extracting user info for provider {}: {}", provider, e.getMessage()))
+      .onErrorResume(e -> Mono.empty());
+  }
+  public Mono<MemberDTO> findMember(JwtAuthenticationToken token){
+    return findMember((String)token.getDetails(), (String)token.getPrincipal());
+  }
+
+
+  public Mono<MemberDTO> updateMember(JwtAuthenticationToken token, MemberDTO memberDTO){
+    return memberRepository.findByOauthProviderAndOauthId((String)token.getDetails(), (String)token.getPrincipal())
+      .map(member -> {
+        member.setPhone(memberDTO.getPhone());
+        member.setAddress(memberDTO.getAddress());
+        member.setDetailAddress(memberDTO.getDetailAddress());
+        member.setZipcode(memberDTO.getZipcode());
+        member.setUpdatedAt(Instant.now());
+        return member;
+      })
+      .flatMap(memberRepository::save)
+      .map(memberMapper::toMemberDTO)
+      .doOnSuccess(_memberDTO -> log.info("Saved memberDTO {}: {}", memberDTO, _memberDTO))
+      .doOnError(e -> log.error("Error saving member {}: {}", memberDTO, e.getMessage()))
       .onErrorResume(e -> Mono.empty());
   }
 

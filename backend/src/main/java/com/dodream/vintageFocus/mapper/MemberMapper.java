@@ -28,6 +28,21 @@ public class MemberMapper {
       .build();
   }
 
+  public Member toMember(MemberDTO memberDTO){
+    return Member.builder()
+      .id(memberDTO.getId())
+      .oauthProvider(memberDTO.getOauthProvider())
+      .oauthId(memberDTO.getOauthId())
+      .username(memberDTO.getUsername())
+      .profileImage(memberDTO.getProfileImage())
+      .phone(memberDTO.getPhone())
+      .address(memberDTO.getAddress())
+      .detailAddress(memberDTO.getDetailAddress())
+      .zipcode(memberDTO.getZipcode())
+      .role(memberDTO.getRole())
+      .build();
+  }
+
   public MemberDTO toMemberDTO(Member member) {
     return MemberDTO.builder()
       .id(member.getId())
@@ -40,7 +55,7 @@ public class MemberMapper {
       .detailAddress(member.getDetailAddress())
       .zipcode(member.getZipcode())
       .isRegistered(isRegistered(member)) // Determine registration status
-       .role(member.getRole()) // Uncomment if role is needed
+      .role(member.getRole()) // Uncomment if role is needed
       .build();
   }
 

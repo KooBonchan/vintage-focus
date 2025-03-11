@@ -1,6 +1,6 @@
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Typography } from '@mui/material';
+import { Avatar, Tooltip, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -15,6 +15,8 @@ import * as React from 'react';
 import { NavLink } from 'react-router-dom';  // 수정: react-router-dom 사용
 import ColorModeIconDropdown from '../components/ColorModeIconDropdown';
 import Logo from '../components/Logo';
+import useAuthStore from '@/stores/authStore';
+import { LogoutOutlined } from '@mui/icons-material';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -44,6 +46,8 @@ const routes: RouteMetadata[] = [
 ];
 
 export default function HeaderBar() {
+  const {user, clearAuth} = useAuthStore();
+
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -78,11 +82,26 @@ export default function HeaderBar() {
           </Box>
           
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
-            <NavLink to="/signin">
+            {user?
+            ( <>
+              <Avatar
+                  alt='profile image'
+                  src={user.profileImage}
+                  sizes='25px'
+                >
+              </Avatar>
+              <IconButton aria-label="logout" onClick={clearAuth}>
+                <LogoutOutlined />
+              </IconButton>
+              </>
+              
+            )
+            :
+            (<NavLink to="/signin">
               <Button color="primary" variant="text" size="small">
                 Sign in
               </Button>
-            </NavLink>
+            </NavLink>)}
             <ColorModeIconDropdown />
           </Box>
           {/* md size end */}
@@ -117,13 +136,38 @@ export default function HeaderBar() {
                 ))}
                 
                 <Divider sx={{ my: 3 }} />
-                <NavLink to="/signin">
-                  <MenuItem>
-                    <Button color="primary" variant="outlined" fullWidth>
-                      Sign in
-                    </Button>
-                  </MenuItem>
-                </NavLink>
+                {
+                  user?
+                  (
+                    <Box display='flex' justifyContent='space-between' >
+                      <Box sx={{display:"flex", alignItems:'center',gap:1}}>
+                        <Avatar
+                          alt='profile image'
+                          src={user.profileImage}
+                          sizes='25px'
+                        >
+                        </Avatar>
+                        <Typography>
+                          {user.username}
+                        </Typography>
+                      </Box>
+                      <Button variant="text" startIcon={<LogoutOutlined />} onClick={clearAuth}>
+                        로그아웃
+                      </Button>
+                    </Box>
+                  )
+                  :
+                  (
+                    <NavLink to="/signin">
+                      <MenuItem>
+                        <Button color="primary" variant="outlined" fullWidth>
+                          Sign in
+                        </Button>
+                      </MenuItem>
+                    </NavLink>  
+                  )
+                }
+                
               </Box>
             </Drawer>
           </Box>

@@ -14,7 +14,6 @@ const defaultProduct:ProductResponse = {
   sellingPrice: 10000,
   company: "Sample Manufacturer",
   condition: "MINT",
-  
 };
 
 const meta = {
@@ -28,10 +27,6 @@ const meta = {
     product: defaultProduct,
     width: 250,
     height: 360,
-    condition: ,
-  },
-  argTypes: {
-    condition: ,
   },
   decorators: [
     (Story) => (
@@ -63,16 +58,15 @@ export const Default: Story = {
 export const SmallCard: Story = {
   args: {
     product: {
-      image: "https://placehold.co/150x150",
+      productImages: ["https://placehold.co/150x150"],
       productName: "Small Product",
-      sellingPrice: "5000",
-      manufacturer: "Small Manufacturer",
-      condition: "2025",
-      id: "2",
+      sellingPrice: 5000,
+      condition: "MINT",
+      code: 'small',
+      id: 2,
     },
     width: 200,
     height: 310,
-    Link: "https://example.com/small-inquiry", // 다른 문의하기 링크 설정
   },
   play: async ({ canvasElement }) => {
     console.log("Navigating to: /product/2");
@@ -83,16 +77,15 @@ export const SmallCard: Story = {
 export const LargeCard: Story = {
   args: {
     product: {
-      image: "https://placehold.co/250x250",
-      productName: "Large Product",
-      sellingPrice: "15000",
-      manufacturer: "Large Manufacturer",
-      condition: "2025",
-      id: "3",
+      productImages: ["https://placehold.co/150x150"],
+      productName: "Small Product",
+      sellingPrice: 5000,
+      condition: "MINT",
+      code: 'large',
+      id: 2,
     },
     width: 300,
     height: 410,
-    Link: "https://example.com/large-inquiry", // 또 다른 문의하기 링크 설정
   },
   play: async ({ canvasElement }) => {
     console.log("Navigating to: /product/3");

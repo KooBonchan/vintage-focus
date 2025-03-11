@@ -25,6 +25,7 @@ const meta: Meta<typeof Write> = {
     content: { control: "text", description: "게시글 내용을 설정할 수 있습니다." },
     isPublic: { control: "boolean", description: "게시글 공개 여부를 설정할 수 있습니다." },
     password: { control: "text", description: "비공개 설정 시 필요한 비밀번호를 설정할 수 있습니다." },
+    initialImage: { control: 'text', description: '초기 이미지 URL을 설정할 수 있습니다.' },
   },
   decorators: [
     (Story) => (
@@ -87,6 +88,7 @@ export const WithImage: Story = {
     backgroundColor: "#F8F8F8",
     textColor: "text.primary",
     link: "/rental-inquiry",
+    initialImage: "/image/imsi.jpg", // 예시 이미지 URL 추가
   },
   render: (args) => (
     <Write {...args} />

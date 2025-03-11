@@ -124,12 +124,32 @@ export default function Cart() {
         </Typography>
       </Box>
 
+
+    {/* ✅ 장바구니 삭제 버튼 (왼쪽 하단) */}
+    <Box sx={{ display: "flex", justifyContent: "flex-start", mt: 2 }}>
+        <Button variant="text" color="secondary" onClick={() => {
+          const updatedCart = cartItems.filter((item) => !selectedItems.includes(item.id));
+          setCartItems(updatedCart);
+          setSelectedItems([]); // 선택 해제
+        }} disabled={selectedItems.length === 0}>
+          선택 상품 삭제
+        </Button>
+
+        <Button className="cart-delete-button" variant="text" color="error" onClick={() => {
+          setCartItems([]);
+          setSelectedItems([]); // 선택 해제
+        }}>
+          전체 삭제
+        </Button>
+      </Box>
+
+
       {/* 버튼을 오른쪽 하단에 배치 */}
-      <Box className="cart-buttons-container">
-        <Button className="cart-button" variant="text" color="primary" onClick={() => handleOrder("selected")}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+        <Button variant="text" color="primary" onClick={() => handleOrder("selected")} sx={{ mr: 2 }}>
           선택 상품 주문
         </Button>
-        <Button className="cart-button" variant="text" color="primary" onClick={() => handleOrder("all")}>
+        <Button variant="text" color="primary" onClick={() => handleOrder("all")}>
           전체 상품 주문
         </Button>
       </Box>

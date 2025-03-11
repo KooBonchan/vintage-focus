@@ -49,10 +49,14 @@ dependencies {
 	implementation("io.asyncer:r2dbc-mysql:1.3.2")
 
 //	Spring Security
+	// google
+	implementation("com.google.api-client:google-api-client:2.7.2")
+	implementation("com.google.auth:google-auth-library-oauth2-http:1.33.1")
+
 	implementation("org.springframework.boot:spring-boot-configuration-processor:3.4.2")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 //	implementation("org.springframework.security:spring-security-oauth2-client:6.4.3")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.4.3")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.4.2")
 
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")

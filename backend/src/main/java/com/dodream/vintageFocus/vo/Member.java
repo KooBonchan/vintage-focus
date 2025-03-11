@@ -20,8 +20,8 @@ public class Member {
 
   private String oauthProvider;
   private String oauthId;
-  private String email;
   private String username;
+  private String profileImage;
 
   private String phone;
   private String address;

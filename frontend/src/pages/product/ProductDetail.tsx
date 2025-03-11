@@ -1,10 +1,12 @@
-import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List } from "@mui/material";
+import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { ChatBubbleOutline, FavoriteBorder, Add, MoreVert } from "@mui/icons-material";
+
 import { useParams, useNavigate } from "react-router-dom"; // useNavigate 추가
 
 export function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 추가
+
 
   return (
     <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 0" }}>
@@ -26,6 +28,8 @@ export function ProductDetail() {
             {/* 이미지가 들어갈 자리 */}
           </Box>
         </Grid>
+
+        
 
         {/* 상품 정보 */}
         <Grid item xs={12} md={6}>
@@ -114,15 +118,34 @@ export function ProductDetail() {
           </Grid>
 
           <Divider sx={{ my: 2 }} />
+          
 
           {/* 버튼 영역 */}
           <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
-            <Button variant="text" sx={{ borderRadius: 2, bgcolor: "#ccc", color: "black", px: 4 }}>
-              구매하기
+          <Button
+            variant="text"
+            sx={{ borderRadius: 2, bgcolor: "#ccc", color: "black", px: 4 }}
+            onClick={() => navigate("/order/delivery", { state: { orderItems: [product] } })} // ✅ 상품 데이터를 그대로 전달
+          >
+            구매하기
+          </Button>
+            
+          <Button
+            variant="text"
+            sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
+            onClick={handleAddToCart} 
+          >
+            장바구니
+          </Button>
+
+            <Button
+              variant="text"
+              sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
+              onClick={() => navigate("/rental-inquiry/write")} // 버튼 클릭 시 이동
+            >
+              대여문의
             </Button>
-            <Button variant="text" sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}>
-              장바구니
-            </Button>
+
             {/* "제품 대여하기" 버튼 클릭 시 rental-inquiry 페이지로 이동 */}
             <Button
               variant="text"
@@ -131,8 +154,22 @@ export function ProductDetail() {
             >
               제품 대여하기
             </Button>
+
           </Box>
         </Grid>
+
+  {/* 장바구니 모달 */}
+  <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>장바구니에 상품이 담겼습니다.</DialogTitle>
+        <DialogContent>장바구니로 이동하시겠습니까?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>계속 쇼핑하기</Button>
+          <Button onClick={() => navigate("/order/cart")} color="primary">
+            장바구니 이동
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       </Grid>
 
       {/* 상세 정보 영역 */}

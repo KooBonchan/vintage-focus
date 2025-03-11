@@ -1,62 +1,96 @@
 package com.dodream.vintageFocus.controller;
 
-import com.dodream.vintageFocus.config.OAuth2Config;
+import com.dodream.vintageFocus.JwtAuthenticationToken;
+import com.dodream.vintageFocus.dto.MemberDTO;
+import com.dodream.vintageFocus.security.ProviderTokenHandler;
 import com.dodream.vintageFocus.security.TokenRequest;
-import com.dodream.vintageFocus.security.TokenResponse;
+import com.dodream.vintageFocus.service.AuthService;
+import com.dodream.vintageFocus.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.*;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @RestController
 @RequestMapping("api/auth")
+@RequiredArgsConstructor
 public class AuthController {
-  private final WebClient webClient;
-  private final OAuth2Config config;
+  private final ProviderTokenHandler providerTokenHandler;
+  private final AuthService authService;
+  private final JwtUtil jwtUtil;
 
-  public AuthController(WebClient.Builder webClientBuilder, OAuth2Config config) {
-    this.webClient = webClientBuilder.build();
-    this.config = config;
-  }
-
-  @PostMapping("/exchange")
-  public Mono<TokenResponse> exchangeCodeForTokens(@RequestBody TokenRequest request) {
-
+  @PostMapping("signin")
+  public Mono<ResponseEntity<MemberDTO>> signIn(@RequestBody TokenRequest request) {
     String provider = request.provider();
-    OAuth2Config.Provider providerConfig = config.getProvider(provider);
 
-    if(providerConfig == null){
-      return Mono.error(new IllegalArgumentException("Unknown provider: " + provider));
-    }
-
-    String requestBody = new StringBuilder()
-      .append("client_id=").append(providerConfig.clientId())
-      .append("&client_secret=").append(providerConfig.clientSecret())
-      .append("&code=").append(request.code())
-      .append("&redirect_uri=").append(config.redirectUri())
-      .append("&code_verifier=").append(request.codeVerifier())
-      .append("&grant_type=authorization_code")
-      .toString();
-
-    return webClient.post()
-      .uri(providerConfig.tokenUrl())
-      .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-      .header("Accept", "application/json;charset=utf-8")
-      .bodyValue(requestBody)
-      .retrieve()
-      .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
-        clientResponse.bodyToMono(String.class)
-          .flatMap(errorBody -> Mono.error(new RuntimeException("Token exchange failed for " + provider + ": " + errorBody))))
-      .bodyToMono(TokenResponse.class);
+    return providerTokenHandler.exchange(request)
+      .flatMap(response -> providerTokenHandler.extractUserInfo(provider, response))
+      .flatMap(authService::findMemberOrSave)
+      .flatMap(memberDTO ->
+        jwtUtil.generateAccessToken(memberDTO)
+          .map(this::publishAccessTokenCookie)
+          .zipWith(
+            authService.generateRefreshToken(memberDTO)
+              .map(refreshToken -> ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/api")
+                .maxAge(604800)
+                .build()
+                .toString()
+              )
+          )
+          .map(cookies -> ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, cookies.getT1())
+            .header(HttpHeaders.SET_COOKIE, cookies.getT2())
+            .body(memberDTO))
+      )
+      .onErrorResume(Mono::error);
   }
 
+  @GetMapping("user")
+  public Mono<MemberDTO> getUserDetails() {
+    return ReactiveSecurityContextHolder.getContext()
+      .map(SecurityContext::getAuthentication)
+      .flatMap(authentication -> {
+        JwtAuthenticationToken authToken = (JwtAuthenticationToken) authentication;
+
+        return authService.findMember((String) authToken.getDetails(), (String) authToken.getPrincipal());
+      });
+  }
+
+  @PostMapping("refresh")
+  public Mono<ResponseEntity<Void>> refreshToken(ServerWebExchange exchange){
+    HttpCookie cookie = exchange.getRequest().getCookies().getFirst("refreshToken");
+    if(cookie == null) return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+
+    String token = cookie.getValue();
+    return authService.validateRefreshToken(token)
+      .flatMap(memberDTO -> jwtUtil.generateAccessToken(memberDTO))
+      .map(this::publishAccessTokenCookie)
+      .flatMap(_cookie -> {return ResponseEntity.ok()
+        .header(HttpHeaders.SET_COOKIE, _cookie)
+        .build();}
+      )
+      .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
+  }
+
+  private String publishAccessTokenCookie(String accessToken){
+    return ResponseCookie.from("accessToken", accessToken)
+      .httpOnly(true)
+      .secure(true)
+      .sameSite("None")
+      .path("/api")
+      .maxAge(3600)
+      .build()
+      .toString();
+  }
 }
 
 

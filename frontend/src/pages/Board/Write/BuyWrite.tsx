@@ -9,18 +9,25 @@ export default function BuyWrite() {
   // 게시글 데이터 상태 관리
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [isPublic, setIsPublic] = useState(true); // 공개/비공개 상태
+  const [isPublic, setIsPublic] = useState(true); // 공개/비공개 상태 (기본값: 공개, 스위치 비활성화)
   const [password, setPassword] = useState(""); // 비밀번호 (비공개 시 필수)
+
+  // 스위치 상태 변경 핸들러 (논리 반대로 설정)
+  const handleSwitchChange = (e) => {
+    const newIsPublic = !e.target.checked; // 스위치가 체크되면 isPublic을 false로 설정
+    console.log("isPublic changed to:", newIsPublic); // 디버깅 로그
+    setIsPublic(newIsPublic);
+  };
 
   // 게시글 등록 함수
   const handleSubmit = () => {
     if (!title.trim() || !content.trim()) {
-      alert("제목과 내용을 입력해주세요!");
+      alert("제목과 내용을 모두 입력해주세요!");
       return;
     }
 
     if (!isPublic && password.length !== 4) {
-      alert("비밀번호는 4자리 숫자로 입력해주세요.");
+      alert("비밀번호는 4자리 숫자로 입력해주세요!");
       return;
     }
 
@@ -34,7 +41,7 @@ export default function BuyWrite() {
       content,
       date: formattedDate,
       views: 0,
-      author: { name: "판매자", avatar: "/static/images/avatar/default.png" },
+      author: { name: "구매희망자", avatar: "/static/images/avatar/default.png" },
       tag: "구매문의",
       locked: !isPublic, // locked는 isPublic의 반대값
       password: !isPublic ? password : undefined, // 비공개일 때만 비밀번호 저장
@@ -43,7 +50,7 @@ export default function BuyWrite() {
     const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
 
-    alert("게시글이 등록되었습니다.");
+    alert("게시글이 성공적으로 등록되었습니다.");
     navigate("/buy-inquiry");
   };
 
@@ -105,15 +112,13 @@ export default function BuyWrite() {
 
       {/* 게시물 공개 설정 */}
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 3 }}>
-        <Typography variant="body1" sx={{ mb: 1 }}>
-          공개/비공개
-        </Typography>
+        <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
         <FormControlLabel
-          control={<Switch checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />}
+          control={<Switch checked={!isPublic} onChange={handleSwitchChange} />}
           label=""
           sx={{ m: 0 }}
         />
-        {!isPublic && ( // 비공개일 때만 비밀번호 입력 필드 표시
+        {!isPublic && (
           <TextField
             label="비밀번호 (4자리 숫자)"
             type="password"
@@ -122,8 +127,12 @@ export default function BuyWrite() {
             value={password}
             onChange={(e) => {
               const input = e.target.value.replace(/\D/g, "");
-              if (e.target.value !== input) alert("숫자만 입력 가능합니다.");
-              if (input.length <= 4) setPassword(input);
+              if (e.target.value !== input) {
+                alert("비밀번호는 숫자만 입력 가능합니다!");
+              }
+              if (input.length <= 4) {
+                setPassword(input);
+              }
             }}
             inputProps={{ maxLength: 4, pattern: "[0-9]*" }}
             sx={{ mt: 1, maxWidth: "300px", mb: 2 }}

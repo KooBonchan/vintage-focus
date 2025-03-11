@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Container,
@@ -23,16 +23,34 @@ interface ProductDetailProps {
     price: number;
     quantity: number;
     shipping: number;
-    image: string;
+    imageSrc: string; // Storybook과 일치하도록 imageSrc로 변경
   };
+  title?: string;
+  description?: string;
   buttonBackgroundColor?: string;
+  buyLink?: string;
+  cartLink?: string;
+  inquiryLink?: string;
+  isAdmin?: boolean; // 관리자 모드 여부를 확인하는 prop 추가
 }
 
-export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailProps) {
+export function ProductDetail({
+  product,
+  title,
+  description,
+  buttonBackgroundColor,
+  buyLink,
+  cartLink,
+  inquiryLink,
+  isAdmin = false,
+}: ProductDetailProps) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(product.quantity || 1);
+  const [imageFile, setImageFile] = useState<File | null>(null); // 업로드된 이미지 파일 상태
+  const [imagePreview, setImagePreview] = useState<string>(product.imageSrc); // 이미지 미리보기 URL
 
+  // 장바구니 추가
   const handleAddToCart = () => {
     try {
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -44,20 +62,63 @@ export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailP
     }
   };
 
+  // 수량 증가
   const handleIncrement = () => {
     setQuantity((prev) => prev + 1);
   };
 
+  // 수량 감소
   const handleDecrement = () => {
     if (quantity > 1) setQuantity((prev) => prev - 1);
   };
 
+  // 수량 직접 입력
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     if (value >= 1) {
       setQuantity(value);
     }
   };
+
+  // 이미지 업로드 핸들러
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
+  };
+
+  // 이미지 저장 핸들러 (서버로 업로드 로직 추가 필요)
+  const handleSaveImage = () => {
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      console.log("이미지 업로드:", imageFile);
+
+      // 서버로 업로드 로직 (예시)
+      // fetch('/api/upload', { method: 'POST', body: formData })
+      //   .then(response => response.json())
+      //   .then(data => {
+      //     setImagePreview(data.imageUrl); // 서버에서 반환된 URL로 업데이트
+      //     alert("이미지가 업로드되었습니다!");
+      //   })
+      //   .catch(error => console.error("이미지 업로드 오류:", error));
+
+      alert("이미지가 저장되었습니다! (서버 업로드 로직은 구현 필요)");
+      setImageFile(null); // 업로드 후 상태 초기화
+    }
+  };
+
+  // 컴포넌트 언마운트 시 미리보기 URL 해제
+  useEffect(() => {
+    return () => {
+      if (imagePreview && imagePreview !== product.imageSrc) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview, product.imageSrc]);
 
   const buttonStyle = {
     borderRadius: "3em",
@@ -66,7 +127,7 @@ export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailP
     fontSize: "12px",
     fontWeight: 700,
     border: "1px solid #445366",
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: buttonBackgroundColor || "rgba(255, 255, 255, 0.7)",
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.7)",
       color: "#aa1f3e",
@@ -91,7 +152,7 @@ export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailP
             }}
           >
             <img
-              src={product.image || "/image/imsi.jpg"}
+              src={imagePreview || "/image/imsi.jpg"}
               alt={product.name}
               style={{
                 width: "100%",
@@ -104,17 +165,34 @@ export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailP
               }}
             />
           </Box>
+
+          {/* 관리자 모드에서 이미지 업로드 UI */}
+          {isAdmin && (
+            <Box sx={{ mt: 2, textAlign: "center" }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                style={{ marginBottom: "10px" }}
+              />
+              {imageFile && (
+                <Button variant="contained" onClick={handleSaveImage} sx={{ ml: 2 }}>
+                  이미지 저장
+                </Button>
+              )}
+            </Box>
+          )}
         </Grid>
 
         <Grid item xs={12} md={6}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Typography variant="h5" fontWeight="bold" sx={{ fontSize: "20px" }}>
-              {product.name}
+              {title || product.name}
             </Typography>
             <Box>
               <IconButton
                 sx={{ padding: 0, margin: "0 4px", border: "none", "&:hover": { backgroundColor: "#e0e0e0" } }}
-                onClick={() => navigate(`/inquiry/${product.id}`)}
+                onClick={() => inquiryLink && navigate(inquiryLink)}
               >
                 <ChatBubbleOutline />
               </IconButton>
@@ -140,13 +218,12 @@ export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailP
               상품 설명
             </Typography>
             <Typography sx={{ color: "gray", fontSize: "12px", mt: 1 }}>
-              여기서 상품 설명을 짧게 추가할 수 있습니다.
+              {description || "여기서 상품 설명을 짧게 추가할 수 있습니다."}
             </Typography>
           </Box>
 
           <Divider sx={{ my: 0.75 }} />
 
-          {/* 가격 부분을 오른쪽으로 정렬 */}
           <Box sx={{ mt: 2, textAlign: "right" }}>
             <Typography variant="h5" fontWeight="bold" sx={{ color: "#027af2" }}>
               {product.price.toLocaleString()}원
@@ -155,70 +232,78 @@ export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailP
 
           <Divider sx={{ my: 0.75 }} />
 
-<Grid container spacing={2} justifyContent="center">
-  <Grid item xs={4} sx={{ textAlign: "center" }}>
-    <Typography variant="body1" sx={{ fontSize: "14px", color: "black" }}>
-      가격
-    </Typography>
-    <Typography variant="body1" sx={{ fontSize: "16px", color: "black" }}>
-      {product.price.toLocaleString()}원
-    </Typography>
-  </Grid>
-  <Grid item xs={4} sx={{ textAlign: "center" }}>
-    <Typography variant="body1" sx={{ fontSize: "14px", color: "black" }}>
-      수량
-    </Typography>
-    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1 }}>
-      <IconButton onClick={handleDecrement} sx={{ padding: "5px" }}>
-        <Typography variant="h6">-</Typography>
-      </IconButton>
-      <TextField
-        value={quantity}
-        onChange={handleQuantityChange}
-        type="number"
-        variant="outlined"
-        sx={{
-          width: "60px",
-          "& input": { 
-            fontSize: "14px", 
-            padding: "8px 0", 
-            textAlign: "center",
-          },
-          "& .MuiOutlinedInput-root": {
-            height: "36px",
-          },
-        }}
-        inputProps={{ min: 1 }}
-      />
-        <IconButton onClick={handleIncrement} sx={{ padding: "5px" }}>
-          <Typography variant="h6">+</Typography>
-        </IconButton>
-      </Box>
-    </Grid>
-    <Grid item xs={4} sx={{ textAlign: "center" }}>
-      <Typography variant="body1" sx={{ fontSize: "14px", color: "black" }}>
-        합계
-      </Typography>
-      <Typography variant="body1" sx={{ fontSize: "16px", color: "black" }}>
-        {(product.price * quantity).toLocaleString()}원
-      </Typography>
-    </Grid>
-  </Grid>
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={4} sx={{ textAlign: "center" }}>
+              <Typography variant="body1" sx={{ fontSize: "14px", color: "black" }}>
+                가격
+              </Typography>
+              <Typography variant="body1" sx={{ fontSize: "16px", color: "black" }}>
+                {product.price.toLocaleString()}원
+              </Typography>
+            </Grid>
+            <Grid item xs={4} sx={{ textAlign: "center" }}>
+              <Typography variant="body1" sx={{ fontSize: "14px", color: "black" }}>
+                수량
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1 }}>
+                <IconButton onClick={handleDecrement} sx={{ padding: "5px" }}>
+                  <Typography variant="h6">-</Typography>
+                </IconButton>
+                <TextField
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                  type="number"
+                  variant="outlined"
+                  sx={{
+                    width: "60px",
+                    "& input": {
+                      fontSize: "14px",
+                      padding: "8px 0",
+                      textAlign: "center",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      height: "36px",
+                    },
+                  }}
+                  inputProps={{ min: 1 }}
+                />
+                <IconButton onClick={handleIncrement} sx={{ padding: "5px" }}>
+                  <Typography variant="h6">+</Typography>
+                </IconButton>
+              </Box>
+            </Grid>
+            <Grid item xs={4} sx={{ textAlign: "center" }}>
+              <Typography variant="body1" sx={{ fontSize: "14px", color: "black" }}>
+                합계
+              </Typography>
+              <Typography variant="body1" sx={{ fontSize: "16px", color: "black" }}>
+                {(product.price * quantity).toLocaleString()}원
+              </Typography>
+            </Grid>
+          </Grid>
 
-  <Divider sx={{ my: 0.75 }} />
+          <Divider sx={{ my: 0.75 }} />
 
           <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
             <Button
               variant="text"
               sx={buttonStyle}
-              onClick={() => navigate("/order/delivery", { state: { orderItems: [{ ...product, quantity }] } })}
+              onClick={() => buyLink && navigate(buyLink)}
             >
               구매하기
             </Button>
-            <Button variant="text" sx={buttonStyle} onClick={handleAddToCart}>
+            <Button
+              variant="text"
+              sx={buttonStyle}
+              onClick={() => cartLink ? navigate(cartLink) : handleAddToCart()}
+            >
               장바구니
             </Button>
-            <Button variant="text" sx={buttonStyle} onClick={() => navigate("/rental-inquiry/write")}>
+            <Button
+              variant="text"
+              sx={buttonStyle}
+              onClick={() => inquiryLink && navigate(inquiryLink)}
+            >
               대여문의
             </Button>
           </Box>
@@ -232,33 +317,11 @@ export function ProductDetail({ product, buttonBackgroundColor }: ProductDetailP
           <Button onClick={() => setOpen(false)} sx={buttonStyle}>
             계속 쇼핑하기
           </Button>
-          <Button onClick={() => navigate("/order/cart")} sx={buttonStyle}>
+          <Button onClick={() => cartLink && navigate(cartLink)} sx={buttonStyle}>
             장바구니 이동
           </Button>
         </DialogActions>
       </Dialog>
-
-      <Box sx={{ pt: 15, pb: 7 }}>
-        <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
-          Product Details
-        </Typography>
-        <Divider />
-        <Box sx={{ width: "100%", height: 800, bgcolor: "#ddd", mt: 7, borderRadius: 2 }} />
-        <Divider sx={{ my: 3 }} />
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <Box sx={{ width: "100%", height: 150, bgcolor: "#ddd", borderRadius: 2, mt: 2 }} />
-          </Grid>
-          <Grid item xs={9}>
-            <Typography variant="h5" fontWeight="bold"></Typography>
-            <div style={{ marginTop: "20px" }}>
-              <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
-                상품이름과 설명
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
-      </Box>
     </Container>
   );
 }

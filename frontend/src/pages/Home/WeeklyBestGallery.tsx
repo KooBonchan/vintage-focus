@@ -3,7 +3,8 @@ import { useState } from "react";
 import Button from "../../components/CustomButton";
 import ProductCard from "../../components/ProductCard";
 
-const ITEMS_PER_PAGE = 16;
+// Change the ITEMS_PER_PAGE to 8 to display exactly 2 rows
+const ITEMS_PER_PAGE = 8;
 
 const sampleProducts = [
   { image: "https://placehold.co/250x250", name: "빈티지 카메라", price: "120,000", manufacturer: "제조사1", year: "2023", id: "1" },
@@ -38,7 +39,7 @@ const WeeklyBestContainer = (props: any) => {
         borderRadius: 2,
         flexDirection: "column",
         padding: 2,
-        marginTop: 20,
+        marginTop: 10,
       }}
     >
       {props.children}
@@ -76,7 +77,7 @@ const WeeklyBestGallery = () => {
 
       <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
         {currentPageProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid item xs={12} sm={6} md={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Box sx={{ display: 'inline-block' }}>
               <ProductCard product={product} />
             </Box>

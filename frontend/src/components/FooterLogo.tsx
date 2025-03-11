@@ -26,7 +26,7 @@ const FooterLogo = () => {
     <Wrapper>
       <Logo src={logoSrc} alt="Vintage Focus Logo" />
       <Typography variant="body2" color="text.secondary">
-        Your Perfect Shot Begins with Vintage.
+       "세월을 품은 카메라,새로운 순간을 담다."
       </Typography>
     </Wrapper>
   );

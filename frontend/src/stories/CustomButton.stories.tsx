@@ -10,7 +10,7 @@ const meta: Meta<typeof CustomButton> = {
       description: {
         component: `**ProductDetail**  
           ## 기본 사용 예시  
-          이 컴포넌트는 버튼 정보를 표시하며, 하단 size 부분에서 다른 사이즈와 색상의 버튼을 제공합니다.  `,
+          이 컴포넌트는 버튼 정보를 표시하며, 하단 size 부분에서 다른 사이즈와 버튼을 제공합니다.  `,
       },
     },
   },

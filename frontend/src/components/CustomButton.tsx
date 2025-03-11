@@ -22,13 +22,8 @@ const CustomButton = ({
   onClick,
   ...props
 }: CustomButtonProps) => {
-  // primary 상태에 따른 클래스 선택
   const mode = primary ? styles['storybook-button--primary'] : styles['storybook-button--secondary'];
-  
-  // 크기별 클래스 선택
   const sizeClass = styles[`storybook-button--${size}`];
-  
-  // 버튼 클래스 결합 (크기, 기본 스타일, primary/secondary)
   const buttonClass = [styles['storybook-button'], sizeClass, mode].filter(Boolean).join(' ');
 
   return (

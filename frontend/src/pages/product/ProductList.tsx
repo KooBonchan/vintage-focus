@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid, useTheme } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // 추가
@@ -27,6 +27,7 @@ const sampleProducts: Product[] = [
 ];
 
 function ProductList() {
+  const theme = useTheme();
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
@@ -36,10 +37,18 @@ function ProductList() {
 
   const totalPages = Math.ceil(sampleProducts.length / ITEMS_PER_PAGE);
 
+  const [filters, setFilters] = useState({
+    manufacturer: "",
+    year: "",
+    price: "",
+    sortBy: "",
+  });
+
   return (
     <>
       <Navbar />
-      <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "20px 0" }}>
+      <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "20px 0",
+        backgroundColor: theme.palette.background.default, }}>
 
         <Grid container spacing={3} justifyContent="center">
           {currentPageProducts.map((product) => (

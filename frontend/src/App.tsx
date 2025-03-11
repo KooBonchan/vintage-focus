@@ -24,6 +24,12 @@ import Callback from './pages/auth/SignIn/components/Callback';
 import BuyDetail from './pages/Board/Detail/BuyDetail';
 import SellDetail from './pages/Board/Detail/SellDetail';
 import RentalDetail from './pages/Board/Detail/RentalDetail';
+import Admin from './pages/Admin/Admin';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminProducts from './pages/Admin/AdminProducts';
+import AdminOrders from './pages/Admin/AdminOrders';
+import AdminDelivery from './pages/Admin/AdminDelivery';
+import AdminLayout from './pages/Admin/AdminLayout';
 
 
 
@@ -154,6 +160,17 @@ function Router(){
           <Route path="complete" element={<OrderCompletePage />} />
         </Route>
       </Route>
+
+          {/* 관리자 */}
+          <Route path="admin" element={<HeaderFooterLayout />}>
+          <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Admin />} />  {/* 기본 페이지 */}
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="delivery" element={<AdminDelivery />} />
+        </Route>
+        </Route>
     </Routes>
   );
 }

@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
+    "@mui/x-charts": "^7.27.1",
     "@mui/x-date-pickers": "^7.27.1",
     "@portone/browser-sdk": "^0.0.13",
     "@react-google-maps/api": "^2.20.6",

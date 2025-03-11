@@ -12,9 +12,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import * as React from 'react';
-import { NavLink } from 'react-router-dom';  // 수정: react-router-dom 사용
+import { NavLink, useNavigate } from 'react-router-dom';  // 수정: react-router-dom 사용
 import ColorModeIconDropdown from '../components/ColorModeIconDropdown';
 import Logo from '../components/Logo';
+
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -45,6 +46,7 @@ const routes: RouteMetadata[] = [
 
 export default function HeaderBar() {
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -76,13 +78,19 @@ export default function HeaderBar() {
               ))}
             </Box>
           </Box>
-          
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
             <NavLink to="/signin">
               <Button color="primary" variant="text" size="small">
                 Sign in
               </Button>
             </NavLink>
+
+            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1, alignItems: "center" }}>
+            {/* 관리자 페이지 */}
+            <Button color="secondary" size="small" onClick={() => navigate("/admin/dashboard")}>
+            ⚙️
+            </Button>
+          
             <ColorModeIconDropdown />
           </Box>
           {/* md size end */}
@@ -126,6 +134,7 @@ export default function HeaderBar() {
                 </NavLink>
               </Box>
             </Drawer>
+          </Box>
           </Box>
           {/* xs size end */}
         </StyledToolbar>

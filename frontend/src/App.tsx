@@ -6,7 +6,7 @@ import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import About from './pages/About';
-import { Register } from './pages/auth/Register';
+import Register from './pages/auth/Register';
 import BuyWrite from './pages/Board/Write/BuyWrite';
 import RentalWrite from './pages/Board/Write/RentalWrite';
 import SellWrite from './pages/Board/Write/SellWrite';
@@ -15,15 +15,15 @@ import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
 
-import NoticePage from './pages/Board/Notice/NoticePage';
-import NoticeDetail from './pages/Board/Detail/NoticeDetail';
-import DeliveryPage from './pages/order/delivery';
-import OrderCompletePage from './pages/order/complete';
 import SignIn from '@/pages/auth/SignIn';
 import Callback from './pages/auth/SignIn/components/Callback';
 import BuyDetail from './pages/Board/Detail/BuyDetail';
-import SellDetail from './pages/Board/Detail/SellDetail';
+import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 import RentalDetail from './pages/Board/Detail/RentalDetail';
+import SellDetail from './pages/Board/Detail/SellDetail';
+import NoticePage from './pages/Board/Notice/NoticePage';
+import OrderCompletePage from './pages/order/complete';
+import DeliveryPage from './pages/order/delivery';
 
 import '@/utils/axiosConfig';
 
@@ -108,6 +108,8 @@ function Router(){
     <Routes>
       <Route element={<AuthLayout />}>
         <Route path="signin" element={<SignIn />} />
+        <Route path="register" element={<Register />} />
+        <Route path="register-result" element={<Register />} />
         <Route path="callback" element={<Callback />} />
       </Route>
 
@@ -145,8 +147,9 @@ function Router(){
         <Route path="about" element={<About />} />
 
         <Route path="product">
-          <Route index element={<ProductList />} />
-          <Route path=":id" element={<ProductDetail />} />
+          <Route index element={<ProductList />} />  {/* /product */}
+          <Route path=":id" element={<ProductDetail />} />  {/* /product/:id */}
+          <Route path=":id/rental-write" element={<RentalWrite />} />  {/* /product/:id/rental-write */}
         </Route>
 
         <Route path="order">

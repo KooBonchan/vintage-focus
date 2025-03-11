@@ -48,21 +48,21 @@ export default function RentalWrite() {
     { name: "김포공항점", lat: 37.55868, lng: 126.79445 },
   ];
 
-// 수정된 defaultNoticeItems: 객체 배열로 정의
-const defaultNoticeItems = [
-  {
-    text: "대여 날짜와 시간,\n 반납 날짜와 시간을\n 선택해주세요.",
-    icon: <AccessTimeIcon sx={{ mr: 1, color: "#0288d1", fontSize: "30px" }} />, // 사이즈를 30px로 증가
-  },
-  {
-    text: "카메라 대여와 반납은\n 반드시 같은 지점에서 \n해 주셔야 합니다.",
-    icon: <ApartmentIcon sx={{ mr: 1, color: "#0288d1", fontSize: "30px" }} />, // 사이즈를 30px로 증가
-  },
-  {
-    text: "일반카메라용\n 메모리카드는 기본으로\n 제공되지 않습니다.",
-    icon: <SdCardIcon sx={{ mr: 1, color: "#0288d1", fontSize: "30px" }} />, // 사이즈를 30px로 증가
-  },
-];
+  // 수정된 defaultNoticeItems: #445366 컬러 적용
+  const defaultNoticeItems = [
+    {
+      text: "대여 날짜와 시간,\n 반납 날짜와 시간을\n 선택해주세요.",
+      icon: <AccessTimeIcon sx={{ mr: 1, color: "#445366", fontSize: "30px" }} />,
+    },
+    {
+      text: "카메라 대여와 반납은\n 반드시 같은 지점에서 \n해 주셔야 합니다.",
+      icon: <ApartmentIcon sx={{ mr: 1, color: "#445366", fontSize: "30px" }} />,
+    },
+    {
+      text: "일반카메라용\n 메모리카드는 기본으로\n 제공되지 않습니다.",
+      icon: <SdCardIcon sx={{ mr: 1, color: "#445366", fontSize: "30px" }} />,
+    },
+  ];
 
   const defaultNotice = defaultNoticeItems.map((item) => item.text).join("\n");
   const [content, setContent] = useState(defaultNotice);
@@ -164,61 +164,60 @@ const defaultNoticeItems = [
           대여 문의
         </Typography>
 
-        {/* 필독 사항 반응형 - 가로로 세 칸 배치 */}
-        <Box
-  sx={{
-    width: "100%",
-    p: { xs: 1.5, sm: 2 },
-    mb: 2,
-    borderRadius: "8px",
-    bgcolor: isPublic ? "#cad1d8" : "#f3f8fb", // 비공개일 때 하얀색, 공개일 때 기존 색상
-    // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-    boxSizing: "border-box",
-  }}
->
-  <Typography
-    variant="subtitle1"
-    sx={{
-      color: "#0288d1",
-      fontWeight: "bold",
-      mb: 1.5,
-      textAlign: "center",
-      fontSize: { xs: "16px", sm: "18px" },
-    }}
-  >
-    필독 사항
-  </Typography>
-  <Grid container spacing={2}>
-    {defaultNoticeItems.map((item, index) => (
-      <Grid item xs={12} sm={4} key={index}>
+        {/* 필독 사항 반응형 - #445366 컬러 적용 */}
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column", // 세로로 쌓이도록 설정
-            alignItems: "center", // 가운데 정렬
-            textAlign: "center", // 텍스트도 가운데 정렬
-            px: 1,
+            width: "100%",
+            p: { xs: 1.5, sm: 2 },
+            mb: 2,
+            borderRadius: "8px",
+            bgcolor: isPublic ? "#cad1d8" : "#f3f8fb",
+            boxSizing: "border-box",
           }}
         >
-          {item.icon}
           <Typography
-            variant="body1"
+            variant="subtitle1"
             sx={{
-              color: "#0288d1",
-              fontSize: { xs: "12px", sm: "14px", md: "16px" },
-              lineHeight: "1.6",
-              mt: 1, // 아이콘과 텍스트 사이 간격
-              wordBreak: "break-word",
-              whiteSpace: "pre-line", // 줄 바꿈 반영
+              color: "#445366", // 제목 색상 변경
+              fontWeight: "bold",
+              mb: 1.5,
+              textAlign: "center",
+              fontSize: { xs: "16px", sm: "18px" },
             }}
           >
-            {item.text}
+             필 독 사 항 
           </Typography>
+          <Grid container spacing={2}>
+            {defaultNoticeItems.map((item, index) => (
+              <Grid item xs={12} sm={4} key={index}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    px: 1,
+                  }}
+                >
+                  {item.icon}
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: "#445366", // 텍스트 색상 변경
+                      fontSize: { xs: "12px", sm: "14px", md: "16px" },
+                      lineHeight: "1.6",
+                      mt: 1,
+                      wordBreak: "break-word",
+                      whiteSpace: "pre-line",
+                    }}
+                  >
+                    {item.text}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
-      </Grid>
-    ))}
-  </Grid>
-</Box>
 
         <TextField
           label="제목"

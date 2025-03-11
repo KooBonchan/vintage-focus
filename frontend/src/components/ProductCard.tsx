@@ -1,9 +1,7 @@
-// ProductCard.tsx
 import React from 'react';
 import { Card, CardMedia, CardContent, Typography, Box, Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
-// 제품 정보 타입 정의
 type Product = {
   image: string;
   name: string;
@@ -13,7 +11,6 @@ type Product = {
   id?: string;
 };
 
-// ProductCardProps 인터페이스 정의
 export interface ProductCardProps {
   product: Product;
   width?: number;
@@ -35,6 +32,9 @@ const ProductCard = ({
     }
   };
 
+  // 매니저일 경우 배경색을 다르게 설정
+  const isManager = product.manufacturer === '매니저';
+
   return (
     <Card
       sx={{
@@ -49,9 +49,9 @@ const ProductCard = ({
           boxShadow: 6,
           cursor: 'pointer',
         },
-        backgroundColor: 'transparent',
+        backgroundColor: isManager ? '#445366' : 'transparent', // 조건부 배경색 설정
       }}
-      onClick={handleProductClick} // 카드 클릭 시 상세정보 링크로 이동
+      onClick={handleProductClick}
     >
       <CardMedia
         component="img"
@@ -64,7 +64,7 @@ const ProductCard = ({
         }}
       />
       <CardContent>
-        <Typography variant="body1" fontWeight="bold" sx={{ mt: 0.5 }}> {/* 타이틀 윗쪽 마진 추가 */}
+        <Typography variant="body1" fontWeight="bold" sx={{ mt: 0.5 }}>
           {product.name}
         </Typography>
         <Typography

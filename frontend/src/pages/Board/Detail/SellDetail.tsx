@@ -1,4 +1,4 @@
-import { Box, Button, Typography, TextField } from "@mui/material";
+import { Box, Button, Card, CardContent, Divider, Typography, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,14 +13,18 @@ export default function SellDetail() {
     // sessionStorage에서 게시글 목록 가져오기
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const foundPost = storedPosts.find((p) => p.id.toString() === id);
-    setPost(foundPost);
+    console.log("Found post from sessionStorage:", foundPost); // 디버깅 로그
+    if (foundPost) {
+      setPost(foundPost);
+      setShowContent(!foundPost.locked); // locked가 false면 바로 내용 표시
+    }
   }, [id]);
 
   if (!post) {
     return (
       <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3, textAlign: "center" }}>
         <Typography variant="h5">게시글을 찾을 수 없습니다.</Typography>
-        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate("/rental-inquiry")}>
+        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate("/sell-inquiry")}>
           목록으로 돌아가기
         </Button>
       </Box>
@@ -28,56 +32,177 @@ export default function SellDetail() {
   }
 
   const handleDelete = () => {
-    if (post.locked && post.password !== inputPassword) {
-      alert("비밀번호가 틀렸습니다.");
-      return;
+    // 잠금 상태이고 내용이 아직 표시되지 않은 경우 비밀번호 확인
+    if (post.locked && !showContent) {
+      if (post.password === inputPassword) {
+        setShowContent(true); // 비밀번호가 맞으면 내용 표시
+        if (window.confirm("이 게시글을 삭제하시겠습니까?")) {
+          // 삭제 확인 후 진행
+          const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+          const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
+          sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+          alert("게시글이 삭제되었습니다.");
+          navigate("/sell-inquiry");
+        }
+      } else {
+        alert("비밀번호가 틀렸습니다.");
+      }
+    } else {
+      // 잠금 상태가 아니거나 이미 내용이 표시된 경우 바로 삭제 확인
+      if (window.confirm("이 게시글을 삭제하시겠습니까?")) {
+        const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+        const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
+        sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+        alert("게시글이 삭제되었습니다.");
+        navigate("/sell-inquiry");
+      }
     }
-
-    // sessionStorage에서 해당 게시글 삭제
-    const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-    const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
-    sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
-
-    alert("게시글이 삭제되었습니다.");
-    navigate("/rental-inquiry");
   };
 
   return (
     <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>{post.title}</Typography>
-      
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        작성일: {new Date(post.id).toLocaleString()}
-      </Typography>
+      {/* 단일 박스 */}
+      <Card sx={{ borderRadius: 2, boxShadow: 3, backgroundColor: "#ffffff" }}>
+        <CardContent>
+          {/* 제목 */}
+          <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
+            제목
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+            {post.title || "제목이 없습니다."}
+          </Typography>
 
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        {showContent ? post.content : "내용을 보려면 비밀번호를 입력하세요."}
-      </Typography>
+          <Divider sx={{ mb: 2 }} />
 
+          {/* 문의 내용 */}
+          <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
+            문의 내용
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+            {showContent ? (post.content || "내용이 없습니다.") : "내용을 보려면 비밀번호를 입력하세요."}
+          </Typography>
+
+          {/* 이미지 큰 사이즈로 세로 표시 */}
+          {post.images && post.images.length > 0 && showContent && (
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, mb: 3 }}>
+              {post.images.map((imageName, index) => {
+                console.log(`Image ${index + 1} name: ${imageName}, attempting to display`); // 디버깅 로그
+                return (
+                  <Box key={index} sx={{ width: "100%", maxWidth: 600, overflow: "hidden" }}>
+                    <img
+                      src={URL.createObjectURL(
+                        new File([], imageName, { type: "image/png" }) // 임시 파일 객체 (실제 데이터 없음)
+                      )}
+                      alt={`이미지 ${index + 1}`}
+                      style={{ width: "100%", height: "auto", objectFit: "contain" }}
+                      onError={(e) => console.error(`Image load failed for ${imageName}`, e)} // 에러 로그
+                    />
+                  </Box>
+                );
+              })}
+            </Box>
+          )}
+
+          <Divider sx={{ mb: 2 }} />
+
+        {/* 안내사항 */}
+        <Box sx={{ backgroundColor: "#e3f2fd", padding: 2, borderRadius: 2, mb: 3 }}>
+          <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
+            안내사항
+          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
+             <Typography variant="body1" color="primary" fontWeight="bold">
+                      ※ 매입 가능 제품: DSLR, 미러리스, 필름 카메라 및 렌즈 (브랜드: 캐논, 니콘, 소니, 후지필름 등)
+                    </Typography>
+                    <Typography variant="body1" color="error" fontWeight="bold">
+                      ※ 매입 불가 제품: 심각한 침수 제품, 수리 이력 있는 제품, 정품이 아닌 제품
+                    </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
+            </Typography>
+         
+        
+            <Typography variant="body1" color="text.primary">
+              ※ 제품 상태 기준: 기능 정상 작동 필수, 심각한 파손 제품은 매입 불가
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 박스 및 구성품 포함 여부에 따라 가격이 달라질 수 있습니다.
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 매입 가격은 제품 상태 및 시장 변동에 따라 조정될 수 있습니다.
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 택배 거래 가능 (왕복 배송비는 고객 부담), 방문 접수 가능 (운영시간: 평일 10:00 - 18:00)
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 당사에서 제품 수령 이후 매입 금액이 마음에 드시지 않을 시, 왕복 배송비는 고객님께서 부담해주셔야합니다.
+            </Typography>
+          </Box>
+        </Box>
+
+          {/* 작성 정보 */}
+          <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
+            작성 정보
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+            작성자: {post.author.name || "작성자 없음"} | 작성일: {new Date(post.date).toLocaleString()} | 태그: {post.tag || "태그 없음"}
+          </Typography>
+        </CardContent>
+      </Card>
+
+      {/* 비밀번호 입력 (locked가 true이고 내용이 아직 표시되지 않은 경우) */}
       {post.locked && !showContent && (
-        <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+        <Box
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            gap: 1,
+            alignItems: "center",
+            justifyContent: "flex-start", // 왼쪽 정렬
+          }}
+        >
           <TextField
             type="password"
-            label="비밀번호 입력"
+            label="비밀번호 입력 (4자리 숫자)"
             variant="outlined"
             size="small"
             value={inputPassword}
-            onChange={(e) => setInputPassword(e.target.value)}
+            onChange={(e) => {
+              const input = e.target.value.replace(/\D/g, ""); // 숫자만 허용
+              if (input.length <= 4) setInputPassword(input);
+            }}
+            inputProps={{ maxLength: 4 }}
+            sx={{ width: "300px" }} // 입력창 크기 고정
           />
-          <Button variant="contained" onClick={() => setShowContent(post.password === inputPassword)}>
-            확인
+          <Button variant="outlined" color="error" onClick={handleDelete} sx={{ height: "40px" }}>
+            삭제하기
           </Button>
         </Box>
       )}
 
-    
-
-      <Button variant="outlined" color="error" sx={{ mt: 2 }} onClick={handleDelete}>
-        삭제하기
-      </Button>
-      <Button variant="contained" sx={{ mt: 2, ml: 2 }} onClick={() => navigate("/sell-inquiry")}>
-        목록으로 돌아가기
-      </Button>
+      {/* 버튼 섹션 (내용이 표시된 경우) */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+        {showContent && (
+          <Button variant="outlined" color="error" onClick={handleDelete} sx={{ borderRadius: 20, px: 2 }}>
+            삭제하기
+          </Button>
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate("/sell-inquiry")}
+          sx={{ borderRadius: 20, px: 2 }}
+        >
+          목록으로 돌아가기
+        </Button>
+      </Box>
     </Box>
   );
 }

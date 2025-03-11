@@ -15,15 +15,15 @@ import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
 import ProductList from "./pages/product/ProductList";
 
-import NoticePage from './pages/Board/Notice/NoticePage';
-import NoticeDetail from './pages/Board/Detail/NoticeDetail';
-import DeliveryPage from './pages/order/delivery';
-import OrderCompletePage from './pages/order/complete';
 import SignIn from '@/pages/auth/SignIn';
 import Callback from './pages/auth/SignIn/components/Callback';
 import BuyDetail from './pages/Board/Detail/BuyDetail';
-import SellDetail from './pages/Board/Detail/SellDetail';
+import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 import RentalDetail from './pages/Board/Detail/RentalDetail';
+import SellDetail from './pages/Board/Detail/SellDetail';
+import NoticePage from './pages/Board/Notice/NoticePage';
+import OrderCompletePage from './pages/order/complete';
+import DeliveryPage from './pages/order/delivery';
 
 import '@/utils/axiosConfig';
 
@@ -147,8 +147,9 @@ function Router(){
         <Route path="about" element={<About />} />
 
         <Route path="product">
-          <Route index element={<ProductList />} />
-          <Route path=":id" element={<ProductDetail />} />
+          <Route index element={<ProductList />} />  {/* /product */}
+          <Route path=":id" element={<ProductDetail />} />  {/* /product/:id */}
+          <Route path=":id/rental-write" element={<RentalWrite />} />  {/* /product/:id/rental-write */}
         </Route>
 
         <Route path="order">

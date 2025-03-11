@@ -67,7 +67,7 @@ const ProductCard = ({
     >
       <CardMedia
         component="img"
-        image="https://placehold.co/250x250"
+        image={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/2143591775204-1-2.jpg`}
         alt={product.productName}
         sx={{
           width: "100%",

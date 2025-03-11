@@ -50,6 +50,7 @@ const DeliveryPage = () => {
 
   // 주문한 상품의 가격 계산
  useEffect(() => {
+  if (orderItems.length === 0) return; 
     const totalPrice = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const totalShipping = orderItems.reduce((acc, item) => acc + item.shipping, 0);
     setForm((prev) => ({
@@ -63,6 +64,14 @@ const DeliveryPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+
+  useEffect(() => {
+    if (!orderItems.length) {
+      console.warn("주문 상품이 없습니다. 홈으로 이동합니다.");
+      navigate("/", { replace: true });
+    }
+  }, [orderItems, navigate]);
 
 
 

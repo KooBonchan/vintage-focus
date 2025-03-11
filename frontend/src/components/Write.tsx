@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Switch, FormControlLabel } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LockIcon from "@mui/icons-material/Lock";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import ImageIcon from "@mui/icons-material/Image";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 export default function Write({
@@ -17,6 +15,7 @@ export default function Write({
   backgroundColor,
   textColor,
   link,
+  initialImage, // 새로운 prop 추가
 }) {
   const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ export default function Write({
   const [isPublic, setIsPublic] = useState(initialIsPublic !== undefined ? initialIsPublic : true);
   const [password, setPassword] = useState(initialPassword || "");
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(initialImage || null); // initialImage로 초기화
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -61,10 +60,10 @@ export default function Write({
       tag: "대여문의",
       locked: !isPublic,
       password: isPublic ? null : password,
-      image: image ? URL.createObjectURL(image) : null,
+      image: image ? URL.createObjectURL(image) : imagePreview,
     };
 
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== "test") {
       const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
       sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
       navigate("/rental-inquiry");
@@ -80,25 +79,33 @@ export default function Write({
   };
 
   return (
-    <Box sx={{
-      ...styles.container,
-      backgroundColor: isPublic ? 'transparent' : '#f0f0f0',
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "0 auto",
-      padding: 3,
-      width: "100%",
-    }}>
-      <Box sx={{
+    <Box
+      sx={{
+        ...styles.container,
+        backgroundColor: isPublic ? "transparent" : "#f0f0f0",
         display: "flex",
-        justifyContent: "space-between",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        margin: "0 auto",
+        padding: 3,
         width: "100%",
-        maxWidth: "860px",
-        mb: 1,
-      }}>
-        <Typography variant="h5" component="h5" sx={{ display: "flex", alignItems: "center", fontWeight: 'bold', marginBottom: 2 }}> {/* marginBottom 추가 */}
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+          maxWidth: "860px",
+          mb: 1,
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h5"
+          sx={{ display: "flex", alignItems: "center", fontWeight: "bold", marginBottom: 2 }}
+        >
           문의 <EditNoteIcon sx={{ ml: 0.5 }} />
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -117,24 +124,23 @@ export default function Write({
           setPrice={setPrice}
           imagePreview={imagePreview}
           handleImageChange={handleImageChange}
+          initialImage={initialImage} // initialImage prop 전달
         />
       </Box>
       <ContentInput content={content} setContent={setContent} isPublic={isPublic} />
-      {!isPublic && (
-        <PrivacySettings password={password} setPassword={setPassword} />
-      )}
+      {!isPublic && <PrivacySettings password={password} setPassword={setPassword} />}
       <Button
         variant="contained"
         color="primary"
         onClick={handleClick}
         sx={{
-          backgroundColor: '#445366',
+          backgroundColor: "#445366",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: '250px',
-          padding: '8px 24px',
-          borderRadius: '12px',
+          width: "250px",
+          padding: "8px 24px",
+          borderRadius: "12px",
           marginTop: 2,
         }}
       >
@@ -143,6 +149,7 @@ export default function Write({
     </Box>
   );
 }
+
 const styles = {
   container: {
     maxWidth: 900,
@@ -166,56 +173,59 @@ const styles = {
   },
 };
 
-const ProductInfo = ({ title, price, setTitle, setPrice, imagePreview, handleImageChange }) => (
-  <Box sx={{ display: "flex", flexDirection: "row", gap: 3, flex: 1 }}>
-    <Box sx={{ ...styles.imageBox }}>
-      {imagePreview ? (
-        <img src={imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
-      ) : (
-        <>
-          <FavoriteBorderIcon sx={{ position: "absolute", top: 8, left: 8 }} />
-          <ImageIcon />
-        </>
-      )}
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        style={{ position: "absolute", opacity: 0, width: "100%", height: "100%", cursor: "pointer" }}
-      />
+const ProductInfo = ({ title, price, setTitle, setPrice, imagePreview, handleImageChange, initialImage }) => {
+  const defaultImageSrc = "/image/imsi.jpg";
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "row", gap: 3, flex: 1 }}>
+      <Box sx={{ ...styles.imageBox }}>
+        <img
+          src={imagePreview || initialImage || defaultImageSrc}
+          alt="Product"
+          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ position: "absolute", opacity: 0, width: "100%", height: "100%", cursor: "pointer" }}
+        />
+      </Box>
+      <Box sx={{ flex: 1 }}>
+        <TextField
+          label="제목"
+          variant="outlined"
+          size="small"
+          fullWidth
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{ mb: 1 }}
+        />
+        <TextField
+          label="상품 가격 (원)"
+          variant="outlined"
+          size="small"
+          fullWidth
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          sx={{ mb: 1 }}
+        />
+      </Box>
     </Box>
-    <Box sx={{ flex: 1 }}>
-      <TextField
-        label="제목"
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        sx={{ mb: 1 }}
-      />
-      <TextField
-        label="상품 가격 (원)"
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        sx={{ mb: 1 }}
-      />
-    </Box>
-  </Box>
-);
+  );
+};
 
 const ContentInput = ({ content, setContent, isPublic }) => (
-  <Box sx={{
-    backgroundColor: isPublic ? "white" : "transparent",
-    p: 2,
-    borderRadius: "8px",
-    mb: 0,
-    width: "100%",
-    maxWidth: "860px"
-  }}>
+  <Box
+    sx={{
+      backgroundColor: isPublic ? "white" : "transparent",
+      p: 2,
+      borderRadius: "8px",
+      mb: 0,
+      width: "100%",
+      maxWidth: "860px",
+    }}
+  >
     <TextField
       label="문의 내용"
       multiline
@@ -229,13 +239,15 @@ const ContentInput = ({ content, setContent, isPublic }) => (
 );
 
 const PrivacySettings = ({ password, setPassword }) => (
-  <Box sx={{
-    backgroundColor: "transparent",
-    p: 2,
-    borderRadius: "8px",
-    mb: 3,
-    mt: 1
-  }}>
+  <Box
+    sx={{
+      backgroundColor: "transparent",
+      p: 2,
+      borderRadius: "8px",
+      mb: 3,
+      mt: 1,
+    }}
+  >
     <TextField
       label="비밀번호 (4자리 숫자)"
       type="password"

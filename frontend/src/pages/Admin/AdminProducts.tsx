@@ -57,7 +57,7 @@ const AdminProducts = () => {
         </Paper>
 
         {/* 상품 목록 테이블 */}
-        <Typography variant="h6" gutterBottom>📝 상품 목록</Typography>
+        <Typography variant="h6" gutterBottom>상품 목록</Typography>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

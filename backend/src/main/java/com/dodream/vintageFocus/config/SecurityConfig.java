@@ -39,6 +39,7 @@ public class SecurityConfig implements WebFluxConfigurer {
         .pathMatchers("/login/oauth2/**").permitAll()
         .pathMatchers("/oauth2/authorization/**").permitAll()
         .pathMatchers("/api/auth/signin").permitAll()
+        .pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
         .anyExchange().authenticated()
       )
 //      .oauth2Login(oauth2 -> oauth2
@@ -52,7 +53,9 @@ public class SecurityConfig implements WebFluxConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
       .allowedOrigins("http://localhost:3000")
-      .allowedMethods("GET", "POST", "PUT", "DELETE")
-      .allowedHeaders("*");
+      .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+      .allowedHeaders("*")
+      .allowCredentials(true)
+    ;
   }
 }

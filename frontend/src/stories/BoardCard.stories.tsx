@@ -1,15 +1,18 @@
+import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import BoardCard from "../components/BoardCard";
+import BoardCard, { BoardCardProps } from "../components/BoardCard"; // 경로는 프로젝트 구조에 맞게 수정
+import { BrowserRouter } from "react-router-dom";
+import { action } from "@storybook/addon-actions";
+import { Star } from "@mui/icons-material"; // 아이콘 추가
 
-// 기본 article 데이터
 const defaultArticle = {
   id: 1,
-  title: "Example Article Title",
-  author: { name: "John Doe", avatar: "https://avatar.iran.liara.run/public" },
-  date: "2025-02-27",
+  title: "Sample Article",
+  author: { name: "John Doe" },
+  date: "2025-03-11T10:00:00",
   views: 123,
-  tag: "Technology",
-  locked: false, // 기본적으로 잠금 해제 상태
+  tag: "sample",
+  locked: false,
 };
 
 const meta = {
@@ -20,71 +23,75 @@ const meta = {
     layout: "fullscreen",
   },
   args: {
-    article: defaultArticle, // 기본 article 값
-    highlighted: false,
-    tagVisible: true,
-    backgroundColor: "#fff",
-    borderColor: "#ddd",
-    fontSize: "1rem",
-    authorAvatarSize: 40,
-    viewsCountColor: "text.secondary",
+    article: defaultArticle,
+    link: "/article/1", // 기본 링크 설정
+    onClick: () => console.log("Card clicked!"), // 기본 onClick 핸들러
   },
-  argTypes: {
-    article: {
-      control: false, // article 객체는 컨트롤 비활성화
-    },
-    highlighted: { control: "boolean" },
-    tagVisible: { control: "boolean" },
-    backgroundColor: { control: "color" },
-    borderColor: { control: "color" },
-    fontSize: { control: "text" },
-    authorAvatarSize: { control: "number" },
-    viewsCountColor: { control: "color" },
-    onUnlock: { action: "unlocked" }, // onUnlock 동작 로깅
-  },
+  decorators: [
+    (Story) => (
+      <BrowserRouter>
+        <Story />
+      </BrowserRouter>
+    ),
+  ],
 } satisfies Meta<typeof BoardCard>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// 기본 스토리: 잠금 없는 일반적인 게시글
 export const Default: Story = {
   args: {
-    article: {
-      ...defaultArticle,
-      locked: false, // 잠금 해제 상태
-    },
-    highlighted: false,
-    tagVisible: true,
+    article: defaultArticle,
+    link: "/article/1",
+    onClick: action("Card clicked"), // Storybook에서 클릭 이벤트 추적
+  },
+  play: async ({ canvasElement }) => {
+    console.log("Navigating to: /article/1");
+    action("Navigated to")("/article/1");
   },
 };
 
-// 잠긴 게시글: 잠금 아이콘과 모달 테스트
-export const Locked: Story = {
+export const LockedCard: Story = {
   args: {
-    article: {
-      ...defaultArticle,
-      id: 2,
-      title: "Locked Article Title",
-      locked: true, // 잠금 상태
-    },
-    highlighted: false,
-    tagVisible: true,
-    onUnlock: (id, password) => console.log(`Unlocked ID: ${id}, Password: ${password}`),
+    article: { ...defaultArticle, locked: true },
+    link: "/article/1",
+    onClick: action("Locked card clicked"), // 잠긴 카드 클릭 시 이벤트
+  },
+  play: async ({ canvasElement }) => {
+    console.log("Locked card clicked");
+    action("Modal opened")("Password modal triggered");
   },
 };
 
-// 매니저 스타일: 배경색이 있는 게시글
-export const Manager: Story = {
+export const ManagerMode: Story = {
   args: {
-    article: {
-      ...defaultArticle,
-      locked: false, // 잠금 해제 상태
-    },
-    highlighted: false,
-    tagVisible: true,
-    backgroundColor: "#dce2e9",
+    article: defaultArticle,
+    link: "/article/1",
+    isManager: true,
+    backgroundColor: "#445366", // 매니저 모드에서 배경색 변경 예시
+    onClick: action("Manager mode card clicked"), // 매니저 모드 클릭 이벤트
   },
+  play: async ({ canvasElement }) => {
+    console.log("Navigating to: /article/1 in manager mode");
+    action("Navigated to")("/article/1");
+  },
+  render: (args) => (
+    <div
+      style={{
+        backgroundColor: args.backgroundColor,
+        padding: 20,
+        borderRadius: 10, // 라운드를 추가
+        position: "relative", // 아이콘을 위해 위치 속성 추가
+      }}
+    >
+      <BoardCard {...args} />
+      {/* 매니저 모드에 아이콘 추가 */}
+      {args.isManager && (
+        <div style={{ position: "absolute", top: 10, right: 10 }}>
+          <Star style={{ color: "white", fontSize: 30 }} />
+        </div>
+      )}
+    </div>
+  ),
 };
-

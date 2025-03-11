@@ -1,15 +1,40 @@
-import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List, Dialog, DialogTitle, DialogContent, DialogActions, useTheme } from "@mui/material";
 import { ChatBubbleOutline, FavoriteBorder, Add, MoreVert } from "@mui/icons-material";
-
-import { useParams, useNavigate } from "react-router-dom"; // useNavigate 추가
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export function ProductDetail() {
+  const theme = useTheme(); // ✅ MUI 테마 적용
   const { id } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 추가
+  const [open, setOpen] = useState(false);
 
+  const handleAddToCart = () => {
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    setOpen(true);
+  };
+
+  const product = {
+    id,
+    name: "상품 이름",
+    price: 100000,
+    quantity: 1,
+    shipping: 3000,
+    image: "https://placehold.co/500x450",
+  };
 
   return (
-    <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 0" }}>
+    <Container
+      sx={{
+        maxWidth: "1100px",
+        margin: "0 auto",
+        padding: "40px 0",
+        backgroundColor: theme.palette.mode === "dark" ? "#000" : "#f9f9f9",
+        color: theme.palette.text.primary,
+      }}
+    >
       {/* 상단 상품 정보 */}
       <Grid container spacing={4} alignItems="center">
         {/* 상품 이미지 */}
@@ -18,18 +43,14 @@ export function ProductDetail() {
             sx={{
               width: "500px",
               height: "450px",
-              bgcolor: "#ddd",
+              backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#ddd",
               borderRadius: 2,
               display: "flex",
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
             }}
-          >
-            {/* 이미지가 들어갈 자리 */}
-          </Box>
+          ></Box>
         </Grid>
-
-        
 
         {/* 상품 정보 */}
         <Grid item xs={12} md={6}>
@@ -40,42 +61,19 @@ export function ProductDetail() {
 
             {/* 아이콘 버튼들 */}
             <Box>
-              <IconButton
-                sx={{
-                  padding: 0,
-                  margin: "0 4px",
-                  border: "none",
-                  "&:hover": {
-                    backgroundColor: "#e0e0e0",
-                  }
-                }}
-              >
-                <ChatBubbleOutline />
-              </IconButton>
-              <IconButton
-                sx={{
-                  padding: 0,
-                  margin: "0 4px",
-                  border: "none",
-                  "&:hover": {
-                    backgroundColor: "#e0e0e0",
-                  }
-                }}
-              >
-                <FavoriteBorder />
-              </IconButton>
-              <IconButton
-                sx={{
-                  padding: 0,
-                  margin: "0 4px",
-                  border: "none",
-                  "&:hover": {
-                    backgroundColor: "#e0e0e0",
-                  }
-                }}
-              >
-                <Add />
-              </IconButton>
+              {[ChatBubbleOutline, FavoriteBorder, Add].map((Icon, index) => (
+                <IconButton
+                  key={index}
+                  sx={{
+                    padding: 0,
+                    margin: "0 4px",
+                    border: "none",
+                    "&:hover": { backgroundColor: theme.palette.mode === "dark" ? "#333" : "#e0e0e0" },
+                  }}
+                >
+                  <Icon />
+                </IconButton>
+              ))}
             </Box>
           </Box>
 
@@ -96,52 +94,33 @@ export function ProductDetail() {
             <Typography variant="h6" fontWeight="bold">
               Title
             </Typography>
-            <Typography sx={{ color: "gray", fontSize: "14px", mt: 1 }}>
-              내용을 짧게 <br />
-              적어주세요 <br />
-            </Typography>
+            <Typography sx={{ color: "gray", fontSize: "14px", mt: 1 }}>내용을 짧게 적어주세요</Typography>
           </Box>
 
           <Divider sx={{ my: 2 }} />
 
-          {/* 상품 사양 테이블 */}
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Typography variant="body1">상품명</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1">상품 수</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="body1">가격</Typography>
-            </Grid>
-          </Grid>
-
-          <Divider sx={{ my: 2 }} />
-          
-
           {/* 버튼 영역 */}
-          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
-          <Button
-            variant="text"
-            sx={{ borderRadius: 2, bgcolor: "#ccc", color: "black", px: 4 }}
-            onClick={() => navigate("/order/delivery", { state: { orderItems: [product] } })} // ✅ 상품 데이터를 그대로 전달
-          >
-            구매하기
-          </Button>
-            
-          <Button
-            variant="text"
-            sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
-            onClick={handleAddToCart} 
-          >
-            장바구니
-          </Button>
+          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4, fontSize:'1rem' }}>
+            <Button
+              variant="text"
+              sx={{ borderRadius: 2, backgroundColor: theme.palette.mode === "dark" ? "#444" : "#ccc", color: "black", px: 4 }}
+              onClick={() => navigate("/order/delivery", { state: { orderItems: [product] } })}
+            >
+              구매하기
+            </Button>
 
             <Button
               variant="text"
-              sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
-              onClick={() => navigate("/rental-inquiry/write")} // 버튼 클릭 시 이동
+              sx={{ borderRadius: 2, backgroundColor: theme.palette.mode === "dark" ? "#555" : "#bbb", color: "black", px: 4 }}
+              onClick={handleAddToCart}
+            >
+              장바구니
+            </Button>
+
+            <Button
+              variant="text"
+              sx={{ borderRadius: 2, backgroundColor: theme.palette.mode === "dark" ? "#555" : "#bbb", color: "black", px: 4 }}
+              onClick={() => navigate("/rental-inquiry/write")}
             >
               대여문의
             </Button>
@@ -158,18 +137,17 @@ export function ProductDetail() {
           </Box>
         </Grid>
 
-  {/* 장바구니 모달 */}
-  <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>장바구니에 상품이 담겼습니다.</DialogTitle>
-        <DialogContent>장바구니로 이동하시겠습니까?</DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>계속 쇼핑하기</Button>
-          <Button onClick={() => navigate("/order/cart")} color="primary">
-            장바구니 이동
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+        {/* 장바구니 모달 */}
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle>장바구니에 상품이 담겼습니다.</DialogTitle>
+          <DialogContent>장바구니로 이동하시겠습니까?</DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpen(false)}>계속 쇼핑하기</Button>
+            <Button onClick={() => navigate("/order/cart")} color="primary">
+              장바구니 이동
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
 
       {/* 상세 정보 영역 */}
@@ -181,14 +159,22 @@ export function ProductDetail() {
         <Divider />
 
         {/* 큰 상세 이미지 */}
-        <Box sx={{ width: "100%", height: 800, bgcolor: "#ddd", mt: 7, borderRadius: 2 }} />
+        <Box
+          sx={{
+            width: "100%",
+            height: 800,
+            backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#ddd",
+            mt: 7,
+            borderRadius: 2,
+          }}
+        />
 
         <Divider sx={{ my: 3 }} />
 
         {/* 상세 설명 */}
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <Box sx={{ width: "100%", height: 150, bgcolor: "#ddd", borderRadius: 2, mt: 2 }} />
+            <Box sx={{ width: "100%", height: 150, bgcolor: {"light":"#ddd", "dark":"#1e1e1e",}, borderRadius: 2, mt: 2 }} />
           </Grid>
           <Grid item xs={9}>
             <Typography variant="h5" fontWeight="bold">
@@ -204,7 +190,7 @@ export function ProductDetail() {
         </Grid>
       </Box>
 
-      <Box sx={{ pt: 7, pb: 7, bgcolor: "#ffffff", borderRadius: 2, p: 3 }}>
+      <Box sx={{ pt: 7, pb: 7, bgcolor: {"light":"#ffffff", "dark":"#161616"}, borderRadius: 2, p: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
           <Typography variant="h6" fontWeight="bold">
             Featured
@@ -222,7 +208,7 @@ export function ProductDetail() {
             { id: 5, name: "액션 카메라", desc: "스포츠용 캠", img: "https://placehold.co/50x50" }
           ].map((product, index, array) => (
             <Box key={product.id}>
-              <ListItem sx={{ bgcolor: "#ffffff", py: 2, borderRadius: 2, position: "relative" }}>
+              <ListItem sx={{ bgcolor: {"light":"#ffffff", "dark":"#161616"}, py: 2, borderRadius: 2, position: "relative" }}>
                 <ListItemAvatar>
                   <Avatar src={product.img} sx={{ width: 50, height: 50 }} />
                 </ListItemAvatar>
@@ -236,6 +222,7 @@ export function ProductDetail() {
           ))}
         </List>
       </Box>
+
     </Container>
   );
 }

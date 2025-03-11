@@ -43,6 +43,7 @@ const Callback = () => {
             headers: {
               'Content-Type': 'application/json',
             },
+            withCredentials: true,
           }
         );
 
@@ -57,7 +58,7 @@ const Callback = () => {
         if(memberInfo.isRegistered){
           navigate('/');
         } else {
-          navigate("/signup");
+          navigate("/register");
         }
         
       } catch (error) {

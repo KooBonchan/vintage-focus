@@ -6,6 +6,7 @@ import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import About from './pages/About';
+import Register from './pages/auth/Register';
 import BuyWrite from './pages/Board/Write/BuyWrite';
 import RentalWrite from './pages/Board/Write/RentalWrite';
 import SellWrite from './pages/Board/Write/SellWrite';
@@ -107,6 +108,8 @@ function Router(){
     <Routes>
       <Route element={<AuthLayout />}>
         <Route path="signin" element={<SignIn />} />
+        <Route path="register" element={<Register />} />
+        <Route path="register-result" element={<Register />} />
         <Route path="callback" element={<Callback />} />
       </Route>
 

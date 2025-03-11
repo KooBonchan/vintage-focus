@@ -34,7 +34,6 @@ export default function BoardList() {
 
   // 현재 경로 설정
   const currentPath = location.pathname;
-  // /rental-inquiry가 아닌 경우에만 "문의하기" 박스를 렌더링
   const showInquiryBox = currentPath !== "/rental-inquiry";
   const selectedTab = categoryRoutes[currentPath] || "구매문의";
 
@@ -60,10 +59,13 @@ export default function BoardList() {
   // 비밀번호 제출 핸들러
   const handlePasswordSubmit = () => {
     if (selectedArticle && selectedArticle.password === inputPassword) {
-      console.log("Password correct, navigating with unlocked=true");
+      console.log("Password correct, navigating with authenticated=true");
+      // 인증 상태를 sessionStorage에 저장
+      sessionStorage.setItem(`post_${selectedArticle.id}_authenticated`, "true");
       setOpenPasswordModal(false);
       setInputPassword("");
-      navigate(`${currentPath}/detail/${selectedArticle.id}?unlocked=true`);
+      // URL에 authenticated 쿼리 파라미터 추가
+      navigate(`${currentPath}/detail/${selectedArticle.id}?authenticated=true`);
     } else {
       alert("비밀번호가 틀렸습니다.");
       setInputPassword("");

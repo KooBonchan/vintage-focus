@@ -9,6 +9,7 @@ interface AuthState {
   setAuth: (user: MemberResponse, token: string) => void;
   clearAuth: () => void;
   fetchUser: (token: string) => Promise<void>;
+  setUser: (user: MemberResponse) => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -37,6 +38,8 @@ const useAuthStore = create<AuthState>((set) => ({
       throw error; // Re-throw error to handle it in the calling component
     }
   },
+
+  setUser: (user: MemberResponse) => set({user})
 }));
 
 export default useAuthStore;

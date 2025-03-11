@@ -27,6 +27,11 @@ public class AuthController {
   @PostMapping("signin")
   public Mono<ResponseEntity<MemberDTO>> signIn(@RequestBody TokenRequest request) {
     String provider = request.provider();
+    ResponseCookie testCookie = ResponseCookie.from("testCookie", "test-value")
+      .domain("localhost")
+      .path("/")
+      .sameSite("Lax")
+      .build();
 
     return providerTokenHandler.exchange(request)
       .flatMap(response -> providerTokenHandler.extractUserInfo(provider, response))
@@ -38,9 +43,9 @@ public class AuthController {
             authService.generateRefreshToken(memberDTO)
               .map(refreshToken -> ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
-                .path("/api")
+                .secure(false)
+                .sameSite("Lax")
+                .path("/")
                 .maxAge(604800)
                 .build()
                 .toString()
@@ -49,8 +54,18 @@ public class AuthController {
           .map(cookies -> ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, cookies.getT1())
             .header(HttpHeaders.SET_COOKIE, cookies.getT2())
+            .header(HttpHeaders.SET_COOKIE, testCookie.toString())
             .body(memberDTO))
       )
+      .onErrorResume(Mono::error);
+  }
+
+  @PostMapping("register")
+  public Mono<MemberDTO> register(@RequestBody MemberDTO memberDTO){
+    return ReactiveSecurityContextHolder.getContext()
+      .map(SecurityContext::getAuthentication)
+      .map(authentication -> (JwtAuthenticationToken) authentication)
+      .flatMap(token -> authService.updateMember(token, memberDTO))
       .onErrorResume(Mono::error);
   }
 
@@ -58,11 +73,7 @@ public class AuthController {
   public Mono<MemberDTO> getUserDetails() {
     return ReactiveSecurityContextHolder.getContext()
       .map(SecurityContext::getAuthentication)
-      .flatMap(authentication -> {
-        JwtAuthenticationToken authToken = (JwtAuthenticationToken) authentication;
-
-        return authService.findMember((String) authToken.getDetails(), (String) authToken.getPrincipal());
-      });
+      .flatMap(authentication -> authService.findMember((JwtAuthenticationToken) authentication));
   }
 
   @PostMapping("refresh")
@@ -72,21 +83,21 @@ public class AuthController {
 
     String token = cookie.getValue();
     return authService.validateRefreshToken(token)
-      .flatMap(memberDTO -> jwtUtil.generateAccessToken(memberDTO))
+      .flatMap(jwtUtil::generateAccessToken)
       .map(this::publishAccessTokenCookie)
-      .flatMap(_cookie -> {return ResponseEntity.ok()
+      .map(_cookie -> ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, _cookie)
-        .build();}
-      )
+        .<Void>build())
       .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
   }
 
   private String publishAccessTokenCookie(String accessToken){
     return ResponseCookie.from("accessToken", accessToken)
       .httpOnly(true)
-      .secure(true)
-      .sameSite("None")
-      .path("/api")
+      .secure(false)
+      .sameSite("Lax")
+      .path("/")
+      .domain("localhost")
       .maxAge(3600)
       .build()
       .toString();

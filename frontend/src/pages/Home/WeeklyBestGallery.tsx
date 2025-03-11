@@ -1,6 +1,6 @@
 import { Box, Grid, Pagination, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
-import Button from "../../components/Button";
+import Button from "../../components/CustomButton";
 import ProductCard from "../../components/ProductCard";
 
 const ITEMS_PER_PAGE = 16;

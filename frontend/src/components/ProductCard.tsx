@@ -1,21 +1,32 @@
 // ProductCard.tsx
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Box, Button } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Box, Button, useTheme, styled } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import { ProductResponse } from '@/types/response';
+
+// interface Product {
+//   id: number;
+//   image: string;
+//   productName: string;
+//   sellingPrice: string;
+//   company?: string;
+//   year?: string;
+// }
 
 // 제품 정보 타입 정의
 type Product = {
-  image: string;
-  name: string;
-  price: string;
-  manufacturer: string;
-  year: string;
   id?: string;
+  image: string;
+  productName: string;
+  sellingPrice: string;
+  manufacturer: string;
+  condition: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' | 'MINT';
+  
 };
 
 // ProductCardProps 인터페이스 정의
 export interface ProductCardProps {
-  product: Product;
+  product: ProductResponse;
   width?: number;
   height?: number;
 }
@@ -26,12 +37,13 @@ const ProductCard = ({
   height = 330,
 }: ProductCardProps) => {
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const handleProductClick = () => {
     if (product.id) {
       navigate(`/product/${product.id}`);
     } else {
-      navigate(`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`);
+      navigate(`/product/${product.productName.toLowerCase().replace(/\s+/g, '-')}`);
     }
   };
 
@@ -55,8 +67,8 @@ const ProductCard = ({
     >
       <CardMedia
         component="img"
-        image={product.image}
-        alt={product.name}
+        image="https://placehold.co/250x250"
+        alt={product.productName}
         sx={{
           width: "100%",
           height: "auto",
@@ -64,41 +76,84 @@ const ProductCard = ({
         }}
       />
       <CardContent>
-        <Typography variant="body1" fontWeight="bold" sx={{ mt: 0.5 }}> {/* 타이틀 윗쪽 마진 추가 */}
-          {product.name}
-        </Typography>
-        <Typography
-          variant="h5"
-          color="primary"
-          sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
-        >
-          {product.price}원
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 0.1, gap: 1 }}>
-          <Typography variant="body2" sx={{ mr: 0, fontSize: "0.6rem" }}>
-            {product.manufacturer}
-          </Typography>
-          <Typography variant="body2" sx={{ fontSize: "0.6rem" }}>
-            {product.year}
-          </Typography>
+        <Box display="flex">
+          <Box id="metadata-wrapper" flexGrow={1}>
+            <Typography variant="body1" fontWeight="bold" sx={{ mt: 0.5, fontSize: "1.2em" }}> {/* 타이틀 윗쪽 마진 추가 */}
+              {product.productName}
+            </Typography>
+            <Typography variant="body2" sx={{ mr: 0, fontSize: "0.8em" }}>
+              {product.company}
+            </Typography>
+            <Box display="flex" justifyContent="center" gap={0.5} mt='1rem'>
+              {product.consumerPrice && 
+                <Typography
+                  fontWeight="regular"
+                  sx={{
+                    textDecoration:"line-through",
+                    color: theme.palette.grey[500],
+                  }}>
+                  {product.consumerPrice.toLocaleString()}
+                </Typography>
+              }
+              <Typography
+                variant="h5"
+                color="primary"
+                sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
+              >
+                {product.sellingPrice.toLocaleString()} 원
+              </Typography>
+            </Box>
+          </Box>
+          <ConditionBattery condition={product.condition} />
         </Box>
-        <Button
-          variant="outlined"
-          size='small'
-          sx={{
-            mt: 0.5,
-            fontSize: '0.7rem',
-            width: 'small',
-            borderRadius: 1.5,
-            padding: '2px 4px',
-            height: '20px',
-          }}
-        >
-          상세정보
-        </Button>
+        
       </CardContent>
     </Card>
   );
 };
+
+
+
+const ConditionBattery = ({ condition = 'FAIR' }: { condition?: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' | 'MINT' }) => {
+  const conditionMap: Record<string, any> = {
+    MINT:      { height: '100%', color: 'linear-gradient(to top, #3b82f6, #60a5fa)' }, // 파란색 계열
+    EXCELLENT: { height: '90%', color: 'linear-gradient(to top, #10b981, #34d399)' }, // 초록색 계열
+    GOOD:      { height: '70%', color: 'linear-gradient(to top, #22c55e, #86efac)' },
+    FAIR:      { height: '50%', color: 'linear-gradient(to top, #f59e0b, #fbbf24)' }, // 노란색 계열
+    POOR:      { height: '20%', color: 'linear-gradient(to top, #ef4444, #f87171)' }  // 빨간색 계열
+  };
+  
+  if (!condition || !conditionMap[condition]) return null;
+
+  return (
+    <Box
+      width="1.2rem"
+      height="5rem"
+      mt=".5rem"
+      sx={{
+        border: '2px solid rgba(0, 0, 0, 0.2)',
+        borderRadius: '1rem',
+        position: 'relative',
+        overflow: 'hidden',
+        backgroundColor: '#f3f4f6',
+        boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.15)',
+      }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+          height: conditionMap[condition].height,
+          background: conditionMap[condition].color,
+          position: 'absolute',
+          bottom: '0',
+          borderRadius: '0 0 1rem 1rem',
+          transition: 'height 0.3s ease-in-out',
+        }}
+      />
+    </Box>
+  );
+};
+
+
 
 export default ProductCard;

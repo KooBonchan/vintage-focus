@@ -15,7 +15,6 @@ import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import { HomeRounded, PersonOutline, Phone } from '@mui/icons-material';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-// import axios from '@/utils/axiosConfig';
 
 export default function Register() {
   const navigate = useNavigate();

@@ -189,12 +189,12 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <Container maxWidth="md" sx={{ py: 4, minHeight: "100vh" }}>
       {/* 주문 상세 내역 */}
-      <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", border: "1px solid #ddd" }}>
+      <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {"light": "#ddd", "dark":"#333333"}, }}>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" } }>
           주문 상세 내역
         </Typography>
-        <Box sx={{ border: "1px solid #ddd", p: 2, borderRadius: "8px", bgcolor: pageColors.boxBgcolor }}>
-          <Grid container spacing={1} sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
+        <Box sx={{ borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, p: 2, borderRadius: "8px", bgcolor: pageColors.boxBgcolor }}>
+          <Grid container spacing={1} sx={{ borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, pb: 1 }}>
             <Grid item xs={2} sx={{ fontWeight: "bold", textAlign: "center" }}>상품 이미지</Grid>
             <Grid item xs={3} sx={{ fontWeight: "bold", textAlign: "center" }}>상품/옵션 정보</Grid>
             <Grid item xs={2} sx={{ fontWeight: "bold", textAlign: "center" }}>수량</Grid>
@@ -222,7 +222,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         </Box>
 
            {/* 합계 금액 */}
-      <Paper sx={{ p: 2, mt: 3, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", border: "1px solid #ddd", bgcolor: pageColors.paperBgcolor, minHeight: "50px" }}>
+      <Paper sx={{ p: 2, mt: 3, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, bgcolor: pageColors.paperBgcolor, minHeight: "50px" }}>
         <Typography sx={{ fontWeight: "bold", minWidth: "200px", textAlign: "center" }}>
           총 {orderItems.length}개의 상품 금액 {form.totalPrice}
         </Typography>
@@ -240,7 +240,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       
 
       {/* 배송 정보 */}
-      <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", border: "1px solid #ddd" }}>
+      <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
           배송 정보
         </Typography>
@@ -273,22 +273,22 @@ const handleSubmit = async (e: React.FormEvent) => {
    
 
        {/* 결제 정보 */}
-       <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", border: "1px solid #ddd" }}>
+       <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
           결제 정보
         </Typography>
-        <Grid container spacing={0} sx={{ border: "1px solid #ddd", borderRadius: "8px", bgcolor: pageColors.boxBgcolor }}>
-          <Grid item xs={3} sx={{ bgcolor: pageColors.boxBgcolor, display: "flex", alignItems: "center", pl: 2, borderBottom: "1px solid #ddd" }}>
+        <Grid container spacing={0} sx={{ borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, borderRadius: "8px", bgcolor: pageColors.boxBgcolor }}>
+          <Grid item xs={3} sx={{ bgcolor: pageColors.boxBgcolor, display: "flex", alignItems: "center", pl: 2, borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
             <Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>상품 합계 금액</Typography>
           </Grid>
-          <Grid item xs={9} sx={{ borderBottom: "1px solid #ddd" }}>
+          <Grid item xs={9} sx={{ borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
             <TextField fullWidth disabled value={form.totalPrice} variant="outlined" size="small" />
           </Grid>
 
-          <Grid item xs={3} sx={{ bgcolor: pageColors.boxBgcolor, display: "flex", alignItems: "center", pl: 2, borderBottom: "1px solid #ddd" }}>
+          <Grid item xs={3} sx={{ bgcolor: pageColors.boxBgcolor, display: "flex", alignItems: "center", pl: 2, borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
             <Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>배송비</Typography>
           </Grid>
-          <Grid item xs={9} sx={{ borderBottom: "1px solid #ddd" }}>
+          <Grid item xs={9} sx={{ borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
             <TextField fullWidth disabled value={form.shippingFee} variant="outlined" size="small" />
           </Grid>
 
@@ -310,7 +310,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           alignItems: "center",
           justifyContent: "space-between",
           borderRadius: "8px",
-          border: "1px solid #ddd",
+          borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"},
           bgcolor: pageColors.paperBgcolor,
           minHeight: "50px",
         }}

@@ -83,6 +83,16 @@ export default function HeaderBar() {
             </Box>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+            <IconButton
+              onClick={() => navigate("/admin/dashboard")}
+              disableRipple
+              size="small"
+              aria-controls={open ? 'color-scheme-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
+              ⚙️
+            </IconButton>
             {user?
             ( <>
               <Avatar
@@ -97,23 +107,16 @@ export default function HeaderBar() {
               </>
               
             )
-            :(
-            <>
-            <NavLink to="/signin">
-              <Button color="primary" variant="text" size="small">
-                Sign in
-              </Button>
-            </NavLink>
 
-            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1, alignItems: "center" }}>
-          {/* 관리자 페이지 */}
-          <Button color="secondary" size="small" onClick={() => navigate("/admin/dashboard")}>
-            ⚙️
-          </Button>
-              </Box>
-            </>
-      )}
-            <ColorModeIconDropdown />
+            :
+            ( <NavLink to="/signin">
+                <Button color="primary" variant="text" size="small">
+                  Sign in
+                </Button>
+              </NavLink>
+            )
+            }
+           <ColorModeIconDropdown />
           </Box>
           {/* md size end */}
 

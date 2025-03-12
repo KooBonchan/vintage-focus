@@ -27,11 +27,6 @@ public class AuthController {
   @PostMapping("signin")
   public Mono<ResponseEntity<MemberDTO>> signIn(@RequestBody TokenRequest request) {
     String provider = request.provider();
-    ResponseCookie testCookie = ResponseCookie.from("testCookie", "test-value")
-      .domain("localhost")
-      .path("/")
-      .sameSite("Lax")
-      .build();
 
     return providerTokenHandler.exchange(request)
       .flatMap(response -> providerTokenHandler.extractUserInfo(provider, response))
@@ -54,7 +49,6 @@ public class AuthController {
           .map(cookies -> ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, cookies.getT1())
             .header(HttpHeaders.SET_COOKIE, cookies.getT2())
-            .header(HttpHeaders.SET_COOKIE, testCookie.toString())
             .body(memberDTO))
       )
       .onErrorResume(Mono::error);

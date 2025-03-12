@@ -1,28 +1,7 @@
 // ProductCard.tsx
-import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Box, Button, useTheme, styled } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
 import { ProductResponse } from '@/types/response';
-
-// interface Product {
-//   id: number;
-//   image: string;
-//   productName: string;
-//   sellingPrice: string;
-//   company?: string;
-//   year?: string;
-// }
-
-// 제품 정보 타입 정의
-type Product = {
-  id?: string;
-  image: string;
-  productName: string;
-  sellingPrice: string;
-  manufacturer: string;
-  condition: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' | 'MINT';
-  
-};
+import { Box, Card, CardContent, CardMedia, Typography, useTheme } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 // ProductCardProps 인터페이스 정의
 export interface ProductCardProps {
@@ -67,11 +46,14 @@ const ProductCard = ({
     >
       <CardMedia
         component="img"
-        image={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/2143591775204-1-2.jpg`}
+        image={
+          (product.productImages && product.productImages.length > 0) ?
+          `${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${product.productImages[0]}`
+          :
+          `/image/icon/camera.svg`}
         alt={product.productName}
         sx={{
-          width: "100%",
-          height: "auto",
+          height: height-115,
           borderRadius: 2,
         }}
       />

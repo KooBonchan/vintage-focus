@@ -14,10 +14,10 @@ import { useNavigate } from "react-router-dom";
 const Reviews = () => {
   const navigate = useNavigate();
 
-  // ✅ 카메라 관련 더미 리뷰 데이터 (작성 날짜 추가)
+  // ✅ 카메라 관련 더미 리뷰 데이터 (사진 배열 추가)
   const dummyReviews = Array.from({ length: 20 }, (_, index) => {
     const date = new Date();
-    date.setDate(date.getDate() - index); // 최근 날짜부터 과거로 설정
+    date.setDate(date.getDate() - index);
     return {
       id: index + 1,
       user: {
@@ -25,7 +25,11 @@ const Reviews = () => {
         avatar: "/static/images/avatar/default.png",
       },
       rating: Math.floor(Math.random() * 5) + 1,
-      image: "https://placehold.co/200",
+      images: [
+        "https://placehold.co/200?text=Image1",
+        "https://placehold.co/200?text=Image2",
+        "https://placehold.co/200?text=Image3",
+      ], // ✅ 3장의 사진 배열
       content: [
         "이 카메라는 야외 촬영 시 뛰어난 화질을 제공합니다. 저조도 환경에서도 선명한 사진을 찍을 수 있어 만족스럽습니다.",
         "렌즈 교체가 쉽고 무게도 가벼워 여행용으로 적합합니다. 배터리 수명도 긴 편이라 하루 종일 촬영할 수 있습니다.",
@@ -33,37 +37,35 @@ const Reviews = () => {
         "터치스크린이 반응이 빠르고 조작이 편리합니다. 초보자도 쉽게 사용할 수 있는 인터페이스가 강점입니다.",
         "사진의 디테일이 뛰어나고 색감도 자연스럽습니다. 하지만 가격이 다소 비싸다는 점이 단점입니다.",
       ][index % 5],
-      createdAt: date.toISOString(), // 작성 날짜 추가
+      createdAt: date.toISOString(),
     };
   });
 
   const [visibleReviews, setVisibleReviews] = useState(dummyReviews.slice(0, 4));
   const [page, setPage] = useState(1);
-  const [sortOption, setSortOption] = useState("recent"); // 기본 정렬: 최근 거래순
+  const [sortOption, setSortOption] = useState("recent");
   const loader = useRef(null);
 
-  // ✅ 리뷰 정렬 함수
   const sortReviews = (reviews: typeof dummyReviews, option: string) => {
     const sortedReviews = [...reviews];
     switch (option) {
       case "ratingHigh":
-        return sortedReviews.sort((a, b) => b.rating - a.rating); // 평점 높은 순
+        return sortedReviews.sort((a, b) => b.rating - a.rating);
       case "ratingLow":
-        return sortedReviews.sort((a, b) => a.rating - b.rating); // 평점 낮은 순
+        return sortedReviews.sort((a, b) => a.rating - b.rating);
       case "recent":
         return sortedReviews.sort(
           (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        ); // 최근 거래순
+        );
       case "oldest":
         return sortedReviews.sort(
           (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        ); // 오래된 거래순
+        );
       default:
         return sortedReviews;
     }
   };
 
-  // ✅ 정렬 옵션 변경 시 리뷰 재정렬
   useEffect(() => {
     const sorted = sortReviews(dummyReviews, sortOption);
     setVisibleReviews(sorted.slice(0, page * 4));
@@ -98,7 +100,6 @@ const Reviews = () => {
     };
   }, [visibleReviews.length, sortOption]);
 
-  // ✅ 텍스트 아래쪽이 점차 흐려지는 효과 적용
   const formatReviewContent = (content: string) => {
     return (
       <div
@@ -117,7 +118,6 @@ const Reviews = () => {
     );
   };
 
-  // ✅ 날짜 포맷팅 함수
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("ko-KR", {
@@ -134,7 +134,7 @@ const Reviews = () => {
         margin: "0 auto",
         padding: 3,
         textAlign: "center",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#ffffff",
       }}
     >
       <Typography variant="h4" gutterBottom sx={{ color: "#000000" }}>
@@ -144,7 +144,6 @@ const Reviews = () => {
         이곳에서 최신 카메라 제품의 리뷰를 확인할 수 있습니다.
       </Typography>
 
-      {/* ✅ 개별 버튼으로 정렬 옵션 표시 (가운데 정렬) */}
       <Box
         sx={{
           display: "flex",
@@ -155,7 +154,7 @@ const Reviews = () => {
         }}
       >
         <Button
-          variant="outlined" // ✅ outlined로 변경하여 기본 배경색 유지
+          variant="outlined"
           sx={{
             backgroundColor: "#ffffff",
             color: "#2196F3",
@@ -174,7 +173,7 @@ const Reviews = () => {
           최근 거래순
         </Button>
         <Button
-          variant="outlined" // ✅ outlined로 변경하여 기본 배경색 유지
+          variant="outlined"
           sx={{
             backgroundColor: "#ffffff",
             color: "#2196F3",
@@ -193,7 +192,7 @@ const Reviews = () => {
           오래된 거래순
         </Button>
         <Button
-          variant="outlined" // ✅ outlined로 변경하여 기본 배경색 유지
+          variant="outlined"
           sx={{
             backgroundColor: "#ffffff",
             color: "#2196F3",
@@ -212,7 +211,7 @@ const Reviews = () => {
           평점 높은순
         </Button>
         <Button
-          variant="outlined" // ✅ outlined로 변경하여 기본 배경색 유지
+          variant="outlined"
           sx={{
             backgroundColor: "#ffffff",
             color: "#2196F3",
@@ -252,7 +251,9 @@ const Reviews = () => {
               borderRadius: 2,
               boxShadow: 1,
               minWidth: 250,
+              cursor: "pointer",
             }}
+            onClick={() => navigate(`/reviews/${review.id}/`)}
           >
             <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
               <Avatar src={review.user.avatar} sx={{ mr: 1 }} />
@@ -263,16 +264,15 @@ const Reviews = () => {
             <Rating value={review.rating} readOnly sx={{ mb: 1 }} />
             <CardMedia
               component="img"
-              image={review.image}
+              image={review.images[0]} // ✅ 첫 번째 사진만 표시
               alt={`Camera Review ${review.id}`}
               sx={{ width: "100%", height: 200, objectFit: "cover", mb: 1 }}
             />
-            <CardContent sx={{ textAlign: "left", flexGrow: 1 }}>
+            <CardContent sx={{ textAlign: "center", flexGrow: 1 }}>
               <Typography variant="body2" sx={{ color: "#000000", mb: 1 }}>
                 {formatReviewContent(review.content)}
               </Typography>
-              {/* ✅ 작성 날짜 표시 */}
-              <Typography variant="caption" sx={{ color: "#666666" }}>
+              <Typography variant="body1" sx={{ color: "#666666" }}>
                 작성 날짜: {formatDate(review.createdAt)}
               </Typography>
             </CardContent>
@@ -282,14 +282,7 @@ const Reviews = () => {
 
       <div ref={loader} style={{ height: "20px" }} />
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => navigate("/")}
-        sx={{ mt: 2 }}
-      >
-        홈으로 돌아가기
-      </Button>
+   
     </Box>
   );
 };

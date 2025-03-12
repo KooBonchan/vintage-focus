@@ -26,6 +26,7 @@ import DeliveryPage from './pages/order/delivery';
 import Reviews from './pages/Reviews/reviews';
 
 import '@/utils/axiosConfig';
+import ReviewDetail from './pages/Board/Detail/ReviewDetail';
 
 const baseTheme = createTheme({
   typography: {
@@ -134,6 +135,8 @@ function Router() {
         {/* 새로운 리뷰 라우트 그룹 */}
         <Route path="reviews">
           <Route index element={<Reviews />} /> {/* ✅ 리뷰 페이지 추가 */}
+          <Route path="/reviews/" element={<Reviews />} />
+          <Route path="/reviews/:id/" element={<ReviewDetail />} />
         </Route>
 
         <Route path="/notice" element={<NoticePage />} /> {/* ✅ 추가 */}

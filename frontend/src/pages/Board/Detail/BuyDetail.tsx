@@ -1,24 +1,37 @@
 import { Box, Button, Card, CardContent, Divider, Typography, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 export default function BuyDetail() {
   const navigate = useNavigate();
   const { id } = useParams(); // URL에서 게시글 ID 가져오기
+  const [searchParams] = useSearchParams(); // URL 쿼리 파라미터 사용
   const [post, setPost] = useState(null);
   const [inputPassword, setInputPassword] = useState("");
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // sessionStorage에서 게시글 목록 가져오기
-    const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-    const foundPost = storedPosts.find((p) => p.id.toString() === id);
-    console.log("Found post from sessionStorage:", foundPost); // 디버깅 로그
-    if (foundPost) {
-      setPost(foundPost);
-      setShowContent(!foundPost.locked); // locked가 false면 바로 내용 표시
+    try {
+      // sessionStorage에서 게시글 목록 가져오기
+      const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+      const foundPost = storedPosts.find((p) => p.id.toString() === id);
+      console.log("Found post from sessionStorage:", foundPost); // 디버깅 로그
+      if (foundPost) {
+        setPost(foundPost);
+        // URL 쿼리 파라미터와 sessionStorage에서 인증 여부 확인
+        const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
+        const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
+        const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
+        console.log("URL 쿼리 파라미터 (authenticated):", searchParams.get("authenticated"));
+        console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
+        console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
+        setShowContent(!foundPost.locked || isAuthenticated); // locked가 false이거나 인증된 경우
+        console.log("showContent 초기값:", !foundPost.locked || isAuthenticated);
+      }
+    } catch (error) {
+      console.error("sessionStorage 파싱 오류:", error);
     }
-  }, [id]);
+  }, [id, searchParams]);
 
   if (!post) {
     return (
@@ -41,6 +54,8 @@ export default function BuyDetail() {
           const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
           const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
           sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+          // 인증 상태 제거
+          sessionStorage.removeItem(`post_${id}_authenticated`);
           alert("게시글이 삭제되었습니다.");
           navigate("/buy-inquiry");
         }
@@ -53,9 +68,29 @@ export default function BuyDetail() {
         const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
         const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
         sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+        // 인증 상태 제거
+        sessionStorage.removeItem(`post_${id}_authenticated`);
         alert("게시글이 삭제되었습니다.");
         navigate("/buy-inquiry");
       }
+    }
+  };
+
+  const handlePasswordSubmit = () => {
+    console.log("입력된 비밀번호:", inputPassword);
+    console.log("저장된 비밀번호:", post.password);
+    console.log("비밀번호 일치 여부:", post.password === inputPassword);
+
+    if (post.password === inputPassword) {
+      setShowContent(true);
+      console.log("showContent 업데이트됨:", true);
+      // 인증 상태를 sessionStorage에 저장
+      sessionStorage.setItem(`post_${id}_authenticated`, "true");
+      // URL에 authenticated 쿼리 파라미터 추가
+      navigate(`/buy-inquiry/${id}?authenticated=true`, { replace: true });
+    } else {
+      alert("비밀번호가 틀렸습니다.");
+      setInputPassword("");
     }
   };
 
@@ -151,6 +186,9 @@ export default function BuyDetail() {
             inputProps={{ maxLength: 4 }}
             sx={{ width: "300px" }} // 입력창 크기 고정
           />
+          <Button variant="contained" color="primary" onClick={handlePasswordSubmit} sx={{ height: "40px" }}>
+            확인
+          </Button>
           <Button variant="outlined" color="error" onClick={handleDelete} sx={{ height: "40px" }}>
             삭제하기
           </Button>

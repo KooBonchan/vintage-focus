@@ -59,10 +59,13 @@ export default function BoardList() {
 
   const handlePasswordSubmit = () => {
     if (selectedArticle && selectedArticle.password === inputPassword) {
-      console.log("Password correct, navigating with unlocked=true");
+      console.log("Password correct, navigating with authenticated=true");
+      // 인증 상태를 sessionStorage에 저장
+      sessionStorage.setItem(`post_${selectedArticle.id}_authenticated`, "true");
       setOpenPasswordModal(false);
       setInputPassword("");
-      navigate(`${currentPath}/detail/${selectedArticle.id}?unlocked=true`);
+      // URL에 authenticated 쿼리 파라미터 추가
+      navigate(`${currentPath}/detail/${selectedArticle.id}?authenticated=true`);
     } else {
       alert("비밀번호가 틀렸습니다.");
       setInputPassword("");

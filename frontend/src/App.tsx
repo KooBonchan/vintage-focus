@@ -13,8 +13,7 @@ import SellWrite from './pages/Board/Write/SellWrite';
 import { Home } from './pages/Home';
 import Cart from './pages/order/cart';
 import { ProductDetail } from './pages/product/ProductDetail';
-import ProductList from "./pages/product/ProductList";
-
+import ProductList from './pages/product/ProductList';
 import SignIn from '@/pages/auth/SignIn';
 import Callback from './pages/auth/SignIn/components/Callback';
 import BuyDetail from './pages/Board/Detail/BuyDetail';
@@ -30,7 +29,9 @@ import SellDetail from './pages/Board/Detail/SellDetail';
 import NoticePage from './pages/Board/Notice/NoticePage';
 import OrderCompletePage from './pages/order/complete';
 import DeliveryPage from './pages/order/delivery';
-
+import Reviews from './pages/Reviews/reviews';
+import '@/utils/axiosConfig';
+import ReviewDetail from './pages/Board/Detail/ReviewDetail';
 
 
 const baseTheme = createTheme({
@@ -40,7 +41,7 @@ const baseTheme = createTheme({
   },
   cssVariables: true,
   palette: {
-    background:{
+    background: {
       default: '#135799',
     },
     primary: {
@@ -65,17 +66,17 @@ function App() {
   }, []);
   const theme = useTheme();
   useEffect(() => {
-    document.body.style.backgroundColor= theme.palette.background.default;
+    document.body.style.backgroundColor = theme.palette.background.default;
   }, [theme]);
   const initializeSessionStorage = () => {
-    const existingPosts = sessionStorage.getItem("posts");
+    const existingPosts = sessionStorage.getItem('posts');
 
     // ✅ 이미 데이터가 있으면 초기화 방지
     if (existingPosts) return;
 
     // ✅ 기본 더미 데이터 생성
     const dummyPosts = [];
-    const categories = ["매각문의", "구매문의", "대여문의"];
+    const categories = ['매각문의', '구매문의', '대여문의'];
 
     for (let i = 1; i <= 50; i++) {
       dummyPosts.push({
@@ -83,33 +84,28 @@ function App() {
         title: `테스트 게시글 ${i}`,
         price: `${Math.floor(Math.random() * 100000) + 10000}원`,
         content: `이것은 ${i}번째 테스트 게시글입니다.`,
-        date: new Date().toISOString().split("T")[0],
+        date: new Date().toISOString().split('T')[0],
         views: Math.floor(Math.random() * 500),
-        author: { name: `사용자${i}`, avatar: "/static/images/avatar/default.png" },
+        author: { name: `사용자${i}`, avatar: '/static/images/avatar/default.png' },
         tag: categories[i % categories.length], // 매각문의 / 구매문의 / 대여문의 순환
         locked: i % 2 === 0, // 짝수 번째 게시글은 비공개
-        password: i % 2 === 0 ? "1234" : null, // 비공개 게시글만 비밀번호 설정
+        password: i % 2 === 0 ? '1234' : null, // 비공개 게시글만 비밀번호 설정
       });
     }
 
     // ✅ `sessionStorage`에 데이터 저장
-    sessionStorage.setItem("posts", JSON.stringify(dummyPosts));
+    sessionStorage.setItem('posts', JSON.stringify(dummyPosts));
   };
 
-
-
   return (
-    
-    <ThemeProvider theme={{baseTheme}}>
+    <ThemeProvider theme={{ baseTheme }}>
       <Router />
     </ThemeProvider>
-    
-  )
+  );
 }
 
-function Router(){
+function Router() {
   return (
-    
     <Routes>
       <Route element={<AuthLayout />}>
         <Route path="signin" element={<SignIn />} />
@@ -121,40 +117,43 @@ function Router(){
       <Route element={<HeaderFooterLayout />}>
         <Route index element={<Home />} />
 
-            {/* 매각문의 라우트 그룹 */}
-      <Route path="sell-inquiry">
-        <Route index element={<About />} />
-        <Route path="write" element={<SellWrite />} />
-        <Route path="detail/:id" element={<SellDetail />} /> {/* ✅ 상세 페이지 추가 */}
-      </Route>
+        {/* 매각문의 라우트 그룹 */}
+        <Route path="sell-inquiry">
+          <Route index element={<About />} />
+          <Route path="write" element={<SellWrite />} />
+          <Route path="detail/:id" element={<SellDetail />} /> {/* ✅ 상세 페이지 추가 */}
+        </Route>
 
-      {/* 구매문의 라우트 그룹 */}
-      <Route path="buy-inquiry">
-        <Route index element={<About />} />
-        <Route path="write" element={<BuyWrite />} />
-        <Route path="detail/:id" element={<BuyDetail />} /> {/* ✅ 상세 페이지 추가 */}
-      </Route>
+        {/* 구매문의 라우트 그룹 */}
+        <Route path="buy-inquiry">
+          <Route index element={<About />} />
+          <Route path="write" element={<BuyWrite />} />
+          <Route path="detail/:id" element={<BuyDetail />} /> {/* ✅ 상세 페이지 추가 */}
+        </Route>
 
-      {/* 대여문의 라우트 그룹 */}
-      <Route path="rental-inquiry">
-        <Route index element={<About />} />
-        <Route path="write" element={<RentalWrite />} />
-        <Route path="detail/:id" element={<RentalDetail />} /> {/* ✅ 상세 페이지 추가 */}
-      </Route>
+        {/* 대여문의 라우트 그룹 */}
+        <Route path="rental-inquiry">
+          <Route index element={<About />} />
+          <Route path="write" element={<RentalWrite />} />
+          <Route path="detail/:id" element={<RentalDetail />} /> {/* ✅ 상세 페이지 추가 */}
+        </Route>
 
+        {/* 새로운 리뷰 라우트 그룹 */}
+        <Route path="reviews">
+          <Route index element={<Reviews />} /> {/* ✅ 리뷰 페이지 추가 */}
+          <Route path="/reviews/" element={<Reviews />} />
+          <Route path="/reviews/:id/" element={<ReviewDetail />} />
+        </Route>
 
-      <Route path="/notice" element={<NoticePage />} /> {/* ✅ 추가 */}
-      <Route path="/notice/detail/:id" element={<NoticeDetail />} /> {/* ✅ 공지사항 상세 */}
+        <Route path="/notice" element={<NoticePage />} /> {/* ✅ 추가 */}
+        <Route path="/notice/detail/:id" element={<NoticeDetail />} /> {/* ✅ 공지사항 상세 */}
 
-
-      
-        {/* <Route path="template" element={<MarketingPage />} /> */}
         <Route path="about" element={<About />} />
 
         <Route path="product">
-          <Route index element={<ProductList />} />  {/* /product */}
-          <Route path=":id" element={<ProductDetail />} />  {/* /product/:id */}
-          <Route path=":id/rental-write" element={<RentalWrite />} />  {/* /product/:id/rental-write */}
+          <Route index element={<ProductList />} /> {/* /product */}
+          <Route path=":id" element={<ProductDetail />} /> {/* /product/:id */}
+          <Route path=":id/rental-write" element={<RentalWrite />} /> {/* /product/:id/rental-write */}
         </Route>
 
         <Route path="order">
@@ -179,4 +178,3 @@ function Router(){
 }
 
 export default App;
-

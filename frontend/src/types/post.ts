@@ -12,14 +12,16 @@ export interface Author {
   export interface Post {
     id: number;
     title: string;
-    price: string;
     content: string;
-    author: Author;
-    rental?: RentalInfo;
+    date: string;
+    views: number;
+    author: { name: string; avatar?: string };
+    tag: string;
     locked: boolean;
     password?: string;
-    tag: string;
-    date:string;
-    views:number;
+    images: string[]; // Array of Base64 strings
+    contact: string;
+    accountHolder: string;
+    bankName: string;
+    accountNumber: string;
   }
-  

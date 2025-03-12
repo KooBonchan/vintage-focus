@@ -66,7 +66,7 @@ const WeeklyBestGallery = () => {
 
       <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
         {currentPageProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid item xs={12} sm={6} md={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
               <ProductCard product={product} />
             </Box>

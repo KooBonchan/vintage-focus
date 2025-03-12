@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Box, Typography, Card, Avatar, Modal, TextField, Button } from "@mui/material";
+import { Box, Typography, Card, Avatar, Modal, TextField } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
-import { useNavigate } from "react-router-dom"; // react-router-dom 사용 시 필요
+import CustomButton from '../components/CustomButton'; // 경로 맞춰서 임포트
+import { useNavigate } from "react-router-dom";
 
 export interface Author {
   name: string;
@@ -30,8 +31,8 @@ export interface BoardCardProps {
   viewsCountColor?: string;
   onUnlock?: (id: number, password: string) => void;
   isManager?: boolean;
-  link?: string; // 클릭 시 이동할 링크
-  onClick?: () => void; // 새로 추가: 상위 컴포넌트에서 전달받은 클릭 이벤트 핸들러
+  link?: string;
+  onClick?: () => void;
 }
 
 interface PasswordModalProps {
@@ -42,7 +43,13 @@ interface PasswordModalProps {
   modalRef: React.RefObject<HTMLDivElement>;
 }
 
-const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose, onUnlock, isManager = false, modalRef }) => {
+const PasswordModal: React.FC<PasswordModalProps> = ({
+  open,
+  onClose,
+  onUnlock,
+  isManager = false,
+  modalRef,
+}) => {
   const [password, setPassword] = useState("");
 
   const handleUnlockClick = () => {
@@ -60,37 +67,46 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose, onUnlock, 
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 300,
-          bgcolor: "background.paper",
-          borderRadius: 2,
-          boxShadow: "0 4px 8px rgba(133, 133, 133, 0.15)",
+          width: 350,
+          bgcolor: isManager ? "#333" : "#fff",
+          borderRadius: 3,
+          boxShadow: "0 8px 15px rgba(0, 0, 0, 0.2)",
           p: 4,
           display: "flex",
           flexDirection: "column",
           gap: 2,
         }}
       >
-        <Typography variant="h6" color={isManager ? "#FFFFFF" : "inherit"}>비밀번호 입력</Typography>
+        <Typography
+          variant="h6"
+          color={isManager ? "#fff" : "inherit"}
+          fontWeight="bold"
+        >
+          비밀번호 입력
+        </Typography>
         <TextField
           label="비밀번호"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
-        />
-        <Button
-          variant="contained"
-          onClick={handleUnlockClick}
           sx={{
-            backgroundColor: "#445366",
-            color: "#FFFFFF",
-            "&:hover": {
-              backgroundColor: "#334050",
+            "& .MuiInputLabel-root": {
+              color: isManager ? "#B0BEC5" : "text.primary",
+            },
+            "& .MuiInputBase-root": {
+              backgroundColor: "#f7f7f7",
+              borderRadius: 2,
             },
           }}
-        >
-          확인
-        </Button>
+        />
+        {/* CustomButton으로 교체 */}
+        <CustomButton
+          label="확인"
+          size="medium"
+          onClick={handleUnlockClick}
+          backgroundColor={isManager ? "#3f51b5" : "#3f51b5"}
+        />
       </Box>
     </Modal>
   );
@@ -122,11 +138,11 @@ const BoardCard: React.FC<BoardCardProps> = ({
   onUnlock,
   isManager = false,
   link,
-  onClick, // 새로 추가
+  onClick,
 }) => {
   const [open, setOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate(); // react-router-dom 사용 시 추가
+  const navigate = useNavigate();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -146,7 +162,6 @@ const BoardCard: React.FC<BoardCardProps> = ({
       }
       if (link) {
         navigate(link); // 링크가 있으면 이동 (react-router-dom 사용 시)
-        // window.location.href = link; // react-router-dom 없이 외부 URL로 이동 시 사용
       }
     }
   };

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, TextField, Button, Switch, FormControlLabel } from "@mui/material";
+import { Box, Typography, TextField, Switch, FormControlLabel, useTheme } from "@mui/material";
 import { Post } from "../../../types/post";
+import CustomButton from "../../../components/CustomButton"; // Importing CustomButton
 
 export default function BuyWrite() {
   const navigate = useNavigate();
+  const theme = useTheme(); // Access current theme
 
   // 게시글 데이터 상태 관리
   const [title, setTitle] = useState("");
@@ -60,11 +62,25 @@ export default function BuyWrite() {
         width: "100%",
         maxWidth: 900,
         margin: "0 auto",
-        backgroundColor: "white",
+        backgroundColor: theme.palette.mode === 'dark' ? '#333' : 'white', // Dark mode background
+        color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode text color
         padding: 3,
         borderRadius: "8px",
+        border: `1px solid ${theme.palette.mode === 'dark' ? '#fff' : '#808080'}`, // Light mode border is gray
       }}
     >
+      {/* 공개/비공개 설정 (오른쪽 정렬로 제목 위로 이동) */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
+          <FormControlLabel
+            control={<Switch checked={!isPublic} onChange={handleSwitchChange} />}
+            label=""
+            sx={{ m: 0 }}
+          />
+        </Box>
+      </Box>
+
       {/* 제목 입력 */}
       <Box sx={{ mb: 3 }}>
         <TextField
@@ -74,7 +90,18 @@ export default function BuyWrite() {
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          sx={{ mb: 1, "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          sx={{
+            mb: 1,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+            },
+            "& .MuiInputLabel-root": {
+              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+            },
+          }}
         />
       </Box>
 
@@ -88,37 +115,23 @@ export default function BuyWrite() {
           fullWidth
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          sx={{ "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+            },
+            "& .MuiInputLabel-root": {
+              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+            },
+          }}
         />
       </Box>
 
-      {/* 안내사항 */}
-      <Box sx={{ backgroundColor: "#e3f2fd", padding: 2, borderRadius: 2, mb: 3 }}>
-        <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
-          안내사항
-        </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
-          <Typography variant="body1" color="text.primary">
-            ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* 게시물 공개 설정 */}
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 3 }}>
-        <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
-        <FormControlLabel
-          control={<Switch checked={!isPublic} onChange={handleSwitchChange} />}
-          label=""
-          sx={{ m: 0 }}
-        />
-        {!isPublic && (
+      {/* 비밀번호 입력 (비공개일 경우) */}
+      {!isPublic && (
+        <Box sx={{ mb: 3 }}>
           <TextField
             label="비밀번호 (4자리 숫자)"
             type="password"
@@ -135,15 +148,57 @@ export default function BuyWrite() {
               }
             }}
             inputProps={{ maxLength: 4, pattern: "[0-9]*" }}
-            sx={{ mt: 1, maxWidth: "300px", mb: 2 }}
+            sx={{
+              mt: 1,
+              maxWidth: "300px",
+              mb: 2,
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+              },
+              "& .MuiInputLabel-root": {
+                color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+              },
+            }}
           />
-        )}
-      </Box>
+        </Box>
+      )}
 
-      {/* 등록 버튼 */}
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        게시글 등록하기
-      </Button>
+      {/* 게시글 등록하기 버튼 */}
+      <CustomButton
+        label="게시글 등록하기"
+        size="colorkingbiglarge" // Use the size prop as per your specification
+        onClick={handleSubmit} // Submit the form on button click
+      />
+
+      {/* 이미지 추가 */}
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
+        <img
+          src="/image/notice/mooni2.jpg" // Use relative path to the image
+          alt="공지사항"
+          style={{ width: "100%", height: "auto", objectFit: "cover" }}
+        />
+      </Box>
     </Box>
   );
 }
+
+// /* buy 안내사항 
+// <Box sx={{ backgroundColor: "#e3f2fd", padding: 2, borderRadius: 2, mb: 3 }}>
+// <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
+//   안내사항
+// </Typography>
+// <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
+//   <Typography variant="body1" color="text.primary">
+//     ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
+//   </Typography>
+//   <Typography variant="body1" color="text.primary">
+//     ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
+//   </Typography>
+//   <Typography variant="body1" color="text.primary">
+//     ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
+//   </Typography>
+// </Box>
+// </Box>

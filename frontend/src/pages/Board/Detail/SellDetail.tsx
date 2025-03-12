@@ -105,7 +105,10 @@ export default function SellDetail() {
 
           <Divider sx={{ mb: 2 }} />
 
-        {/* 안내사항 */}
+
+
+
+        {/* 안내사항
         <Box sx={{ backgroundColor: "#e3f2fd", padding: 2, borderRadius: 2, mb: 3 }}>
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             안내사항
@@ -144,8 +147,19 @@ export default function SellDetail() {
               ※ 당사에서 제품 수령 이후 매입 금액이 마음에 드시지 않을 시, 왕복 배송비는 고객님께서 부담해주셔야합니다.
             </Typography>
           </Box>
-        </Box>
+        </Box> */}
+        
 
+          {/* 이미지 추가 */}
+              <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
+                <img
+                  src="/image/notice/mooni.jpg" // Use relative path to the image
+                  alt="공지사항"
+                  style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                />
+              </Box>
+
+            
           {/* 작성 정보 */}
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             작성 정보

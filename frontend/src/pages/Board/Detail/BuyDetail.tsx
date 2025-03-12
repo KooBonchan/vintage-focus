@@ -84,6 +84,14 @@ export default function BuyDetail() {
 
           <Divider sx={{ mb: 2 }} />
 
+       {/* 이미지 추가 */}
+       <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
+                <img
+                  src="/image/notice/mooni2.jpg" // Use relative path to the image
+                  alt="공지사항"
+                  style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                />
+              </Box>
           {/* 안내사항 (파란색 블록) */}
           <Box
             sx={{
@@ -94,9 +102,7 @@ export default function BuyDetail() {
               textAlign: "center",
             }}
           >
-            <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
-              안내사항
-            </Typography>
+            
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
               <Typography variant="body1" color="text.primary">
                 ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
@@ -107,7 +113,7 @@ export default function BuyDetail() {
               <Typography variant="body1" color="text.primary">
                 ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
               </Typography>
-            </Box>
+            </Box> 
           </Box>
 
           {/* 작성 정보 */}

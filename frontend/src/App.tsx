@@ -30,7 +30,6 @@ import NoticePage from './pages/Board/Notice/NoticePage';
 import OrderCompletePage from './pages/order/complete';
 import DeliveryPage from './pages/order/delivery';
 import Reviews from './pages/Reviews/reviews';
-import '@/utils/axiosConfig';
 import ReviewDetail from './pages/Board/Detail/ReviewDetail';
 
 

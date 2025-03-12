@@ -97,19 +97,22 @@ export default function HeaderBar() {
               </>
               
             )
-            :
-            (<NavLink to="/signin">
+            :(
+            <>
+            <NavLink to="/signin">
               <Button color="primary" variant="text" size="small">
                 Sign in
               </Button>
             </NavLink>
 
             <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1, alignItems: "center" }}>
-            {/* 관리자 페이지 */}
-            <Button color="secondary" size="small" onClick={() => navigate("/admin/dashboard")}>
+          {/* 관리자 페이지 */}
+          <Button color="secondary" size="small" onClick={() => navigate("/admin/dashboard")}>
             ⚙️
-            </Button>
-            </NavLink>)}
+          </Button>
+              </Box>
+            </>
+      )}
             <ColorModeIconDropdown />
           </Box>
           {/* md size end */}
@@ -178,7 +181,6 @@ export default function HeaderBar() {
                 
               </Box>
             </Drawer>
-          </Box>
           </Box>
           {/* xs size end */}
         </StyledToolbar>

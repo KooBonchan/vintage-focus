@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
+import { Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
 
 const AdminProducts = () => {
   // 상품 목록 상태
@@ -25,15 +25,15 @@ const AdminProducts = () => {
   };
 
   return (
-    <Box sx={{  width: "calc(100% - 260px)", mt: 4, display: "flex", justifyContent: "center" }}>
-      <Box sx={{ maxWidth: 1200, width: "100%" }}>
-        <Typography variant="h4" gutterBottom textAlign="center">
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 4, width: "100%" }}>
+      <Box sx={{ maxWidth: 800, width: "100%", textAlign: "center" }}>
+        <Typography variant="h4" gutterBottom>
           상품 관리
         </Typography>
 
         {/* 상품 등록 폼 */}
-        <Paper sx={{ p: 3, mb: 3 }}>
-          <Typography variant="h6" gutterBottom>📦 상품 추가</Typography>
+        <Paper sx={{ p: 3, mb: 3, textAlign: "center", }}>
+          <Typography variant="h6" gutterBottom > 상품 추가</Typography>
           <TextField
             label="상품명"
             name="name"
@@ -51,33 +51,35 @@ const AdminProducts = () => {
             fullWidth
             sx={{ mb: 2 }}
           />
-          <Button variant="contained" color="primary" onClick={handleAddProduct} fullWidth>
+          <Button variant="outlined" color="primary" onClick={handleAddProduct} fullWidth>
             상품 추가
           </Button>
         </Paper>
 
         {/* 상품 목록 테이블 */}
         <Typography variant="h6" gutterBottom>상품 목록</Typography>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-                <TableCell align="center"><b>ID</b></TableCell>
-                <TableCell align="center"><b>상품명</b></TableCell>
-                <TableCell align="center"><b>가격</b></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {products.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell align="center">{product.id}</TableCell>
-                  <TableCell align="center">{product.name}</TableCell>
-                  <TableCell align="center">{product.price.toLocaleString()}원</TableCell>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <TableContainer component={Paper} sx={{ width: "90%", maxWidth: 600 }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+                  <TableCell align="center"><b>ID</b></TableCell>
+                  <TableCell align="center"><b>상품명</b></TableCell>
+                  <TableCell align="center"><b>가격</b></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {products.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell align="center">{product.id}</TableCell>
+                    <TableCell align="center">{product.name}</TableCell>
+                    <TableCell align="center">{product.price.toLocaleString()}원</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
     </Box>
   );

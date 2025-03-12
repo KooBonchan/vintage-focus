@@ -107,6 +107,7 @@ export default function HeaderBar() {
               </>
               
             )
+
             :
             ( <NavLink to="/signin">
                 <Button color="primary" variant="text" size="small">
@@ -115,7 +116,7 @@ export default function HeaderBar() {
               </NavLink>
             )
             }
-            <ColorModeIconDropdown />
+           <ColorModeIconDropdown />
           </Box>
           {/* md size end */}
 

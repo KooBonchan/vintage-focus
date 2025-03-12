@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,13 +28,25 @@ public class ProductController {
 
   @Operation(summary = "Get all products", description = "Retrieves a list of all products")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))),
+    @ApiResponse(
+      responseCode = "200",
+      description = "Successful operation",
+      content = @Content(
+        mediaType = "application/json",
+        array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)))),
     @ApiResponse(responseCode = "404", description = "No products found")
   })
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<ResponseEntity<Flux<ProductDTO>>> getAllProducts() {
-    return Mono.just(ResponseEntity.ok(productService.getAllProducts()))
-      .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+    Flux<ProductDTO> products = productService.getAllProducts();
+    return products.hasElements() // Check if the Flux has any elements
+      .map(hasElements -> {
+        if (hasElements) {
+          return ResponseEntity.ok(products);
+        } else {
+          return ResponseEntity.notFound().build();
+        }
+      });
   }
 
   @Operation(

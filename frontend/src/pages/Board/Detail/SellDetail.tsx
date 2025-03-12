@@ -203,8 +203,7 @@ export default function SellDetail() {
                 ※ 당사에서 제품 수령 이후 매입 금액이 마음에 드시지 않을 시, 왕복 배송비는 고객님께서 부담해주셔야합니다.
               </Typography>
             </Box>
-          </Box>
-
+          </Box> 
           {/* 작성 정보 */}
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             작성 정보

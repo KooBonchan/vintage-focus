@@ -16,9 +16,11 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close"; // "X" 아이콘 사용
 import { Post } from "../../../types/post";
+import CustomButton from "../../../components/CustomButton"; // Importing CustomButton
 
 export default function SellWrite() {
   const navigate = useNavigate();
+  const theme = useTheme(); // Access current theme
 
   // State management for form fields
   const [title, setTitle] = useState("");
@@ -67,7 +69,6 @@ export default function SellWrite() {
   };
 
   const handleAddImage = (index: number) => {
-    console.log(`이미지 ${index + 1} 첨부 클릭`);
     if (fileInputRefs.current[index]) {
       fileInputRefs.current[index]?.click();
     }
@@ -162,23 +163,25 @@ export default function SellWrite() {
     const now = new Date();
     const formattedDate = now.toISOString();
 
+
     const newPost: Post = {
       id: Date.now(),
       title,
       content,
-      date: formattedDate,
+      date: new Date().toISOString(),
       views: 0,
       author: { name: sellerName, avatar: "/static/images/avatar/default.png" },
       tag: "매각문의",
       locked: !isPublic,
       password: !isPublic ? password : undefined,
-      images: imageBase64s.filter((base64) => base64 !== ""), // 빈 문자열 제거
+      images: images.map((file) => file?.name).filter(Boolean),
       contact,
       accountHolder,
       bankName,
       accountNumber,
     };
 
+    // 게시글 저장
     const posts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     sessionStorage.setItem("posts", JSON.stringify([newPost, ...posts]));
 
@@ -192,11 +195,25 @@ export default function SellWrite() {
         width: "100%",
         maxWidth: 900,
         margin: "0 auto",
-        backgroundColor: "white",
+        backgroundColor: theme.palette.mode === 'dark' ? '#333' : 'white', // Dark mode background, light mode defaults to white
+        color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode text color, light mode defaults to black
         padding: 3,
         borderRadius: "8px",
+        border: `1px solid ${theme.palette.mode === 'dark' ? '#fff' : '#808080'}`, // Border color for light mode (gray), and white for dark mode
       }}
     >
+      {/* 공개/비공개 설정 (오른쪽 정렬로 제목 위로 이동) */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
+          <FormControlLabel
+            control={<Switch checked={!isPublic} onChange={handleSwitchChange} />}
+            label=""
+            sx={{ m: 0 }}
+          />
+        </Box>
+      </Box>
+
       {/* 제목 입력 */}
       <Box sx={{ mb: 3 }}>
         <TextField
@@ -206,7 +223,18 @@ export default function SellWrite() {
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          sx={{ mb: 1, "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          sx={{
+            mb: 1,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+            },
+            "& .MuiInputLabel-root": {
+              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+            },
+          }}
         />
       </Box>
 
@@ -220,7 +248,17 @@ export default function SellWrite() {
           fullWidth
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          sx={{ "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+            },
+            "& .MuiInputLabel-root": {
+              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+            },
+          }}
         />
       </Box>
 
@@ -316,15 +354,12 @@ export default function SellWrite() {
       <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3 }}>
         {[0, 1, 2].map((index) => (
           <Box key={index} sx={{ textAlign: "center" }}>
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<AddIcon />}
-              onClick={() => handleAddImage(index)}
-              sx={{ minWidth: 120, height: 40, mb: 1 }}
-            >
-              {images[index] ? images[index].name : `이미지 ${index + 1}`}
-            </Button>
+
+            <CustomButton
+              label={images[index] ? images[index].name : `이미지 ${index + 1}`}
+              size="medium"
+              onClick={() => handleAddImage(index)} // 이미지 선택 클릭 핸들러
+            />
             {imagePreviews[index] && (
               <Box sx={{ maxWidth: 400, maxHeight: 400, overflow: "hidden", mt: 1, position: "relative" }}>
                 <img
@@ -437,3 +472,4 @@ export default function SellWrite() {
     </Box>
   );
 }
+

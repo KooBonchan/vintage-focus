@@ -11,7 +11,7 @@ const WeeklyBestItem = ({ product }: { product: ProductResponse }) => {
           transition: "all 0.3s ease", // 부드러운 전환
           "&:hover": {
             transform: "translateY(-5px)", // 마우스 올리면 위로 올라감
-            boxShadow: 6, // 마우스 올리면 그림자 강하게
+            boxShadow: 3, // 마우스 올리면 그림자 강하게
           },
         }}
       />

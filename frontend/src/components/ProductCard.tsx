@@ -70,8 +70,7 @@ const ProductCard = ({
         image={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/2143591775204-1-2.jpg`}
         alt={product.productName}
         sx={{
-          width: "100%",
-          height: "auto",
+          height: height-115,
           borderRadius: 2,
         }}
       />

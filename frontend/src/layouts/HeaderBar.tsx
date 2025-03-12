@@ -12,11 +12,12 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import * as React from 'react';
-import { NavLink } from 'react-router-dom';  // 수정: react-router-dom 사용
+import { NavLink, useNavigate } from 'react-router-dom';  // 수정: react-router-dom 사용
 import ColorModeIconDropdown from '../components/ColorModeIconDropdown';
 import Logo from '../components/Logo';
 import useAuthStore from '@/stores/authStore';
 import { LogoutOutlined } from '@mui/icons-material';
+
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -49,6 +50,7 @@ export default function HeaderBar() {
   const {user, clearAuth} = useAuthStore();
 
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -80,8 +82,17 @@ export default function HeaderBar() {
               ))}
             </Box>
           </Box>
-          
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+            <IconButton
+              onClick={() => navigate("/admin/dashboard")}
+              disableRipple
+              size="small"
+              aria-controls={open ? 'color-scheme-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
+              ⚙️
+            </IconButton>
             {user?
             ( <>
               <Avatar
@@ -97,11 +108,13 @@ export default function HeaderBar() {
               
             )
             :
-            (<NavLink to="/signin">
-              <Button color="primary" variant="text" size="small">
-                Sign in
-              </Button>
-            </NavLink>)}
+            ( <NavLink to="/signin">
+                <Button color="primary" variant="text" size="small">
+                  Sign in
+                </Button>
+              </NavLink>
+            )
+            }
             <ColorModeIconDropdown />
           </Box>
           {/* md size end */}

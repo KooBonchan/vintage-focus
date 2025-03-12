@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState("https://via.placeholder.com/150"); // 기본 프로필 이미지
+  const [profileImage, setProfileImage] = useState("https://via.placeholder.com/150");
 
-  // 프로필 사진 변경 핸들러
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -27,7 +26,6 @@ const MyPage = () => {
         margin: "0 auto",
       }}
     >
-      {/* ✅ 왼쪽 사이드바 (고정 스크롤) */}
       <Box
         sx={{
           position: "sticky",
@@ -44,48 +42,29 @@ const MyPage = () => {
           마이페이지
         </Typography>
         <List>
-  <ListItem 
-    button 
-    sx={{ 
-      "&:hover": { backgroundColor: "#f0f0f0" }, // 마우스 올릴 때 배경색 변경
-      cursor: "pointer" // 커서를 손가락 모양으로 변경
-    }}
-  >
-                    <ListItemText primary="배송 조회" />
-                </ListItem>
-                <ListItem 
-                    button 
-                    sx={{ 
-                    "&:hover": { backgroundColor: "#f0f0f0" },
-                    cursor: "pointer"
-                    }}
-                >
-                    <ListItemText primary="쿠폰함" />
-                </ListItem>
-                <ListItem 
-                    button 
-                    onClick={() => navigate("/mypage/review/")}
-                    sx={{ 
-                    "&:hover": { backgroundColor: "#f0f0f0" },
-                    cursor: "pointer"
-                    }}
-                >
-                    <ListItemText primary="리뷰 작성" />
-                </ListItem>
-                <ListItem 
-                    button 
-                    sx={{ 
-                    "&:hover": { backgroundColor: "#f0f0f0" },
-                    cursor: "pointer"
-                    }}
-                >
-                    <ListItemText primary="내 리뷰 수정하기" />
-                </ListItem>
-                </List>
-
+          <ListItem button sx={{ "&:hover": { backgroundColor: "#f0f0f0" }, cursor: "pointer" }}>
+            <ListItemText primary="배송 조회" />
+          </ListItem>
+          <ListItem button sx={{ "&:hover": { backgroundColor: "#f0f0f0" }, cursor: "pointer" }}>
+            <ListItemText primary="쿠폰함" />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => navigate("/write-review")}
+            sx={{ "&:hover": { backgroundColor: "#f0f0f0" }, cursor: "pointer" }}
+          >
+            <ListItemText primary="리뷰 작성" />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => navigate("/mypage/edit-reviews/")}
+            sx={{ "&:hover": { backgroundColor: "#f0f0f0" }, cursor: "pointer" }}
+          >
+            <ListItemText primary="내 리뷰 수정하기" />
+          </ListItem>
+        </List>
       </Box>
 
-      {/* ✅ 프로필 사진 변경 기능 */}
       <Box sx={{ textAlign: "center", flexGrow: 1 }}>
         <Typography variant="h5" sx={{ mb: 3 }}>
           프로필 설정

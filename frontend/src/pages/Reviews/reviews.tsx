@@ -258,6 +258,7 @@ const Reviews = () => {
               boxShadow: 1,
               minWidth: 250,
               cursor: "pointer",
+              height: "100%", // 카드 높이를 유연하게 설정
             }}
             onClick={() => navigate(`/reviews/${review.id}/`)}
           >
@@ -272,13 +273,35 @@ const Reviews = () => {
               component="img"
               image={review.images[0]} // 첫 번째 사진 표시
               alt={`Camera Review ${review.id}`}
-              sx={{ width: "100%", height: 200, objectFit: "cover", mb: 1 }}
+              sx={{
+                width: "100%",
+                height: 200,
+                objectFit: "contain", // contain으로 변경하여 전체 이미지 표시
+                backgroundColor: "#f0f0f0", // 빈 공간 채우기
+                mb: 1,
+              }}
             />
-            <CardContent sx={{ textAlign: "center", flexGrow: 1 }}>
-              <Typography variant="body2" sx={{ color: "#000000", mb: 1 }}>
-                {formatReviewContent(review.content)}
-              </Typography>
-              <Typography variant="body1" sx={{ color: "#666666" }}>
+            <CardContent
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                flexGrow: 1,
+                textAlign: "center",
+                padding: 0, // 기본 패딩 제거
+                height: "100%", // CardContent도 높이를 채우도록 설정
+              }}
+            >
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="body2" sx={{ color: "#000000", mb: 2 }}>
+                  {formatReviewContent(review.content)}
+                </Typography>
+              </Box>
+              {/* 작성 날짜를 하단에 고정 */}
+              <Typography
+                variant="body1"
+                sx={{ color: "#666666", mt: "auto", paddingTop: 1 }}
+              >
                 작성 날짜: {formatDate(review.createdAt)}
               </Typography>
             </CardContent>

@@ -34,6 +34,8 @@ import ReviewDetail from './pages/Board/Detail/ReviewDetail';
 import MyPage from './pages/MyPage/Mypage';
 import ReviewNew from './pages/Reviews/reviewnew';
 import WroteReview from './pages/Reviews/wrotereview';
+import EditReviewList from './pages/Reviews/EditReviewList';
+import EditReviewForm from './pages/Reviews/EditReviewForm';
 
 
 const baseTheme = createTheme({
@@ -141,10 +143,22 @@ function Router() {
         </Route>
 
         {/* 새로운 리뷰 라우트 그룹 */}
+        {/* 리뷰 작성 페이지 */}
+        <Route path="/write-review" element={<WroteReview />} />
+
+        {/* 리뷰 관련 중첩 라우트 */}
         <Route path="reviews">
-          <Route index element={<Reviews />} /> {/* ✅ 리뷰 페이지 추가 */}
-          <Route path="/reviews/" element={<Reviews />} />
-          <Route path="/reviews/:id/" element={<ReviewDetail />} />
+          <Route index element={<Reviews />} /> {/* 기본 경로: /reviews */}
+          <Route path=":id" element={<ReviewDetail />} /> {/* 상세 페이지: /reviews/:id */}
+        </Route>
+
+        {/* 마이페이지 및 리뷰 수정 관련 경로 */}
+        <Route path="/mypage">
+          <Route index element={<MyPage />} /> {/* 기본 경로: /mypage */}
+          <Route path="edit-reviews">
+            <Route index element={<EditReviewList />} /> {/* 리뷰 수정 목록: /mypage/edit-reviews */}
+            <Route path=":id" element={<EditReviewForm />} /> {/* 리뷰 수정 폼: /mypage/edit-reviews/:id */}
+          </Route>
         </Route>
 
         <Route path="/notice" element={<NoticePage />} /> {/* ✅ 추가 */}

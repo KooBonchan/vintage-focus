@@ -67,17 +67,32 @@ const ReviewDetail = () => {
     );
   }
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
   return (
     <Box
       sx={{
-        maxWidth: 800,
-        margin: "0 auto",
-        padding: 3,
+        maxWidth: "100%", // 전체 너비를 화면에 맞춤
+        margin: 0, // 여백 제거
+        padding: 0, // 패딩 제거
         textAlign: "center",
         backgroundColor: "#ffffff",
+        height: "100vh", // 화면 전체 높이 사용
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "auto", // 내용이 넘칠 경우 스크롤 가능
       }}
     >
-      <Typography variant="h4" gutterBottom sx={{ color: "#000000" }}>
+      <Typography variant="h4" gutterBottom sx={{ color: "#000000", mb: 2 }}>
         리뷰 상세 페이지
       </Typography>
       <Card
@@ -85,11 +100,14 @@ const ReviewDetail = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: 2,
           backgroundColor: "#ffffff",
-          borderRadius: 2,
           boxShadow: 1,
-          minWidth: 250,
+          borderRadius: 2,
+          width: "80%", // 카드 너비를 화면의 80%로 설정
+          maxWidth: 800, // 최대 너비 제한
+          margin: "0 auto", // 중앙 정렬
+          padding: 2,
+          overflow: "auto", // 내용이 넘칠 경우 스크롤
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -105,10 +123,18 @@ const ReviewDetail = () => {
             component="img"
             image={image}
             alt={`Review Image ${index + 1}`}
-            sx={{ width: "100%", height: 300, objectFit: "cover", mb: 2 }}
+            sx={{
+              width: "100%", // 너비를 100%로 설정
+              height: "auto", // 높이를 자동으로 조정
+              maxHeight: "60vh", // 화면 높이의 60%로 제한
+              objectFit: "contain", // 비율 유지하며 전체 표시
+              display: "block", // 블록 요소로 설정
+              margin: 0, // 여백 제거
+              padding: 0, // 패딩 제거
+            }}
           />
         ))}
-        <CardContent sx={{ textAlign: "center", flexGrow: 1 }}>
+        <CardContent sx={{ textAlign: "center", mt: 2 }}>
           <Typography variant="body1" sx={{ color: "#000000", mb: 2 }}>
             {review.content}
           </Typography>
@@ -127,15 +153,6 @@ const ReviewDetail = () => {
       </Button>
     </Box>
   );
-};
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
 };
 
 export default ReviewDetail;

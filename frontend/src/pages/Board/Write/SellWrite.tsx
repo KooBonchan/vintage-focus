@@ -1,4 +1,3 @@
-// SellWrite.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,8 +11,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close"; // "X" 아이콘 사용
 import { Post } from "../../../types/post";
 
 export default function SellWrite() {
@@ -25,7 +26,7 @@ export default function SellWrite() {
   const [isPublic, setIsPublic] = useState(true);
   const [password, setPassword] = useState("");
   const [images, setImages] = useState<File[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<string[]>(["", "", ""]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [sellerName, setSellerName] = useState("");
   const [contact, setContact] = useState("");
   const [accountHolder, setAccountHolder] = useState("");
@@ -33,7 +34,7 @@ export default function SellWrite() {
   const [accountNumber, setAccountNumber] = useState("");
   const [imageBase64s, setImageBase64s] = useState<string[]>([]); // Store Base64 strings
 
-  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([null, null, null]);
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // List of Korean banks
   const bankList = [
@@ -50,6 +51,14 @@ export default function SellWrite() {
     "카카오뱅크",
     "토스뱅크",
   ];
+
+  // 초기화: 3개의 이미지 슬롯 준비
+  useEffect(() => {
+    setImages(new Array(3).fill(null));
+    setImagePreviews(new Array(3).fill(""));
+    setImageBase64s(new Array(3).fill(""));
+    fileInputRefs.current = new Array(3).fill(null);
+  }, []);
 
   const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newIsPublic = !e.target.checked;
@@ -89,6 +98,31 @@ export default function SellWrite() {
 
       console.log(`이미지 ${index + 1} 선택됨:`, file.name);
     }
+  };
+
+  // 이미지 삭제 함수 (개선됨)
+  const handleRemoveImage = (index: number) => {
+    const updatedImages = [...images];
+    updatedImages[index] = null; // null로 초기화
+    setImages(updatedImages);
+
+    const updatedPreviews = [...imagePreviews];
+    if (updatedPreviews[index]) {
+      URL.revokeObjectURL(updatedPreviews[index]); // 메모리 해제
+    }
+    updatedPreviews[index] = "";
+    setImagePreviews(updatedPreviews);
+
+    const updatedBase64s = [...imageBase64s];
+    updatedBase64s[index] = "";
+    setImageBase64s(updatedBase64s);
+
+    // 파일 입력 초기화
+    if (fileInputRefs.current[index]) {
+      fileInputRefs.current[index]!.value = "";
+    }
+
+    console.log(`이미지 ${index + 1} 삭제됨`);
   };
 
   useEffect(() => {
@@ -138,7 +172,7 @@ export default function SellWrite() {
       tag: "매각문의",
       locked: !isPublic,
       password: !isPublic ? password : undefined,
-      images: imageBase64s.filter(Boolean), // Store Base64 strings
+      images: imageBase64s.filter((base64) => base64 !== ""), // 빈 문자열 제거
       contact,
       accountHolder,
       bankName,
@@ -292,12 +326,28 @@ export default function SellWrite() {
               {images[index] ? images[index].name : `이미지 ${index + 1}`}
             </Button>
             {imagePreviews[index] && (
-              <Box sx={{ maxWidth: 400, maxHeight: 400, overflow: "hidden", mt: 1 }}>
+              <Box sx={{ maxWidth: 400, maxHeight: 400, overflow: "hidden", mt: 1, position: "relative" }}>
                 <img
                   src={imagePreviews[index]}
                   alt={`미리 보기 ${index + 1}`}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => handleRemoveImage(index)}
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    color: "white",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.7)",
+                    },
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
               </Box>
             )}
             <input

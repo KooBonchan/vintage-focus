@@ -4,6 +4,13 @@ import { Container, Paper, Box, Typography, TextField, Button, Grid, Dialog, Dia
 
 let PortOne: any = null;
 
+const pageColors = {
+  paperBgcolor: {light: "#fff", dark: "#262626"},
+  boxBgcolor: {light: "#fcfcfc", dark: "#595959"},
+
+  secondaryFontColor: {light: "#555", dark: "#ccc"},
+}
+
 
 const DeliveryPage = () => {
   const location = useLocation();
@@ -50,6 +57,7 @@ const DeliveryPage = () => {
 
   // 주문한 상품의 가격 계산
  useEffect(() => {
+  if (orderItems.length === 0) return; 
     const totalPrice = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const totalShipping = orderItems.reduce((acc, item) => acc + item.shipping, 0);
     setForm((prev) => ({
@@ -63,6 +71,14 @@ const DeliveryPage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+
+  useEffect(() => {
+    if (!orderItems.length) {
+      console.warn("주문 상품이 없습니다. 홈으로 이동합니다.");
+      navigate("/", { replace: true });
+    }
+  }, [orderItems, navigate]);
 
 
 
@@ -180,14 +196,14 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
   return (
-    <Container maxWidth="md" sx={{ py: 4,bgcolor: "#f8f8f8", minHeight: "100vh" }}>
+    <Container maxWidth="md" sx={{ py: 4, minHeight: "100vh" }}>
       {/* 주문 상세 내역 */}
-      <Paper sx={{ p: 3, mb: 3, bgcolor: "#fff", boxShadow: "none", borderRadius: "8px", border: "1px solid #ddd" }}>
+      <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {"light": "#ddd", "dark":"#333333"}, }}>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" } }>
           주문 상세 내역
         </Typography>
-        <Box sx={{ border: "1px solid #ddd", p: 2, borderRadius: "8px", bgcolor: "#fcfcfc" }}>
-          <Grid container spacing={1} sx={{ borderBottom: "1px solid #ddd", pb: 1 }}>
+        <Box sx={{ borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, p: 2, borderRadius: "8px", bgcolor: pageColors.boxBgcolor }}>
+          <Grid container spacing={1} sx={{ borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, pb: 1 }}>
             <Grid item xs={2} sx={{ fontWeight: "bold", textAlign: "center" }}>상품 이미지</Grid>
             <Grid item xs={3} sx={{ fontWeight: "bold", textAlign: "center" }}>상품/옵션 정보</Grid>
             <Grid item xs={2} sx={{ fontWeight: "bold", textAlign: "center" }}>수량</Grid>
@@ -215,7 +231,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         </Box>
 
            {/* 합계 금액 */}
-      <Paper sx={{ p: 2, mt: 3, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", border: "1px solid #ddd", bgcolor: "#FFFFFF", minHeight: "50px" }}>
+      <Paper sx={{ p: 2, mt: 3, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, bgcolor: pageColors.paperBgcolor, minHeight: "50px" }}>
         <Typography sx={{ fontWeight: "bold", minWidth: "200px", textAlign: "center" }}>
           총 {orderItems.length}개의 상품 금액 {form.totalPrice}
         </Typography>
@@ -233,31 +249,31 @@ const handleSubmit = async (e: React.FormEvent) => {
       
 
       {/* 배송 정보 */}
-      <Paper sx={{ p: 3, mb: 3, bgcolor: "#fff", boxShadow: "none", borderRadius: "8px", border: "1px solid #ddd" }}>
+      <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
           배송 정보
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: "#555" }}>주문하시는 분</Typography></Grid>
+          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>주문하시는 분</Typography></Grid>
           <Grid item xs={9}><TextField fullWidth name="recipient" value={form.recipient} onChange={handleChange} variant="outlined" size="small" /></Grid>
 
-          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: "#555" }}>전화번호</Typography></Grid>
+          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>전화번호</Typography></Grid>
           <Grid item xs={9}><TextField fullWidth name="phone" value={form.phone} onChange={handleChange} variant="outlined" size="small" /></Grid>
 
-          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: "#555" }}>이메일</Typography></Grid>
+          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>이메일</Typography></Grid>
           <Grid item xs={9}><TextField fullWidth name="email" value={form.email} onChange={handleChange} variant="outlined" size="small" /></Grid>
 
-          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: "#555" }}>받으실 곳</Typography></Grid>
+          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>받으실 곳</Typography></Grid>
           <Grid item xs={6}><TextField fullWidth name="address" value={form.address} onChange={handleChange} variant="outlined" size="small" /></Grid>
           <Grid item xs={3}>
           <Button fullWidth variant="outlined" onClick={handleSearchAddress}>
               우편번호 검색
             </Button>
           </Grid>
-          <Grid item xs={3}><Typography>우편번호</Typography></Grid>
+          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>우편번호</Typography></Grid>
           <Grid item xs={9}><TextField fullWidth name="postalCode" value={form.postalCode} variant="outlined" size="small" /></Grid>
           
-          <Grid item xs={3}><Typography>상세 주소</Typography></Grid>
+          <Grid item xs={3}><Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>상세 주소</Typography></Grid>
           <Grid item xs={9}><TextField fullWidth name="detailAddress" value={form.detailAddress} onChange={handleChange} variant="outlined" size="small" /></Grid>
 
         </Grid>
@@ -266,27 +282,27 @@ const handleSubmit = async (e: React.FormEvent) => {
    
 
        {/* 결제 정보 */}
-       <Paper sx={{ p: 3, mb: 3, bgcolor: "#fff", boxShadow: "none", borderRadius: "8px", border: "1px solid #ddd" }}>
+       <Paper sx={{ p: 3, mb: 3, bgcolor: pageColors.paperBgcolor, boxShadow: "none", borderRadius: "8px", borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
         <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
           결제 정보
         </Typography>
-        <Grid container spacing={0} sx={{ border: "1px solid #ddd", borderRadius: "8px", bgcolor: "#fcfcfc" }}>
-          <Grid item xs={3} sx={{ bgcolor: "#f5f5f5", display: "flex", alignItems: "center", pl: 2, borderBottom: "1px solid #ddd" }}>
-            <Typography sx={{ fontWeight: "bold", color: "#555" }}>상품 합계 금액</Typography>
+        <Grid container spacing={0} sx={{ borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, borderRadius: "8px", bgcolor: pageColors.boxBgcolor }}>
+          <Grid item xs={3} sx={{ bgcolor: pageColors.boxBgcolor, display: "flex", alignItems: "center", pl: 2, borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
+            <Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>상품 합계 금액</Typography>
           </Grid>
-          <Grid item xs={9} sx={{ borderBottom: "1px solid #ddd" }}>
+          <Grid item xs={9} sx={{ borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
             <TextField fullWidth disabled value={form.totalPrice} variant="outlined" size="small" />
           </Grid>
 
-          <Grid item xs={3} sx={{ bgcolor: "#f5f5f5", display: "flex", alignItems: "center", pl: 2, borderBottom: "1px solid #ddd" }}>
-            <Typography sx={{ fontWeight: "bold", color: "#555" }}>배송비</Typography>
+          <Grid item xs={3} sx={{ bgcolor: pageColors.boxBgcolor, display: "flex", alignItems: "center", pl: 2, borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
+            <Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>배송비</Typography>
           </Grid>
-          <Grid item xs={9} sx={{ borderBottom: "1px solid #ddd" }}>
+          <Grid item xs={9} sx={{ borderWidth: '0 0 1px 0', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"}, }}>
             <TextField fullWidth disabled value={form.shippingFee} variant="outlined" size="small" />
           </Grid>
 
-          <Grid item xs={3} sx={{ bgcolor: "#f5f5f5", display: "flex", alignItems: "center", pl: 2 }}>
-            <Typography sx={{ fontWeight: "bold", color: "#555" }}>최종 결제 금액</Typography>
+          <Grid item xs={3} sx={{ bgcolor: pageColors.boxBgcolor, display: "flex", alignItems: "center", pl: 2 }}>
+            <Typography sx={{ fontWeight: "bold", color: pageColors.secondaryFontColor }}>최종 결제 금액</Typography>
           </Grid>
           <Grid item xs={9}>
             <TextField fullWidth disabled value={form.finalAmount} variant="outlined" size="small" />
@@ -303,8 +319,8 @@ const handleSubmit = async (e: React.FormEvent) => {
           alignItems: "center",
           justifyContent: "space-between",
           borderRadius: "8px",
-          border: "1px solid #ddd",
-          bgcolor: "#FFFFFF",
+          borderWidth: '1px', borderStyle: 'solid', borderColor: {light: "#ddd", dark:"#333333"},
+          bgcolor: pageColors.paperBgcolor,
           minHeight: "50px",
         }}
       >
@@ -322,21 +338,21 @@ const handleSubmit = async (e: React.FormEvent) => {
 
       {/* 모달 */}
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-              <DialogTitle>입력 확인</DialogTitle>
-              <DialogContent>
-                <Typography>다음 필수 항목을 입력해주세요:</Typography>
-                <ul>
-                  {missingFields.map((field, index) => (
-                    <li key={index}>{field}</li>
-                  ))}
-                </ul>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setOpenModal(false)} color="primary">
-                  확인
-                </Button>
-              </DialogActions>
-            </Dialog>
+        <DialogTitle>입력 확인</DialogTitle>
+        <DialogContent>
+          <Typography>다음 필수 항목을 입력해주세요:</Typography>
+          <ul>
+            {missingFields.map((field, index) => (
+              <li key={index}>{field}</li>
+            ))}
+          </ul>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenModal(false)} color="primary">
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </Container>
   );

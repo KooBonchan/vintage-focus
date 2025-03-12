@@ -16,7 +16,7 @@ export type ProductResponse = {
   category3?: string;
 
   // 상품상세 (Product Details)
-  condition?: string; // Enum(1-POOR, 2-FAIR, 3-GOOD, 4-EXCELLENT, 5-MINT)
+  condition?: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' | 'MINT';
   stock?: number; // Integer in Java, -1 indicates "not applicable"
   consumerPrice?: number;
   sellingPrice: number;

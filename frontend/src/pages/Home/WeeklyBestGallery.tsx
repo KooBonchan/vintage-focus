@@ -1,29 +1,19 @@
 import { Box, Grid, Pagination, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
-import Button from "../../components/Button";
+import Button from "../../components/CustomButton";
 import ProductCard from "../../components/ProductCard";
+import { ProductResponse } from "@/types/response";
 
-const ITEMS_PER_PAGE = 16;
+// Change the ITEMS_PER_PAGE to 8 to display exactly 2 rows
+const ITEMS_PER_PAGE = 8;
 
-const sampleProducts = [
-  { image: "https://placehold.co/250x250", name: "빈티지 카메라", price: "120,000", manufacturer: "제조사1", year: "2023", id: "1" },
-  { image: "https://placehold.co/250x250", name: "필름 카메라", price: "150,000", manufacturer: "제조사2", year: "2023", id: "2" },
-  { image: "https://placehold.co/250x250", name: "DSLR 카메라", price: "1,200,000", manufacturer: "제조사3", year: "2023", id: "3" },
-  { image: "https://placehold.co/250x250", name: "미러리스 카메라", price: "900,000", manufacturer: "제조사4", year: "2023", id: "4" },
-  { image: "https://placehold.co/250x250", name: "즉석 카메라", price: "80,000", manufacturer: "제조사5", year: "2023", id: "5" },
-  { image: "https://placehold.co/250x250", name: "액션 카메라", price: "500,000", manufacturer: "제조사6", year: "2023", id: "6" },
-  { image: "https://placehold.co/250x250", name: "중형 카메라", price: "2,500,000", manufacturer: "제조사7", year: "2023", id: "7" },
-  { image: "https://placehold.co/250x250", name: "파노라마 카메라", price: "700,000", manufacturer: "제조사8", year: "2023", id: "8" },
-  { image: "https://placehold.co/250x250", name: "필름 컴팩트 카메라", price: "400,000", manufacturer: "제조사9", year: "2023", id: "9" },
-  { image: "https://placehold.co/250x250", name: "카메라 렌즈", price: "300,000", manufacturer: "제조사10", year: "2023", id: "10" },
-  { image: "https://placehold.co/250x250", name: "삼각대", price: "120,000", manufacturer: "제조사11", year: "2023", id: "11" },
-  { image: "https://placehold.co/250x250", name: "카메라 가방", price: "150,000", manufacturer: "제조사12", year: "2023", id: "12" },
-  { image: "https://placehold.co/250x250", name: "야외 촬영용 카메라", price: "1,100,000", manufacturer: "제조사13", year: "2023", id: "13" },
-  { image: "https://placehold.co/250x250", name: "고프로", price: "600,000", manufacturer: "제조사14", year: "2023", id: "14" },
-  { image: "https://placehold.co/250x250", name: "카메라 플래시", price: "200,000", manufacturer: "제조사15", year: "2023", id: "15" },
-  { image: "https://placehold.co/250x250", name: "스튜디오 조명", price: "1,500,000", manufacturer: "제조사16", year: "2023", id: "16" },
-  { image: "https://placehold.co/250x250", name: "카메라 필터", price: "50,000", manufacturer: "제조사17", year: "2023", id: "17" },
-  { image: "https://placehold.co/250x250", name: "무선 리모컨", price: "30,000", manufacturer: "제조사18", year: "2023", id: "18" },
+const sampleProducts:ProductResponse[] = [
+  { id: 1, code: 'vc', productName: "빈티지 카메라", sellingPrice: 120000, company: "Canon", condition: "MINT", consumerPrice: 123120},
+  { id: 2, code: 'fc', productName: "필름 카메라", sellingPrice: 150000, company: "Nikon", condition:"EXCELLENT" },
+  { id: 3, code: 'dc', productName: "DSLR 카메라", sellingPrice: 1200000, company: "Sony", condition:"FAIR" },
+  { id: 4, code: 'mc', productName: "미러리스 카메라", sellingPrice: 900000, company: "Fujifilm", condition:"GOOD" },
+  { id: 5, code: 'zc', productName: "즉석 카메라", sellingPrice: 80000, company: "Polaroid", condition:"POOR", consumerPrice: 270000},
+  { id: 6, code: 'ac', productName: "액션 카메라", sellingPrice: 500000, company: "GoPro", condition:"MINT" },
 ];
 
 const WeeklyBestContainer = (props: any) => {
@@ -38,7 +28,7 @@ const WeeklyBestContainer = (props: any) => {
         borderRadius: 2,
         flexDirection: "column",
         padding: 2,
-        marginTop: 20,
+        marginTop: 10,
       }}
     >
       {props.children}
@@ -76,8 +66,8 @@ const WeeklyBestGallery = () => {
 
       <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
         {currentPageProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Box sx={{ display: 'inline-block' }}>
+          <Grid item xs={12} sm={6} md={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
               <ProductCard product={product} />
             </Box>
           </Grid>

@@ -2,11 +2,14 @@ package com.dodream.vintageFocus.service;
 
 import com.dodream.vintageFocus.dto.ProductDTO;
 import com.dodream.vintageFocus.repository.ProductRepository;
+import com.dodream.vintageFocus.repository.image.ProductDetailImageRepository;
+import com.dodream.vintageFocus.repository.image.ProductImageRepository;
 import com.dodream.vintageFocus.util.ListUtils;
 import com.dodream.vintageFocus.vo.Product;
 import com.dodream.vintageFocus.vo.image.BaseImage;
 import com.dodream.vintageFocus.vo.image.ProductDetailImage;
 import com.dodream.vintageFocus.vo.image.ProductImage;
+import com.dodream.vintageFocus.vo.joinedTables.ProductWithFirstImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,15 +27,29 @@ import static com.dodream.vintageFocus.util.ListUtils.*;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
   private final ProductRepository productRepository;
+  private final ProductImageRepository productImageRepository;
+  private final ProductDetailImageRepository productDetailImageRepository;
   private final TransactionalOperator transactionalOperator;
 
 
   public Flux<ProductDTO> getAllProducts(){
-    return productRepository.findAll().map(this::mapToDTO);
+    return productRepository.findAllWithFirstImage()
+      .map(this::mapToDTO);
   }
   public Mono<ProductDTO> getProductById(Long id){
     return productRepository.findById(id)
-      .map(this::mapToDTO);
+      .flatMap(product ->
+        Mono.zip(
+          productImageRepository.findByProductId(id).collectList(), // Fetch all product images
+          productDetailImageRepository.findByProductId(id).collectList() // Fetch all detail images
+        ).map(tuple -> {
+          List<ProductImage> productImages = tuple.getT1();
+          List<ProductDetailImage> detailImages = tuple.getT2();
+          return mapToDTO(product, productImages, detailImages);
+        })
+      )
+      .onErrorResume(e -> Mono.empty())
+    ;
   }
   public Mono<ProductDTO> getProductByModelName(String modelName){
     return productRepository.findByModelName(modelName)
@@ -123,6 +140,43 @@ public class ProductServiceImpl implements ProductService{
     if (dto.getRentalPrice() != null) entity.setRentalPrice(dto.getRentalPrice());
   }
   private ProductDTO mapToDTO(Product product) { return mapToDTO(product, null, null);}
+  private ProductDTO mapToDTO(ProductWithFirstImage pwi) {
+    // Construct the Product entity
+    Product product = Product.builder()
+      .id(pwi.getProductId())
+      .code(pwi.getCode())
+      .modelName(pwi.getModelName())
+      .productName(pwi.getProductName())
+      .company(pwi.getCompany())
+      .country(pwi.getCountry())
+      .category1(pwi.getCategory1())
+      .category2(pwi.getCategory2())
+      .category3(pwi.getCategory3())
+      .condition(pwi.getCondition())
+      .stock(pwi.getStock())
+      .consumerPrice(pwi.getConsumerPrice())
+      .sellingPrice(pwi.getSellingPrice())
+      .rentalPrice(pwi.getRentalPrice())
+      .reviewCount(pwi.getReviewCount())
+      .likeCount(pwi.getLikeCount())
+      .viewCount(pwi.getViewCount())
+      .build();
+
+    // Construct the ProductImage (if present)
+    List<ProductImage> productImages = pwi.getImageId() != null
+      ? Collections.singletonList(ProductImage.builder()
+      .id(pwi.getImageId())
+      .originalImageName(pwi.getOriginalImageName())
+      .path(pwi.getPath())
+      .savedImageName(pwi.getSavedImageName())
+      .uploadTimestamp(pwi.getUploadTimestamp())
+      .productId(pwi.getProductId())
+      .build())
+      : Collections.emptyList();
+
+    // Use the existing mapToDTO method
+    return mapToDTO(product, productImages, null);
+  }
   private ProductDTO mapToDTO(Product product, List<ProductImage> productImages, List<ProductDetailImage> detailImages){
     return ProductDTO.builder()
       .id(product.getId())

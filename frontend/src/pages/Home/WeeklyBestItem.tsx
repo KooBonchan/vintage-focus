@@ -1,7 +1,8 @@
 import { Grid } from "@mui/material";
 import ProductCard from "../../components/ProductCard";  // ProductCard 컴포넌트를 import
+import { ProductResponse } from "@/types/response";
 
-const WeeklyBestItem = ({ product }: { product: { image: string; name: string; price: string } }) => {
+const WeeklyBestItem = ({ product }: { product: ProductResponse }) => {
   return (
     <Grid item xs={12} sm={6} md={3}>
       <ProductCard
@@ -10,7 +11,7 @@ const WeeklyBestItem = ({ product }: { product: { image: string; name: string; p
           transition: "all 0.3s ease", // 부드러운 전환
           "&:hover": {
             transform: "translateY(-5px)", // 마우스 올리면 위로 올라감
-            boxShadow: 6, // 마우스 올리면 그림자 강하게
+            boxShadow: 3, // 마우스 올리면 그림자 강하게
           },
         }}
       />

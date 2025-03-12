@@ -1,17 +1,19 @@
 // ProductCard.stories.tsx
-import React from "react";
-import { Meta, StoryObj } from "@storybook/react";
-import ProductCard, { ProductCardProps } from "../components/ProductCard";
-import { BrowserRouter } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
+import { Meta, StoryObj } from "@storybook/react";
+import { BrowserRouter } from 'react-router-dom';
+import ProductCard from "../components/ProductCard";
+import { ProductResponse } from '@/types/response';
 
-const defaultProduct = {
-  image: "https://placehold.co/200x200",
-  name: "Sample Product",
-  price: "10000",
-  manufacturer: "Sample Manufacturer",
-  year: "2025",
-  id: "1",
+const defaultProduct:ProductResponse = {
+  id: 1,
+  code: 'sp',
+  productImages: ["https://placehold.co/200x200",],
+  productName: "Sample Product",
+  consumerPrice: 100000,
+  sellingPrice: 10000,
+  company: "Sample Manufacturer",
+  condition: "MINT",
 };
 
 const meta = {
@@ -25,7 +27,6 @@ const meta = {
     product: defaultProduct,
     width: 250,
     height: 360,
-    Link: "https://example.com/inquiry", // 기본 문의하기 링크 설정
   },
   decorators: [
     (Story) => (
@@ -57,16 +58,15 @@ export const Default: Story = {
 export const SmallCard: Story = {
   args: {
     product: {
-      image: "https://placehold.co/150x150",
-      name: "Small Product",
-      price: "5000",
-      manufacturer: "Small Manufacturer",
-      year: "2025",
-      id: "2",
+      productImages: ["https://placehold.co/150x150"],
+      productName: "Small Product",
+      sellingPrice: 5000,
+      condition: "MINT",
+      code: 'small',
+      id: 2,
     },
     width: 200,
     height: 310,
-    Link: "https://example.com/small-inquiry", // 다른 문의하기 링크 설정
   },
   play: async ({ canvasElement }) => {
     console.log("Navigating to: /product/2");
@@ -77,16 +77,15 @@ export const SmallCard: Story = {
 export const LargeCard: Story = {
   args: {
     product: {
-      image: "https://placehold.co/250x250",
-      name: "Large Product",
-      price: "15000",
-      manufacturer: "Large Manufacturer",
-      year: "2025",
-      id: "3",
+      productImages: ["https://placehold.co/150x150"],
+      productName: "Small Product",
+      sellingPrice: 5000,
+      condition: "MINT",
+      code: 'large',
+      id: 2,
     },
     width: 300,
     height: 410,
-    Link: "https://example.com/large-inquiry", // 또 다른 문의하기 링크 설정
   },
   play: async ({ canvasElement }) => {
     console.log("Navigating to: /product/3");

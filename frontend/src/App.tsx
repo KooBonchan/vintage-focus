@@ -25,7 +25,6 @@ import NoticePage from './pages/Board/Notice/NoticePage';
 import OrderCompletePage from './pages/order/complete';
 import DeliveryPage from './pages/order/delivery';
 
-import '@/utils/axiosConfig';
 
 
 const baseTheme = createTheme({

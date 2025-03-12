@@ -27,6 +27,9 @@ import Reviews from './pages/Reviews/reviews';
 
 import '@/utils/axiosConfig';
 import ReviewDetail from './pages/Board/Detail/ReviewDetail';
+import MyPage from './pages/MyPage/Mypage';
+import ReviewNew from './pages/Reviews/reviewnew';
+import WroteReview from './pages/Reviews/wrotereview';
 
 const baseTheme = createTheme({
   typography: {
@@ -143,6 +146,10 @@ function Router() {
         <Route path="/notice/detail/:id" element={<NoticeDetail />} /> {/* ✅ 공지사항 상세 */}
 
         <Route path="about" element={<About />} />
+
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/review/" element={<ReviewNew />} /> {/* ✅ 제품 리뷰 가능한 리스트를 보여주는 페이지로 이동 */}
+        <Route path="/mypage/review/wrote" element={<WroteReview />} /> {/* ✅ 리뷰 작성 페이지 추가 */}
 
         <Route path="product">
           <Route index element={<ProductList />} /> {/* /product */}

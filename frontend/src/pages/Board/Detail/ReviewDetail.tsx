@@ -15,7 +15,10 @@ const ReviewDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  // 더미 데이터에서 해당 id의 리뷰를 찾음 (실제로는 API 호출로 대체 가능)
+  // localStorage에서 저장된 리뷰 가져오기
+  const savedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+
+  // 더미 데이터 (기존과 동일)
   const dummyReviews = Array.from({ length: 20 }, (_, index) => {
     const date = new Date();
     date.setDate(date.getDate() - index);
@@ -42,11 +45,13 @@ const ReviewDetail = () => {
     };
   });
 
-  const review = dummyReviews.find((r) => r.id === Number(id));
+  // 저장된 리뷰와 더미 데이터를 결합 (ID는 문자열로 비교)
+  const allReviews = [...savedReviews, ...dummyReviews];
+  const review = allReviews.find((r) => String(r.id) === id);
 
   if (!review) {
     return (
-      <Box sx={{ textAlign: "center", padding: 3, backgroundColor: "#fffff" }}>
+      <Box sx={{ textAlign: "center", padding: 3, backgroundColor: "#ffffff" }}>
         <Typography variant="h6" sx={{ color: "#000000" }}>
           리뷰를 찾을 수 없습니다.
         </Typography>
@@ -69,7 +74,7 @@ const ReviewDetail = () => {
         margin: "0 auto",
         padding: 3,
         textAlign: "center",
-        backgroundColor: "#ffffff", // ✅ 배경색을 하얀색으로 변경
+        backgroundColor: "#ffffff",
       }}
     >
       <Typography variant="h4" gutterBottom sx={{ color: "#000000" }}>

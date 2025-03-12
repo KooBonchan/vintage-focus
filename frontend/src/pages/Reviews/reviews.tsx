@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 const Reviews = () => {
   const navigate = useNavigate();
 
-  // ✅ 카메라 관련 더미 리뷰 데이터 (사진 배열 추가)
+  // 더미 데이터 (기존과 동일)
   const dummyReviews = Array.from({ length: 20 }, (_, index) => {
     const date = new Date();
     date.setDate(date.getDate() - index);
@@ -29,7 +29,7 @@ const Reviews = () => {
         "https://placehold.co/200?text=Image1",
         "https://placehold.co/200?text=Image2",
         "https://placehold.co/200?text=Image3",
-      ], // ✅ 3장의 사진 배열
+      ],
       content: [
         "이 카메라는 야외 촬영 시 뛰어난 화질을 제공합니다. 저조도 환경에서도 선명한 사진을 찍을 수 있어 만족스럽습니다.",
         "렌즈 교체가 쉽고 무게도 가벼워 여행용으로 적합합니다. 배터리 수명도 긴 편이라 하루 종일 촬영할 수 있습니다.",
@@ -41,7 +41,13 @@ const Reviews = () => {
     };
   });
 
-  const [visibleReviews, setVisibleReviews] = useState(dummyReviews.slice(0, 4));
+  // localStorage에서 리뷰 가져오기
+  const [reviews, setReviews] = useState(() => {
+    const savedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+    return [...savedReviews, ...dummyReviews]; // 저장된 리뷰와 더미 데이터 결합
+  });
+
+  const [visibleReviews, setVisibleReviews] = useState(reviews.slice(0, 4));
   const [page, setPage] = useState(1);
   const [sortOption, setSortOption] = useState("recent");
   const loader = useRef(null);
@@ -67,13 +73,13 @@ const Reviews = () => {
   };
 
   useEffect(() => {
-    const sorted = sortReviews(dummyReviews, sortOption);
+    const sorted = sortReviews(reviews, sortOption);
     setVisibleReviews(sorted.slice(0, page * 4));
-  }, [sortOption, page]);
+  }, [sortOption, page, reviews]);
 
   const loadMoreReviews = () => {
     const nextPage = page + 1;
-    const sorted = sortReviews(dummyReviews, sortOption);
+    const sorted = sortReviews(reviews, sortOption);
     const nextReviews = sorted.slice(0, nextPage * 4);
     setVisibleReviews(nextReviews);
     setPage(nextPage);
@@ -82,7 +88,7 @@ const Reviews = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && visibleReviews.length < dummyReviews.length) {
+        if (entries[0].isIntersecting && visibleReviews.length < reviews.length) {
           loadMoreReviews();
         }
       },
@@ -264,7 +270,7 @@ const Reviews = () => {
             <Rating value={review.rating} readOnly sx={{ mb: 1 }} />
             <CardMedia
               component="img"
-              image={review.images[0]} // ✅ 첫 번째 사진만 표시
+              image={review.images[0]} // 첫 번째 사진 표시
               alt={`Camera Review ${review.id}`}
               sx={{ width: "100%", height: 200, objectFit: "cover", mb: 1 }}
             />
@@ -281,8 +287,6 @@ const Reviews = () => {
       </Box>
 
       <div ref={loader} style={{ height: "20px" }} />
-
-   
     </Box>
   );
 };

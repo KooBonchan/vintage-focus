@@ -1,6 +1,6 @@
 import styles from './button.module.css';
 
-export interface ButtonProps {
+export interface CustomButtonProps {
   primary?: boolean;
   backgroundColor?: string;
   size?: 'small' | 'medium' | 'large' | 'biglarge' | 'kingbiglarge' | 
@@ -9,17 +9,22 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 
-const Button = ({
+/**
+ * A customizable button component with various sizes and styles.
+ * @param {CustomButtonProps} props - The props for the CustomButton component.
+ * @returns {JSX.Element} A styled button element.
+ */
+const CustomButton = ({
   primary = false,
   size = 'medium',
   backgroundColor,
   label,
   onClick,
   ...props
-}: ButtonProps) => {
+}: CustomButtonProps) => {
   const mode = primary ? styles['storybook-button--primary'] : styles['storybook-button--secondary'];
   const sizeClass = styles[`storybook-button--${size}`];
-  const buttonClass = [styles['storybook-button'], sizeClass, mode].join(' ');
+  const buttonClass = [styles['storybook-button'], sizeClass, mode].filter(Boolean).join(' ');
 
   return (
     <button
@@ -34,4 +39,4 @@ const Button = ({
   );
 };
 
-export default Button;
+export default CustomButton;

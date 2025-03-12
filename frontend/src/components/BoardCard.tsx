@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography, Card, Avatar, Modal, TextField, Button } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
+import { useNavigate } from "react-router-dom"; // react-router-dom 사용 시 필요
 
 export interface Author {
   name: string;
@@ -29,6 +30,8 @@ export interface BoardCardProps {
   viewsCountColor?: string;
   onUnlock?: (id: number, password: string) => void;
   isManager?: boolean;
+  link?: string; // 클릭 시 이동할 링크
+  onClick?: () => void; // 새로 추가: 상위 컴포넌트에서 전달받은 클릭 이벤트 핸들러
 }
 
 interface PasswordModalProps {
@@ -111,16 +114,19 @@ const BoardCard: React.FC<BoardCardProps> = ({
   article,
   highlighted = false,
   tagVisible = true,
-  backgroundColor = "#fff", // 기본 배경색 흰색
-  borderColor = "#909eb0", // 기본 테두리 색상 #909eb0
+  backgroundColor = "#fff",
+  borderColor = "#909eb0",
   fontSize = "1rem",
   authorAvatarSize = 40,
   viewsCountColor = "text.secondary",
   onUnlock,
   isManager = false,
+  link,
+  onClick, // 새로 추가
 }) => {
   const [open, setOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate(); // react-router-dom 사용 시 추가
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -133,7 +139,15 @@ const BoardCard: React.FC<BoardCardProps> = ({
 
   const handleClick = () => {
     if (article?.locked) {
-      handleOpen();
+      handleOpen(); // 잠긴 경우 모달 열기
+    } else {
+      if (onClick) {
+        onClick(); // 상위 컴포넌트에서 전달된 클릭 이벤트 실행
+      }
+      if (link) {
+        navigate(link); // 링크가 있으면 이동 (react-router-dom 사용 시)
+        // window.location.href = link; // react-router-dom 없이 외부 URL로 이동 시 사용
+      }
     }
   };
 
@@ -154,18 +168,18 @@ const BoardCard: React.FC<BoardCardProps> = ({
     <Card
       sx={{
         p: 2,
-        border: `1px solid ${borderColor}`, // 테두리 색상 적용
+        border: `1px solid ${borderColor}`,
         borderRadius: "8px",
-        boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.3)" : "none", // 매니저 모드 그림자 유지
+        boxShadow: isManager ? "0 8px 20px rgba(0, 0, 0, 0.3)" : "none",
         display: "flex",
         flexDirection: "column",
         gap: 1,
         position: "relative",
-        backgroundColor: highlighted ? "#f0f8ff" : backgroundColor, // 매니저 모드에서도 기본 배경색(#fff) 사용
-        color: isManager ? "#FFFFFF" : "inherit", // 매니저 모드 글자색 유지
+        backgroundColor: highlighted ? "#f0f8ff" : backgroundColor,
+        color: isManager ? "#FFFFFF" : "inherit",
         transition: "box-shadow 0.3s ease-in-out",
         "&:hover": {
-          boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.4)" : "0 4px 10px rgba(161, 161, 161, 0.2)", // 호버 효과 유지
+          boxShadow: isManager ? "0 6px 15px rgba(0, 0, 0, 0.4)" : "0 4px 10px rgba(161, 161, 161, 0.2)",
         },
         cursor: "pointer",
       }}

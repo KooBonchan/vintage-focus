@@ -6,7 +6,7 @@ import { useState } from "react";
 export function ProductDetail() {
   const theme = useTheme(); // ✅ MUI 테마 적용
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // useNavigate 훅 추가
   const [open, setOpen] = useState(false);
 
   const handleAddToCart = () => {
@@ -100,7 +100,7 @@ export function ProductDetail() {
           <Divider sx={{ my: 2 }} />
 
           {/* 버튼 영역 */}
-          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
+          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4, fontSize:'1rem' }}>
             <Button
               variant="text"
               sx={{ borderRadius: 2, backgroundColor: theme.palette.mode === "dark" ? "#444" : "#ccc", color: "black", px: 4 }}
@@ -124,6 +124,16 @@ export function ProductDetail() {
             >
               대여문의
             </Button>
+
+            {/* "제품 대여하기" 버튼 클릭 시 rental-inquiry 페이지로 이동 */}
+            <Button
+              variant="text"
+              sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
+              onClick={() => navigate("/rental-inquiry/write")} // rental-inquiry로 이동
+            >
+              제품 대여하기
+            </Button>
+
           </Box>
         </Grid>
 
@@ -160,68 +170,58 @@ export function ProductDetail() {
         />
 
         <Divider sx={{ my: 3 }} />
+
+        {/* 상세 설명 */}
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <Box sx={{ width: "100%", height: 150, bgcolor: {"light":"#ddd", "dark":"#1e1e1e",}, borderRadius: 2, mt: 2 }} />
+          </Grid>
+          <Grid item xs={9}>
+            <Typography variant="h5" fontWeight="bold">
+              상품
+            </Typography>
+
+            <div style={{ marginTop: "20px" }}>
+              <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
+                상품이름과 설명
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
       </Box>
 
-      <Box
-  sx={{
-    pt: 7,
-    pb: 7,
-    bgcolor: theme.palette.mode === "dark" ? "#121212" : "#ffffff",
-    borderRadius: 2,
-    p: 3,
-  }}
->
-  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-    <Typography variant="h6" fontWeight="bold">Featured</Typography>
-    <Button variant="text" sx={{ minWidth: "auto", color: "black", fontSize: "18px", p: 0 }}>
-      →
-    </Button>
-  </Box>
-
-  <List>
-    {[
-      { id: 1, name: "빈티지 카메라", desc: "고급 필름 카메라", img: "https://placehold.co/50x50" },
-      { id: 2, name: "DSLR 카메라", desc: "전문가용 DSLR", img: "https://placehold.co/50x50" },
-      { id: 3, name: "미러리스 카메라", desc: "가벼운 미러리스", img: "https://placehold.co/50x50" },
-      { id: 4, name: "즉석 카메라", desc: "즉석에서 인화", img: "https://placehold.co/50x50" },
-      { id: 5, name: "액션 카메라", desc: "스포츠용 캠", img: "https://placehold.co/50x50" }
-    ].map((product, index, array) => (
-      <Box key={product.id}>
-        {/* 리스트 아이템 */}
-        <ListItem
-          sx={{
-            bgcolor: theme.palette.mode === "dark" ? "#1e1e1e" : "#ffffff",
-            py: 2,
-            borderRadius: 2,
-            position: "relative",
-          }}
-        >
-          <ListItemAvatar>
-            <Avatar src={product.img} sx={{ width: 50, height: 50 }} />
-          </ListItemAvatar>
-          <ListItemText primary={product.name} secondary={product.desc} />
-
-          {/* MoreVert 버튼 */}
-          <IconButton
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              "&:hover": {
-                backgroundColor: theme.palette.mode === "dark" ? "#333" : "#e0e0e0",
-              },
-            }}
-          >
-            <MoreVert />
-          </IconButton>
-        </ListItem>
-
-        {/* 구분선 */}
-        {index < array.length - 1 && <Divider sx={{ my: 1, bgcolor: theme.palette.mode === "dark" ? "#333" : "#ddd" }} />}
+      <Box sx={{ pt: 7, pb: 7, bgcolor: {"light":"#ffffff", "dark":"#161616"}, borderRadius: 2, p: 3 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+          <Typography variant="h6" fontWeight="bold">
+            Featured
+          </Typography>
+          <Button variant="text" sx={{ minWidth: "auto", color: "black", fontSize: "18px", p: 0 }}>
+            →
+          </Button>
+        </Box>
+        <List>
+          {[
+            { id: 1, name: "빈티지 카메라", desc: "고급 필름 카메라", img: "https://placehold.co/50x50" },
+            { id: 2, name: "DSLR 카메라", desc: "전문가용 DSLR", img: "https://placehold.co/50x50" },
+            { id: 3, name: "미러리스 카메라", desc: "가벼운 미러리스", img: "https://placehold.co/50x50" },
+            { id: 4, name: "즉석 카메라", desc: "즉석에서 인화", img: "https://placehold.co/50x50" },
+            { id: 5, name: "액션 카메라", desc: "스포츠용 캠", img: "https://placehold.co/50x50" }
+          ].map((product, index, array) => (
+            <Box key={product.id}>
+              <ListItem sx={{ bgcolor: {"light":"#ffffff", "dark":"#161616"}, py: 2, borderRadius: 2, position: "relative" }}>
+                <ListItemAvatar>
+                  <Avatar src={product.img} sx={{ width: 50, height: 50 }} />
+                </ListItemAvatar>
+                <ListItemText primary={product.name} secondary={product.desc} />
+                <IconButton sx={{ position: "absolute", top: 8, right: 8 }}>
+                  <MoreVert />
+                </IconButton>
+              </ListItem>
+              {index < array.length - 1 && <Divider sx={{ my: 1 }} />}
+            </Box>
+          ))}
+        </List>
       </Box>
-    ))}
-  </List>
-</Box>
 
     </Container>
   );

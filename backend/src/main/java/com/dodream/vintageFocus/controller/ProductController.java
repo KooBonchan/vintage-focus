@@ -4,6 +4,8 @@ import com.dodream.vintageFocus.dto.ProductDTO;
 import com.dodream.vintageFocus.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,7 +19,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -36,15 +38,21 @@ public class ProductController {
 
   @Operation(
     summary = "Get product by ID",
-    description = "Retrieves a product by its ID"
+    description = "Retrieves a product by its ID",
+    parameters = {
+      @Parameter(
+        description = "ID of the product to retrieve",
+        required = true,
+        example = "1",
+        in = ParameterIn.PATH
+      )},
+    responses = {
+      @ApiResponse(responseCode = "200", description = "Product found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))),
+      @ApiResponse(responseCode = "404", description = "Product not found")
+    }
   )
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "Product found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))),
-    @ApiResponse(responseCode = "404", description = "Product not found")
-  })
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<ResponseEntity<ProductDTO>> getProductById(
-    @Parameter(description = "ID of the product to retrieve", required = true, example = "1")
     @PathVariable Long id) {
     return productService.getProductById(id)
       .map(ResponseEntity::ok)

@@ -38,8 +38,8 @@ export function Home() {
     >
       <StyledImageBox id="image" />
       <CategoryIconBar />
-      <NewItemGallery />
       <WeeklyBestGallery />
+      <NewItemGallery />
     </ThemedContainer>
   );
 }

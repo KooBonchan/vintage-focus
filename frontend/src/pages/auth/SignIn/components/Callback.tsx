@@ -1,3 +1,5 @@
+import useAuthStore from "@/stores/authStore";
+import { MemberResponse } from "@/types/response";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -5,6 +7,7 @@ import { useNavigate, useSearchParams } from "react-router";
 const Callback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const {setAuth} = useAuthStore();
   const hasRun = useRef(false);
 
   
@@ -40,29 +43,32 @@ const Callback = () => {
             headers: {
               'Content-Type': 'application/json',
             },
+            withCredentials: true,
           }
         );
 
-        const tokens = response.data;
-        console.log('Tokens received:', tokens);
+        const memberInfo:MemberResponse = response.data;
+        
+        const accessToken = response.headers.getAuthorization?.toString();
+        if(!accessToken) { throw new Error('JWT not found in Authorization header') }
 
-        // For now, just log the tokens; next step is to store/send them
-        const jwt = tokens.id_token || tokens.access_token; // Use id_token if available
-
-        // Clean up sessionStorage
         sessionStorage.removeItem(`${provider}_code_verifier`);
         sessionStorage.removeItem('provider');
-
-        // Redirect to home (or wherever you want)
-        navigate('/');
+        setAuth(memberInfo, accessToken);
+        if(memberInfo.isRegistered){
+          navigate('/');
+        } else {
+          navigate("/register");
+        }
+        
       } catch (error) {
-        console.error('Token exchange failed:', error);
+        console.error('Error during authentication:', error);
         navigate('/signin?error');
       }
     };
 
     exchangeCodeForTokens();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, setAuth]);
 
   return <div>Loading...</div>;
 };

@@ -89,7 +89,7 @@ export default function BuyWrite() {
           size="small"
           fullWidth
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => { setTitle(e.target.value); }}
           sx={{
             mb: 1,
             "& .MuiOutlinedInput-root": {
@@ -114,7 +114,7 @@ export default function BuyWrite() {
           variant="outlined"
           fullWidth
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => { setContent(e.target.value); }}
           sx={{
             "& .MuiOutlinedInput-root": {
               backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background

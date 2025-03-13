@@ -127,9 +127,9 @@ export default function RentalWrite() {
     setSelectedLocation(locations[0]);
   };
 
-  const handleCloseModal = () => setOpenModal(false);
+  const handleCloseModal = () => { setOpenModal(false); };
 
-  const handleLocationSelect = (location) => setSelectedLocation(location);
+  const handleLocationSelect = (location) => { setSelectedLocation(location); };
 
   const handleConfirmSelection = () => {
     if (selectedLocation) {
@@ -356,7 +356,7 @@ export default function RentalWrite() {
             공개/비공개
           </Typography>
           <FormControlLabel
-            control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
+            control={<Switch checked={isPublic} onChange={() => { setIsPublic(!isPublic); }} />}
             label=""
             sx={{ m: 0 }}
           />
@@ -424,7 +424,7 @@ export default function RentalWrite() {
           }}
         >
           <Box sx={{ width: { xs: "100%", sm: "70%" }, borderRadius: "12px", overflow: "hidden" }}>
-            <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} onLoad={() => setIsMapLoaded(true)}>
+            <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} onLoad={() => { setIsMapLoaded(true); }}>
               {isMapLoaded && selectedLocation && (
                 <GoogleMap
                   mapContainerStyle={mapContainerStyle}
@@ -459,7 +459,7 @@ export default function RentalWrite() {
                   <ListItem
                     button
                     key={loc.name}
-                    onClick={() => handleLocationSelect(loc)}
+                    onClick={() => { handleLocationSelect(loc); }}
                     sx={{
                       mb: 1,
                       borderRadius: "8px",

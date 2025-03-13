@@ -21,7 +21,7 @@ const NoticePage = () => {
     const fetchNotices = () => {
       const storedNotices = JSON.parse(sessionStorage.getItem("notices") || "[]");
 
-      let data = storedNotices.length
+      const data = storedNotices.length
         ? storedNotices
         : [
             {

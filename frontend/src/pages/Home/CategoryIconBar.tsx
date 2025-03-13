@@ -101,7 +101,7 @@ const CategoryIconBar = () => {
             <a
               href={routes[item.id]}
               style={{ display: 'block', marginBottom: '10px' }}
-              onMouseEnter={() => handleMouseEnter(item.id)}
+              onMouseEnter={() => { handleMouseEnter(item.id); }}
               onMouseLeave={handleMouseLeave}
             >
               <Box

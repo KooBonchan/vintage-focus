@@ -129,7 +129,7 @@ export default function BoardList() {
               xs={12}
               key={article.id}
               sx={{ width: "100%", cursor: "pointer" }}
-              onClick={() => handleArticleClick(article)}
+              onClick={() => { handleArticleClick(article); }}
             >
               <BoardCard article={article} />
             </Grid>
@@ -140,7 +140,7 @@ export default function BoardList() {
         <Pagination
           count={Math.ceil(filteredArticles.length / itemsPerPage)}
           page={page}
-          onChange={(event, value) => setPage(value)}
+          onChange={(event, value) => { setPage(value); }}
           color="primary"
         />
       </Box>

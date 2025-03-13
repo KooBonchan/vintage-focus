@@ -175,7 +175,7 @@ export const getDesignTokens = (mode: PaletteMode) => {
       },
       action: {
         hover: alpha(gray[200], 0.2),
-        selected: `${alpha(gray[200], 0.3)}`,
+        selected: alpha(gray[200], 0.3),
         ...(mode === 'dark' && {
           hover: alpha(gray[600], 0.2),
           selected: alpha(gray[600], 0.3),
@@ -283,7 +283,7 @@ export const colorSchemes = {
       },
       action: {
         hover: alpha(gray[200], 0.2),
-        selected: `${alpha(gray[200], 0.3)}`,
+        selected: alpha(gray[200], 0.3),
       },
       baseShadow:
         'hsla(220, 30%, 5%, 0.07) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.07) 0px 8px 16px -5px',

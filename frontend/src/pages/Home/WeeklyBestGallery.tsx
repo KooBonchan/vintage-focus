@@ -78,7 +78,7 @@ const WeeklyBestGallery = () => {
         <Pagination
           count={totalPages}
           page={page}
-          onChange={(event, value) => setPage(value)}
+          onChange={(event, value) => { setPage(value); }}
           color="primary"
         />
       </Box>

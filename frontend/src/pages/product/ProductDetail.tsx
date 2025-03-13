@@ -28,12 +28,12 @@ export function ProductDetail() {
 
     readProductDetail(idNum)
     .then(setProduct)
-    .then(_=>setNoItem(false))
-    .catch(_=>setNoItem(true));
+    .then(_=>{ setNoItem(false); })
+    .catch(_=>{ setNoItem(true); });
   },[id, setProduct, setNoItem]);
 
   const handleAddToCart = () => {
-    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     cart.push(product);
     localStorage.setItem("cart", JSON.stringify(cart));
     setOpen(true);
@@ -206,11 +206,11 @@ export function ProductDetail() {
         </Grid>
 
         {/* 장바구니 모달 */}
-        <Dialog open={open} onClose={() => setOpen(false)}>
+        <Dialog open={open} onClose={() => { setOpen(false); }}>
           <DialogTitle>장바구니에 상품이 담겼습니다.</DialogTitle>
           <DialogContent>장바구니로 이동하시겠습니까?</DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpen(false)}>계속 쇼핑하기</Button>
+            <Button onClick={() => { setOpen(false); }}>계속 쇼핑하기</Button>
             <Button onClick={() => navigate("/order/cart")} color="primary">
               장바구니 이동
             </Button>

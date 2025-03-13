@@ -88,7 +88,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({
           label="비밀번호"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => { setPassword(e.target.value); }}
           fullWidth
           sx={{
             "& .MuiInputLabel-root": {
@@ -144,8 +144,8 @@ const BoardCard: React.FC<BoardCardProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => { setOpen(true); };
+  const handleClose = () => { setOpen(false); };
 
   const handleUnlock = (password: string) => {
     if (article?.id && onUnlock) {

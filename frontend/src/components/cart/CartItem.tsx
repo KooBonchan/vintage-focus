@@ -45,7 +45,7 @@ export default function CartItem({ item, selected, onSelect, onQuantityChange }:
       <TableCell align="center" sx={{ width: "20%" }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1 }}>
           <IconButton
-            onClick={() => onQuantityChange(-1)}
+            onClick={() => { onQuantityChange(-1); }}
             size="small"
             sx={{
               border: "1px solid #ccc",
@@ -60,7 +60,7 @@ export default function CartItem({ item, selected, onSelect, onQuantityChange }:
           </IconButton>
           <Typography sx={{ mx: 1.5, fontSize: 18, fontWeight: 600 }}>{item.quantity}</Typography>
           <IconButton
-            onClick={() => onQuantityChange(1)}
+            onClick={() => { onQuantityChange(1); }}
             size="small"
             sx={{
               border: "1px solid #ccc",

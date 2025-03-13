@@ -25,7 +25,7 @@ function FilterBar() {
         <InputLabel>제조사</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={manufacturer}
-          onChange={(e) => setManufacturer(e.target.value)}
+          onChange={(e) => { setManufacturer(e.target.value); }}
           sx={{
             border: "1px solid #bdbdbd",
             borderRadius: "15px",
@@ -45,7 +45,7 @@ function FilterBar() {
         <InputLabel>년식</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={year}
-          onChange={(e) => setYear(e.target.value)}
+          onChange={(e) => { setYear(e.target.value); }}
           sx={{
             border: "1px solid #bdbdbd",
             borderRadius: "15px",
@@ -66,7 +66,7 @@ function FilterBar() {
         <InputLabel>가격</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) => { setPrice(e.target.value); }}
           sx={{
             border: "1px solid #bdbdbd",
             borderRadius: "15px",
@@ -84,7 +84,7 @@ function FilterBar() {
         <InputLabel>필터</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
+          onChange={(e) => { setSortBy(e.target.value); }}
           sx={{
             border: "1px solid #bdbdbd",
             borderRadius: "15px",

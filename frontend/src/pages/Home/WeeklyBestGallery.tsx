@@ -68,7 +68,7 @@ const WeeklyBestGallery = () => {
         {
           products.length < 6 ? 
           [...Array(6).keys()].map((_, i) => (
-            <Grid item xs={12} sm={6} md={3} key={"skeleton-" + i} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Grid item xs={12} sm={6} md={4} key={"skeleton-" + i} sx={{ display: 'flex', justifyContent: 'center' }}>
               <Skeleton variant="rectangular" width="250px" height="330px" />
             </Grid>
           ))

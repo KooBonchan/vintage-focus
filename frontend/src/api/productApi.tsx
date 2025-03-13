@@ -7,7 +7,10 @@ export const readProductList= (limit = 200) => (
     params: { limit }, // Add the limit query parameter
   })
   .then(response => response.data)
-  .catch(console.error)
+  .catch(error => {
+    console.log(error);
+    return [];
+  })
 );
 
 export const readProductDetail: (id:number) => Promise<ProductResponse> = (id) => (

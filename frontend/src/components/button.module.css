@@ -21,11 +21,6 @@
   border: 1px solid #445366;
 }
 
-.storybook-button--secondary {
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
-  background-color: rgba(255, 255, 255, 0.6); /* 60% 불투명도 */
-  color: #333;
-}
 
 /* 사이즈별 스타일 */
 .storybook-button--small {

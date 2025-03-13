@@ -119,14 +119,15 @@ export default function BuyDetail() {
 
           <Divider sx={{ mb: 2 }} />
 
-       {/* 이미지 추가 */}
-       <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
-                <img
-                  src="/image/notice/mooni2.jpg" // Use relative path to the image
-                  alt="공지사항"
-                  style={{ width: "100%", height: "auto", objectFit: "cover" }}
-                />
-              </Box>
+          {/* 이미지 추가 */}
+          <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
+            <img
+              src="/image/notice/mooni2.jpg" // Use relative path to the image
+              alt="공지사항"
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            />
+          </Box>
+
           {/* 안내사항 (파란색 블록) */}
           <Box
             sx={{
@@ -137,7 +138,6 @@ export default function BuyDetail() {
               textAlign: "center",
             }}
           >
-            
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
               <Typography variant="body1" color="text.primary">
                 ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
@@ -148,7 +148,7 @@ export default function BuyDetail() {
               <Typography variant="body1" color="text.primary">
                 ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
               </Typography>
-            </Box> 
+            </Box>
           </Box>
 
           {/* 작성 정보 */}
@@ -170,7 +170,7 @@ export default function BuyDetail() {
             flexDirection: "row",
             gap: 1,
             alignItems: "center",
-            justifyContent: "flex-start", // 왼쪽 정렬
+            justifyContent: "center", // 가운데 정렬로 변경
           }}
         >
           <TextField
@@ -196,7 +196,7 @@ export default function BuyDetail() {
       )}
 
       {/* 버튼 섹션 (내용이 표시된 경우) */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>
         {showContent && (
           <Button variant="outlined" color="error" onClick={handleDelete} sx={{ borderRadius: 20, px: 2 }}>
             삭제하기

@@ -166,44 +166,15 @@ export default function SellDetail() {
             </>
           )}
 
-          {/* 안내사항 */}
-          <Box sx={{ backgroundColor: "#e3f2fd", padding: 2, borderRadius: 2, mb: 3 }}>
-            <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
-              안내사항
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
-              <Typography variant="body1" color="primary" fontWeight="bold">
-                ※ 매입 가능 제품: DSLR, 미러리스, 필름 카메라 및 렌즈 (브랜드: 캐논, 니콘, 소니, 후지필름 등)
-              </Typography>
-              <Typography variant="body1" color="error" fontWeight="bold">
-                ※ 매입 불가 제품: 심각한 침수 제품, 수리 이력 있는 제품, 정품이 아닌 제품
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 제품 상태 기준: 기능 정상 작동 필수, 심각한 파손 제품은 매입 불가
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 박스 및 구성품 포함 여부에 따라 가격이 달라질 수 있습니다.
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 매입 가격은 제품 상태 및 시장 변동에 따라 조정될 수 있습니다.
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 택배 거래 가능 (왕복 배송비는 고객 부담), 방문 접수 가능 (운영시간: 평일 10:00 - 18:00)
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 당사에서 제품 수령 이후 매입 금액이 마음에 드시지 않을 시, 왕복 배송비는 고객님께서 부담해주셔야합니다.
-              </Typography>
-            </Box>
-          </Box> 
+          {/* 이미지 추가 */}
+          <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
+            <img
+              src="/image/notice/mooni.jpg" // Use relative path to the image
+              alt="공지사항"
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            />
+          </Box>
+
           {/* 작성 정보 */}
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             작성 정보
@@ -215,7 +186,16 @@ export default function SellDetail() {
       </Card>
 
       {post.locked && !showContent && (
-        <Box sx={{ mt: 2, display: "flex", flexDirection: "row", gap: 1, alignItems: "center" }}>
+        <Box
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: "row",
+            gap: 1,
+            alignItems: "center",
+            justifyContent: "center", // 가운데 정렬로 변경
+          }}
+        >
           <TextField
             type="password"
             label="비밀번호 입력 (4자리 숫자)"
@@ -238,7 +218,8 @@ export default function SellDetail() {
         </Box>
       )}
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+      {/* 버튼 섹션 (내용이 표시된 경우) */}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>
         {showContent && (
           <Button variant="outlined" color="error" onClick={handleDelete} sx={{ borderRadius: 20, px: 2 }}>
             삭제하기

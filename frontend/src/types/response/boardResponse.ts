@@ -1,4 +1,4 @@
-export type BoardResponse = {
+export interface BoardResponse {
   id: number; // Long in Java becomes number in TypeScript
   memberId: number;
   writer: number; // Assuming writer is a member ID or similar numeric identifier
@@ -10,4 +10,4 @@ export type BoardResponse = {
   updateDate: string; // Same assumption as writeDate
 
   secured: boolean; // Boolean in Java maps directly to boolean in TypeScript
-};
+}

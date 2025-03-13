@@ -1,7 +1,7 @@
 import { MemberResponse } from './memberResponse';
 import { ProductResponse } from './productResponse';
 
-export type RentalResponse = {
+export interface RentalResponse {
   member: MemberResponse; // Nested MemberDTO
   product: ProductResponse; // Nested ProductDTO
 
@@ -12,4 +12,4 @@ export type RentalResponse = {
   returnTimestamp: string;
 
   isDelayed: boolean;
-};
+}

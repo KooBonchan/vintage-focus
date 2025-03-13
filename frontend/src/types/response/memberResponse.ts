@@ -1,4 +1,4 @@
-export type MemberResponse = {
+export interface MemberResponse {
   username: string;
   profileImage: string;
 
@@ -9,4 +9,4 @@ export type MemberResponse = {
 
   role: string;
   isRegistered: boolean;
-};
+}

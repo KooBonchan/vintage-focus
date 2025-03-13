@@ -17,5 +17,8 @@ export default defineConfig({
     rollupOptions:{
       external: [/src\/stories/],
     }
+  },
+  preview: {
+    port: 3000,
   }
 })

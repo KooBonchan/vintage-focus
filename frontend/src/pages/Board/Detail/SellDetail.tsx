@@ -1,24 +1,40 @@
 import { Box, Button, Card, CardContent, Divider, Typography, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Post } from "../../../types/post";
 
 export default function SellDetail() {
   const navigate = useNavigate();
-  const { id } = useParams(); // URL에서 게시글 ID 가져오기
-  const [post, setPost] = useState(null);
+  const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams(); // URL 쿼리 파라미터 사용
+  const [post, setPost] = useState<Post | null>(null);
   const [inputPassword, setInputPassword] = useState("");
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // sessionStorage에서 게시글 목록 가져오기
-    const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-    const foundPost = storedPosts.find((p) => p.id.toString() === id);
-    console.log("Found post from sessionStorage:", foundPost); // 디버깅 로그
-    if (foundPost) {
-      setPost(foundPost);
-      setShowContent(!foundPost.locked); // locked가 false면 바로 내용 표시
+    try {
+      const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+      console.log("저장된 게시글:", storedPosts);
+      const foundPost = storedPosts.find((p: Post) => p.id.toString() === id);
+      console.log("찾은 게시글:", foundPost);
+      if (foundPost) {
+        setPost(foundPost);
+        // URL 쿼리 파라미터와 sessionStorage에서 인증 여부 확인
+        const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
+        const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
+        const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
+        console.log("URL 쿼리 파라미터 (authenticated):", searchParams.get("authenticated"));
+        console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
+        console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
+        setShowContent(!foundPost.locked || isAuthenticated); // locked가 false이거나 인증된 경우
+        console.log("showContent 초기값:", !foundPost.locked || isAuthenticated);
+      } else {
+        console.error("해당 ID의 게시글을 찾을 수 없습니다:", id);
+      }
+    } catch (error) {
+      console.error("sessionStorage 파싱 오류:", error);
     }
-  }, [id]);
+  }, [id, searchParams]);
 
   if (!post) {
     return (
@@ -32,15 +48,15 @@ export default function SellDetail() {
   }
 
   const handleDelete = () => {
-    // 잠금 상태이고 내용이 아직 표시되지 않은 경우 비밀번호 확인
     if (post.locked && !showContent) {
       if (post.password === inputPassword) {
-        setShowContent(true); // 비밀번호가 맞으면 내용 표시
+        setShowContent(true);
         if (window.confirm("이 게시글을 삭제하시겠습니까?")) {
-          // 삭제 확인 후 진행
           const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-          const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
+          const updatedPosts = storedPosts.filter((p: Post) => p.id.toString() !== id);
           sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+          // 인증 상태 제거
+          sessionStorage.removeItem(`post_${id}_authenticated`);
           alert("게시글이 삭제되었습니다.");
           navigate("/sell-inquiry");
         }
@@ -48,21 +64,39 @@ export default function SellDetail() {
         alert("비밀번호가 틀렸습니다.");
       }
     } else {
-      // 잠금 상태가 아니거나 이미 내용이 표시된 경우 바로 삭제 확인
       if (window.confirm("이 게시글을 삭제하시겠습니까?")) {
         const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-        const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
+        const updatedPosts = storedPosts.filter((p: Post) => p.id.toString() !== id);
         sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+        // 인증 상태 제거
+        sessionStorage.removeItem(`post_${id}_authenticated`);
         alert("게시글이 삭제되었습니다.");
         navigate("/sell-inquiry");
       }
     }
   };
 
+  const handlePasswordSubmit = () => {
+    console.log("입력된 비밀번호:", inputPassword);
+    console.log("저장된 비밀번호:", post.password);
+    console.log("비밀번호 일치 여부:", post.password === inputPassword);
+
+    if (post.password === inputPassword) {
+      setShowContent(true);
+      console.log("showContent 업데이트됨:", true);
+      // 인증 상태를 sessionStorage에 저장
+      sessionStorage.setItem(`post_${id}_authenticated`, "true");
+      // URL에 authenticated 쿼리 파라미터 추가
+      navigate(`/sell-inquiry/${id}?authenticated=true`, { replace: true });
+    } else {
+      alert("비밀번호가 틀렸습니다.");
+      setInputPassword("");
+    }
+  };
+
   return (
     <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3 }}>
-      {/* 단일 박스 */}
-      <Card sx={{ borderRadius: 2, boxShadow: 3, backgroundColor: "#ffffff" }}>
+      <Card sx={{ borderRadius: 2, boxShadow: 3, backgroundColor: "white" }}>
         <CardContent>
           {/* 제목 */}
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
@@ -78,32 +112,59 @@ export default function SellDetail() {
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             문의 내용
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 2, whiteSpace: "pre-wrap" }}>
             {showContent ? (post.content || "내용이 없습니다.") : "내용을 보려면 비밀번호를 입력하세요."}
           </Typography>
 
-          {/* 이미지 큰 사이즈로 세로 표시 */}
+          {/* 첨부 이미지 */}
           {post.images && post.images.length > 0 && showContent && (
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, mb: 3 }}>
-              {post.images.map((imageName, index) => {
-                console.log(`Image ${index + 1} name: ${imageName}, attempting to display`); // 디버깅 로그
-                return (
+            <>
+              <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
+                첨부 이미지
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, mb: 3 }}>
+                {post.images.map((imageBase64: string, index: number) => (
                   <Box key={index} sx={{ width: "100%", maxWidth: 600, overflow: "hidden" }}>
-                    <img
-                      src={URL.createObjectURL(
-                        new File([], imageName, { type: "image/png" }) // 임시 파일 객체 (실제 데이터 없음)
-                      )}
-                      alt={`이미지 ${index + 1}`}
-                      style={{ width: "100%", height: "auto", objectFit: "contain" }}
-                      onError={(e) => console.error(`Image load failed for ${imageName}`, e)} // 에러 로그
-                    />
+                    {imageBase64 ? (
+                      <img
+                        src={imageBase64}
+                        alt={`이미지 ${index + 1}`}
+                        style={{ width: "100%", height: "auto", objectFit: "contain", borderRadius: 2 }}
+                      />
+                    ) : (
+                      <Typography>이미지 로드 실패</Typography>
+                    )}
                   </Box>
-                );
-              })}
-            </Box>
+                ))}
+              </Box>
+              <Divider sx={{ mb: 2 }} />
+            </>
           )}
 
-          <Divider sx={{ mb: 2 }} />
+          {/* 판매자 정보 */}
+          {showContent && (
+            <>
+              <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
+                소중한 고객님의 정보
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                성함: {post.author.name || "정보 없음"}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                연락처: {post.contact || "정보 없음"}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                입금받으실 계좌 성함: {post.accountHolder || "정보 없음"}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                은행 이름: {post.bankName || "정보 없음"}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                입금받으실 계좌: {post.accountNumber || "정보 없음"}
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+            </>
+          )}
 
           {/* 이미지 추가 */}
           <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
@@ -124,7 +185,6 @@ export default function SellDetail() {
         </CardContent>
       </Card>
 
-      {/* 비밀번호 입력 (locked가 true이고 내용이 아직 표시되지 않은 경우) */}
       {post.locked && !showContent && (
         <Box
           sx={{
@@ -143,12 +203,15 @@ export default function SellDetail() {
             size="small"
             value={inputPassword}
             onChange={(e) => {
-              const input = e.target.value.replace(/\D/g, ""); // 숫자만 허용
+              const input = e.target.value.replace(/\D/g, "");
               if (input.length <= 4) setInputPassword(input);
             }}
             inputProps={{ maxLength: 4 }}
-            sx={{ width: "300px" }} // 입력창 크기 고정
+            sx={{ width: "300px" }}
           />
+          <Button variant="contained" color="primary" onClick={handlePasswordSubmit} sx={{ height: "40px" }}>
+            확인
+          </Button>
           <Button variant="outlined" color="error" onClick={handleDelete} sx={{ height: "40px" }}>
             삭제하기
           </Button>

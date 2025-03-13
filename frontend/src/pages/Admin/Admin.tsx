@@ -6,19 +6,7 @@ const AdminLayout = () => {
     <Box sx={{ display: "flex" }}>
       {/* ✅ 사이드바 고정 (Layout으로 분리) */}
       <Box
-        sx={{
-          width: 250,
-          height: "100vh",
-          flexShrink: 0,
-          mr: 3,
-          borderRight: "1px solid #ddd",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          backgroundColor: "#ffffff",
-          paddingTop: "80px",
-          zIndex: 1000,
-        }}
+        
       >
         <Typography variant="h6" sx={{ p: 2, borderBottom: "1px solid #ddd" }}>
           관리 메뉴

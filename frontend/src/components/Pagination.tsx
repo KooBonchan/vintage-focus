@@ -11,7 +11,7 @@ function CustomPagination({ page, setPage }: CustomPaginationProps) {
     <Pagination
       count={5}
       page={page}
-      onChange={(event, value) => setPage(value)}
+      onChange={(event, value) => { setPage(value); }}
       sx={{ display: "flex", justifyContent: "center", mt: 3 }}
     />
   );

@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider, useTheme } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
 import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
@@ -104,6 +104,8 @@ function App() {
 }
 
 function Router() {
+  const navigate = useNavigate();
+
   return (
     <Routes>
       <Route element={<AuthLayout />}>
@@ -162,16 +164,16 @@ function Router() {
         </Route>
       </Route>
 
-          {/* 관리자 */}
-          <Route path="admin" element={<HeaderFooterLayout />}>
-          <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Admin />} />  {/* 기본 페이지 */}
+      {/* 관리자 */}
+      <Route element={<HeaderFooterLayout />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to={"/admin/dashboard"} />} />  {/* 기본 페이지 */}
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="delivery" element={<AdminDelivery />} />
         </Route>
-        </Route>
+      </Route>
     </Routes>
   );
 }

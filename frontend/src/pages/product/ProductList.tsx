@@ -55,7 +55,7 @@ function ProductList() {
             </Grid2>
           ))
           :
-          Array.from({ length: 8 }, (_, i) => i).map((_, i) => (<>
+          Array.from({ length: ITEMS_PER_PAGE }, (_, i) => i).map((_, i) => (<>
             <Grid2 size={{xs:12, sm:6, md:4, lg:3}} key={i} >
               <Skeleton variant="rectangular" width={250} height={330} style={{margin: "0 auto"}} />
             </Grid2>
@@ -67,7 +67,7 @@ function ProductList() {
           <Pagination
             count={totalPages}
             page={page}
-            onChange={(event, value) => setPage(value)}
+            onChange={(event, value) => { setPage(value); }}
             color="primary"
           />
         </Box>

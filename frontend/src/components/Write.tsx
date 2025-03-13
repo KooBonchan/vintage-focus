@@ -111,7 +111,7 @@ export default function Write({
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {!isPublic && <LockIcon sx={{ mr: 0.5 }} />}
           <FormControlLabel
-            control={<Switch checked={isPublic} onChange={() => setIsPublic(!isPublic)} />}
+            control={<Switch checked={isPublic} onChange={() => { setIsPublic(!isPublic); }} />}
             label={isPublic ? "공개" : "비공개"}
           />
         </Box>

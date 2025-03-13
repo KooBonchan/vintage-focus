@@ -1,4 +1,4 @@
-export type ReviewResponse = {
+export interface ReviewResponse {
   id: number; // Long in Java becomes number in TypeScript
   productId: number;
   memberId: number;
@@ -11,4 +11,4 @@ export type ReviewResponse = {
   updateDate: string; // Same assumption as writeDate
 
   secured: boolean; // Boolean maps to boolean
-};
+}

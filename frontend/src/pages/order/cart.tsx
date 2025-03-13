@@ -119,7 +119,7 @@ export default function Cart() {
                 <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedItems.includes(item.id)}
-                    onChange={() => handleSelectItem(item.id)}
+                    onChange={() => { handleSelectItem(item.id); }}
                   />
                 </TableCell>
 
@@ -131,11 +131,11 @@ export default function Cart() {
 
                 <TableCell sx={{ textAlign: "center" }}>
                   <Box className="quantity-container">
-                    <IconButton onClick={() => handleQuantityChange(item.id, -1)}>
+                    <IconButton onClick={() => { handleQuantityChange(item.id, -1); }}>
                       <RemoveIcon />
                     </IconButton>
                     <Typography sx={{ mx: 1 }}>{item.quantity}</Typography>
-                    <IconButton onClick={() => handleQuantityChange(item.id, 1)}>
+                    <IconButton onClick={() => { handleQuantityChange(item.id, 1); }}>
                       <AddIcon />
                     </IconButton>
                   </Box>
@@ -179,10 +179,10 @@ export default function Cart() {
 
       {/* 버튼을 오른쪽 하단에 배치 */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-        <Button variant="text" color="primary" onClick={() => handleOrder("selected")} sx={{ mr: 2 }}>
+        <Button variant="text" color="primary" onClick={() => { handleOrder("selected"); }} sx={{ mr: 2 }}>
           선택 상품 주문
         </Button>
-        <Button variant="text" color="primary" onClick={() => handleOrder("all")}>
+        <Button variant="text" color="primary" onClick={() => { handleOrder("all"); }}>
           전체 상품 주문
         </Button>
       </Box>

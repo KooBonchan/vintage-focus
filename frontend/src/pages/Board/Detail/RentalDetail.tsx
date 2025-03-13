@@ -111,7 +111,7 @@ export default function RentalDetail() {
     };
     console.log("Extracting from content:", content); // 디버깅용 로그
 
-    for (let line of lines) {
+    for (const line of lines) {
       if (line.startsWith("✍️ 문의 내용:")) {
         details.write = line.replace("✍️ 문의 내용: ", "").trim() || "없음";
       } else if (line.startsWith("👤 성함:")) {
@@ -216,9 +216,9 @@ export default function RentalDetail() {
             <Typography variant="body1" sx={{ color: "#e65100", fontSize: "16px", lineHeight: "1.8", mb: 1 }}>
               📍 희망 수령 지점: {details.pickupLocation} {/* 텍스트로 지점 이름 추가 */}
             </Typography>
-            {post.rental && post.rental.lat && post.rental.lng ? (
+            {post.rental?.lat && post.rental.lng ? (
               <Box sx={{ borderRadius: "12px", overflow: "hidden", mt: 1 }}>
-                <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} onLoad={() => setIsMapLoaded(true)}>
+                <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} onLoad={() => { setIsMapLoaded(true); }}>
                   {isMapLoaded && (
                     <GoogleMap mapContainerStyle={mapContainerStyle} center={{ lat: post.rental.lat, lng: post.rental.lng }} zoom={15}>
                       <Marker position={{ lat: post.rental.lat, lng: post.rental.lng }} title={post.rental.rentalLocation} />

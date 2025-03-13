@@ -27,18 +27,11 @@ public class ProductController {
   private final ProductService productService;
 
   @Operation(summary = "Get all products", description = "Retrieves a list of all products")
-  @ApiResponses({
-    @ApiResponse(
-      responseCode = "200",
-      description = "Successful operation",
-      content = @Content(
-        mediaType = "application/json",
-        array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)))),
-    @ApiResponse(responseCode = "404", description = "No products found")
-  })
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<ResponseEntity<Flux<ProductDTO>>> getAllProducts() {
-    Flux<ProductDTO> products = productService.getAllProducts();
+  public Mono<ResponseEntity<Flux<ProductDTO>>> getAllProducts(
+    @RequestParam(name="limit", defaultValue = "200") int limit
+  ) {
+    Flux<ProductDTO> products = productService.getAllProducts(limit);
     return products.hasElements() // Check if the Flux has any elements
       .map(hasElements -> {
         if (hasElements) {
@@ -49,24 +42,9 @@ public class ProductController {
       });
   }
 
-  @Operation(
-    summary = "Get product by ID",
-    description = "Retrieves a product by its ID",
-    parameters = {
-      @Parameter(
-        description = "ID of the product to retrieve",
-        required = true,
-        example = "1",
-        in = ParameterIn.PATH
-      )},
-    responses = {
-      @ApiResponse(responseCode = "200", description = "Product found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))),
-      @ApiResponse(responseCode = "404", description = "Product not found")
-    }
-  )
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<ResponseEntity<ProductDTO>> getProductById(
-    @PathVariable Long id) {
+    @PathVariable("id") Long id) {
     return productService.getProductById(id)
       .map(ResponseEntity::ok)
       .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));

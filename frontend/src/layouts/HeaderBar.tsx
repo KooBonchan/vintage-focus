@@ -31,10 +31,10 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: '8px 12px',
 }));
 
-type RouteMetadata = {
+interface RouteMetadata {
   name: string,
   route: string,
-};
+}
 
 const routes: RouteMetadata[] = [
   { name: "홈", route: "/" },

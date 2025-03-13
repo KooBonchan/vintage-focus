@@ -36,6 +36,11 @@ public class ProductServiceImpl implements ProductService{
     return productRepository.findAllWithFirstImage()
       .map(this::mapToDTO);
   }
+  public Flux<ProductDTO> getAllProducts(int limit) {
+    return getAllProducts().take(limit);
+  }
+
+
   public Mono<ProductDTO> getProductById(Long id){
     return productRepository.findById(id)
       .flatMap(product ->

@@ -119,9 +119,9 @@ export default function RentalWrite() {
     setSelectedLocation(locations[0]);
   };
 
-  const handleCloseModal = () => setOpenModal(false);
+  const handleCloseModal = () => { setOpenModal(false); };
 
-  const handleLocationSelect = (location) => setSelectedLocation(location);
+  const handleLocationSelect = (location) => { setSelectedLocation(location); };
 
   const handleConfirmSelection = () => {
     if (selectedLocation) {
@@ -165,18 +165,18 @@ export default function RentalWrite() {
           ))}
         </Box>
 
-        <TextField label="제목" fullWidth value={title} onChange={(e) => setTitle(e.target.value)} sx={{ mb: 2 }} />
-        <TextField label="문의 내용" fullWidth value={write} onChange={(e) => setWrite(e.target.value)} multiline minRows={4} sx={{ mb: 2 }} />
-        <TextField label="성함" fullWidth value={name} onChange={(e) => setName(e.target.value)} sx={{ mb: 2 }} />
-        <TextField label="전화번호" fullWidth value={phone} onChange={(e) => setPhone(e.target.value)} sx={{ mb: 2 }} />
+        <TextField label="제목" fullWidth value={title} onChange={(e) => { setTitle(e.target.value); }} sx={{ mb: 2 }} />
+        <TextField label="문의 내용" fullWidth value={write} onChange={(e) => { setWrite(e.target.value); }} multiline minRows={4} sx={{ mb: 2 }} />
+        <TextField label="성함" fullWidth value={name} onChange={(e) => { setName(e.target.value); }} sx={{ mb: 2 }} />
+        <TextField label="전화번호" fullWidth value={phone} onChange={(e) => { setPhone(e.target.value); }} sx={{ mb: 2 }} />
 
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <DatePicker label="대여 날짜" value={rentalDate} onChange={(date) => setRentalDate(date)} minDate={dayjs()} sx={{ flex: 1 }} />
-          <TimePicker label="대여 시간" value={rentalTime} onChange={(time) => setRentalTime(time)} sx={{ flex: 1 }} />
+          <DatePicker label="대여 날짜" value={rentalDate} onChange={(date) => { setRentalDate(date); }} minDate={dayjs()} sx={{ flex: 1 }} />
+          <TimePicker label="대여 시간" value={rentalTime} onChange={(time) => { setRentalTime(time); }} sx={{ flex: 1 }} />
         </Box>
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <DatePicker label="반납 날짜" value={returnDate} onChange={(date) => setReturnDate(date)} minDate={rentalDate || dayjs()} sx={{ flex: 1 }} />
-          <TimePicker label="반납 시간" value={returnTime} onChange={(time) => setReturnTime(time)} sx={{ flex: 1 }} />
+          <DatePicker label="반납 날짜" value={returnDate} onChange={(date) => { setReturnDate(date); }} minDate={rentalDate || dayjs()} sx={{ flex: 1 }} />
+          <TimePicker label="반납 시간" value={returnTime} onChange={(time) => { setReturnTime(time); }} sx={{ flex: 1 }} />
         </Box>
 
         <Alert severity="warning" sx={{ width: "100%", mb: 2, fontSize: "16px", textAlign: "center", "& .MuiAlert-icon": { color: "#e65100" } }}>
@@ -187,7 +187,7 @@ export default function RentalWrite() {
 
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 3 }}>
           <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
-          <FormControlLabel control={<Switch checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />} label="" sx={{ m: 0 }} />
+          <FormControlLabel control={<Switch checked={isPublic} onChange={(e) => { setIsPublic(e.target.checked); }} />} label="" sx={{ m: 0 }} />
           {isPublic && (
             <TextField
               label="비밀번호 (4자리 숫자)"
@@ -216,7 +216,7 @@ export default function RentalWrite() {
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "90%", maxWidth: "1000px", bgcolor: "rgba(255, 255, 255, 0.95)", boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)", p: 4, borderRadius: "16px", display: "flex", gap: 2, border: "1px solid rgba(0, 0, 0, 0.1)" }}>
           <Box sx={{ width: "70%", borderRadius: "12px", overflow: "hidden" }}>
-            <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} onLoad={() => setIsMapLoaded(true)}>
+            <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} onLoad={() => { setIsMapLoaded(true); }}>
               {isMapLoaded && selectedLocation && (
                 <GoogleMap mapContainerStyle={mapContainerStyle} center={{ lat: selectedLocation.lat, lng: selectedLocation.lng }} zoom={15}>
                   <Marker position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }} title={selectedLocation.name} />
@@ -231,7 +231,7 @@ export default function RentalWrite() {
               </Typography>
               <List sx={{ maxHeight: "400px", overflowY: "auto" }}>
                 {locations.map((loc) => (
-                  <ListItem button key={loc.name} onClick={() => handleLocationSelect(loc)} sx={{ mb: 1, borderRadius: "8px", bgcolor: selectedLocation?.name === loc.name ? "#e3f2fd" : "#fff", transition: "all 0.3s ease", "&:hover": { bgcolor: "#f5f5f5", transform: "scale(1.02)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" } }}>
+                  <ListItem button key={loc.name} onClick={() => { handleLocationSelect(loc); }} sx={{ mb: 1, borderRadius: "8px", bgcolor: selectedLocation?.name === loc.name ? "#e3f2fd" : "#fff", transition: "all 0.3s ease", "&:hover": { bgcolor: "#f5f5f5", transform: "scale(1.02)", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" } }}>
                     <ListItemText primary={loc.name} sx={{ "& .MuiListItemText-primary": { fontWeight: selectedLocation?.name === loc.name ? "bold" : "normal", color: selectedLocation?.name === loc.name ? "#1976d2" : "#333" } }} />
                   </ListItem>
                 ))}

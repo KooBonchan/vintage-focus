@@ -120,7 +120,7 @@ export default function SellWrite() {
 
     // 파일 입력 초기화
     if (fileInputRefs.current[index]) {
-      fileInputRefs.current[index]!.value = "";
+      fileInputRefs.current[index].value = "";
     }
 
     console.log(`이미지 ${index + 1} 삭제됨`);
@@ -137,7 +137,7 @@ export default function SellWrite() {
   // Format phone number with hyphens
   const formatPhoneNumber = (input: string) => {
     const cleaned = input.replace(/\D/g, "");
-    const match = cleaned.match(/^(\d{0,3})(\d{0,4})(\d{0,4})$/);
+    const match = /^(\d{0,3})(\d{0,4})(\d{0,4})$/.exec(cleaned);
     if (match) {
       return !match[2]
         ? match[1]
@@ -174,7 +174,7 @@ export default function SellWrite() {
       tag: "매각문의",
       locked: !isPublic,
       password: !isPublic ? password : undefined,
-      images: images.map((file) => file?.name).filter(Boolean),
+      images: images.map((file) => file.name).filter(Boolean),
       contact,
       accountHolder,
       bankName,
@@ -222,7 +222,7 @@ export default function SellWrite() {
           size="small"
           fullWidth
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => { setTitle(e.target.value); }}
           sx={{
             mb: 1,
             "& .MuiOutlinedInput-root": {
@@ -247,7 +247,7 @@ export default function SellWrite() {
           variant="outlined"
           fullWidth
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => { setContent(e.target.value); }}
           sx={{
             "& .MuiOutlinedInput-root": {
               backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
@@ -270,7 +270,7 @@ export default function SellWrite() {
           size="small"
           fullWidth
           value={sellerName}
-          onChange={(e) => setSellerName(e.target.value)}
+          onChange={(e) => { setSellerName(e.target.value); }}
           sx={{ mb: 2, "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
         />
         <TextField
@@ -293,7 +293,7 @@ export default function SellWrite() {
           size="small"
           fullWidth
           value={accountHolder}
-          onChange={(e) => setAccountHolder(e.target.value)}
+          onChange={(e) => { setAccountHolder(e.target.value); }}
           sx={{ mb: 2, "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
         />
         <FormControl fullWidth sx={{ mb: 2 }}>
@@ -305,7 +305,7 @@ export default function SellWrite() {
             value={bankName}
             label="은행이름"
             size="small"
-            onChange={(e) => setBankName(e.target.value)}
+            onChange={(e) => { setBankName(e.target.value); }}
             sx={{
               backgroundColor: "white",
               fontSize: "0.9rem",
@@ -358,7 +358,7 @@ export default function SellWrite() {
             <CustomButton
               label={images[index] ? images[index].name : `이미지 ${index + 1}`}
               size="medium"
-              onClick={() => handleAddImage(index)} // 이미지 선택 클릭 핸들러
+              onClick={() => { handleAddImage(index); }} // 이미지 선택 클릭 핸들러
             />
             {imagePreviews[index] && (
               <Box sx={{ maxWidth: 400, maxHeight: 400, overflow: "hidden", mt: 1, position: "relative" }}>
@@ -369,7 +369,7 @@ export default function SellWrite() {
                 />
                 <IconButton
                   aria-label="delete"
-                  onClick={() => handleRemoveImage(index)}
+                  onClick={() => { handleRemoveImage(index); }}
                   sx={{
                     position: "absolute",
                     top: 0,
@@ -390,7 +390,7 @@ export default function SellWrite() {
               accept="image/*"
               style={{ display: "none" }}
               ref={(el) => (fileInputRefs.current[index] = el)}
-              onChange={(e) => handleFileChange(index, e)}
+              onChange={(e) => { handleFileChange(index, e); }}
             />
           </Box>
         ))}

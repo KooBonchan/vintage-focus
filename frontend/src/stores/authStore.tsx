@@ -19,10 +19,10 @@ const useAuthStore = create<AuthState>((set) => ({
 
   // Action to set user and token
   setAuth: (user: MemberResponse, token: string) =>
-    set({ user, accessToken: token, hasLoggedInBefore: true }),
+    { set({ user, accessToken: token, hasLoggedInBefore: true }); },
 
   // Action to clear auth state (e.g., on logout)
-  clearAuth: () => set({ user: null, accessToken: null, hasLoggedInBefore: false }),
+  clearAuth: () => { set({ user: null, accessToken: null, hasLoggedInBefore: false }); },
 
   // Action to fetch user profile and update store
   fetchUser: async (token: string) => {
@@ -39,7 +39,7 @@ const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  setUser: (user: MemberResponse) => set({user})
+  setUser: (user: MemberResponse) => { set({user}); }
 }));
 
 export default useAuthStore;

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Card, Avatar } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "./CustomButton";
 
 export interface Author {
   name: string;

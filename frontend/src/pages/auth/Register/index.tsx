@@ -43,7 +43,7 @@ export default function Register() {
         withCredentials: true,
       }
     )
-    .then(response => setUser(response.data))
+    .then(response => { setUser(response.data); })
     .then(() => navigate("/"))
     .catch(console.error)
   };

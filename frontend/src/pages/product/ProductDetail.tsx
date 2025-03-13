@@ -1,13 +1,36 @@
-import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List, Dialog, DialogTitle, DialogContent, DialogActions, useTheme } from "@mui/material";
-import { ChatBubbleOutline, FavoriteBorder, Add, MoreVert } from "@mui/icons-material";
+import { Box, Container, Typography, Button, Grid, Divider, IconButton, ListItem, ListItemAvatar, Avatar, ListItemText, List, Dialog, DialogTitle, DialogContent, DialogActions, useTheme, Skeleton, Stack } from "@mui/material";
+import { ChatBubbleOutline, FavoriteBorder, Add, MoreVert, VisibilityOutlined } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ProductResponse } from "@/types/response";
+import { readProductDetail } from "@/api/productApi";
 
 export function ProductDetail() {
   const theme = useTheme(); // ✅ MUI 테마 적용
   const { id } = useParams();
   const navigate = useNavigate(); // useNavigate 훅 추가
   const [open, setOpen] = useState(false);
+  const [product, setProduct] = useState<ProductResponse | null>(null);
+  const [noItem, setNoItem] = useState(false);
+
+  useEffect(() => {
+    if(!id) {
+      setProduct(null);
+      setNoItem(true);
+      return;
+    }
+    const idNum = Number.parseInt(id);
+    if(idNum < 1) {
+      setProduct(null);
+      setNoItem(true);
+      return;
+    }
+
+    readProductDetail(idNum)
+    .then(setProduct)
+    .then(_=>setNoItem(false))
+    .catch(_=>setNoItem(true));
+  },[id, setProduct, setNoItem]);
 
   const handleAddToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -15,16 +38,7 @@ export function ProductDetail() {
     localStorage.setItem("cart", JSON.stringify(cart));
     setOpen(true);
   };
-
-  const product = {
-    id,
-    name: "상품 이름",
-    price: 100000,
-    quantity: 1,
-    shipping: 3000,
-    image: "https://placehold.co/500x450",
-  };
-
+  
   return (
     <Container
       sx={{
@@ -39,25 +53,47 @@ export function ProductDetail() {
       <Grid container spacing={4} alignItems="center">
         {/* 상품 이미지 */}
         <Grid item xs={12} md={6}>
-          <Box
-            sx={{
-              width: "500px",
-              height: "450px",
-              backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#ddd",
-              borderRadius: 2,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          ></Box>
+          {product ? (
+            <div
+              style={{
+                width: '500px', // Fixed width of the wrapper
+                height: '450px', // Fixed height of the wrapper
+                display: 'flex', // Use flex to center the image
+                justifyContent: 'center', // Center horizontally
+                alignItems: 'center', // Center vertically
+                overflow: 'hidden', // Prevent overflow
+              }}
+            >
+              <img
+                src={
+                  product.productImages
+                    ? `${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${product.productImages[0]}`
+                    : '/image/icon/camera.svg'
+                }
+                alt={product.productName}
+                style={{
+                  maxWidth: '100%', // Ensure image scales down if needed
+                  maxHeight: '100%', // Ensure image scales down if needed
+                  objectFit: 'contain', // Maintain aspect ratio without cropping
+                }}
+              />
+            </div>
+          ) : (
+            <Skeleton variant="rectangular" height={'450px'} />
+          )}
         </Grid>
 
         {/* 상품 정보 */}
         <Grid item xs={12} md={6}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography variant="h5" fontWeight="bold">
-              어쩌구 저쩌구
-            </Typography>
+            {product ? (
+              <Typography variant="h5" fontWeight="bold">
+                {product.productName}
+              </Typography>
+            ) : (
+              <Skeleton sx={{flexGrow: "1"}} />
+            )}
+            
 
             {/* 아이콘 버튼들 */}
             <Box>
@@ -82,19 +118,61 @@ export function ProductDetail() {
           {/* 가격 */}
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
             <Typography variant="body1">가격</Typography>
-            <Typography variant="h6" fontWeight="bold" sx={{ color: "#027af2" }}>
-              1,000,000원
-            </Typography>
+            {product ? (
+              <Box display="flex" gap={0.5} alignItems="center">
+              {product.consumerPrice && 
+                <Typography
+                  fontWeight="regular"
+                  sx={{
+                    textDecoration:"line-through",
+                    color: theme.palette.grey[500],
+                  }}>
+                  {product.consumerPrice.toLocaleString()}
+                </Typography>
+              }
+              <Typography variant="h5" fontWeight="bold">
+                {product.sellingPrice.toLocaleString()}원
+              </Typography>
+              </Box>
+            ) : (
+              <Skeleton width="30%" />
+            )}
           </Box>
-
           <Divider sx={{ my: 2 }} />
 
           {/* 추가 정보 */}
           <Box sx={{ textAlign: "left", mt: 5, mb: 5 }}>
-            <Typography variant="h6" fontWeight="bold">
-              Title
-            </Typography>
-            <Typography sx={{ color: "gray", fontSize: "14px", mt: 1 }}>내용을 짧게 적어주세요</Typography>
+            {product ? (
+              <>
+                <Typography variant="h5" fontWeight="bold">
+                  {product.productName || "Unnamed Product"}
+                </Typography>
+                <Typography sx={{ color: "gray", fontSize: "14px", mt: 1 }}>
+                  {product.company ?? "Unknown Brand"} - {product.country ?? "Unknown Country"}
+                </Typography>
+
+                <Stack direction="row" spacing={2} sx={{ mt: 1, color: "gray", fontSize: "14px" }}>
+                  <Typography>Condition: {product.condition ?? "N/A"}</Typography>
+                  <Typography>Stock: {product.stock === -1 ? "N/A" : product.stock}</Typography>
+                </Stack>
+
+                <Stack direction="row" spacing="2" sx={{ mt: 1, color: "gray", fontSize: "14px" }}>
+                  <ChatBubbleOutline />
+                  <Typography pl={0.2} pr={1}>{product.reviewCount ?? 0} </Typography>
+                  <FavoriteBorder />
+                  <Typography pl={0.2} pr={1}>{product.likeCount ?? 0} </Typography>
+                  <VisibilityOutlined />
+                  <Typography pl={0.2} pr={1}>{product.viewCount ?? 0} </Typography>
+                </Stack>
+              </>
+            ) : (
+              <>
+                <Skeleton width="30%" height={30} />
+                <Skeleton width="50%" height={20} sx={{ mt: 1 }} />
+                <Skeleton width="60%" height={20} sx={{ mt: 1 }} />
+                <Skeleton width="60%" height={20} sx={{ mt: 1 }} />
+              </>
+            )}
           </Box>
 
           <Divider sx={{ my: 2 }} />
@@ -124,16 +202,6 @@ export function ProductDetail() {
             >
               대여문의
             </Button>
-
-            {/* "제품 대여하기" 버튼 클릭 시 rental-inquiry 페이지로 이동 */}
-            <Button
-              variant="text"
-              sx={{ borderRadius: 2, bgcolor: "#bbb", color: "black", px: 4 }}
-              onClick={() => navigate("/rental-inquiry/write")} // rental-inquiry로 이동
-            >
-              제품 대여하기
-            </Button>
-
           </Box>
         </Grid>
 
@@ -159,35 +227,19 @@ export function ProductDetail() {
         <Divider />
 
         {/* 큰 상세 이미지 */}
-        <Box
-          sx={{
-            width: "100%",
-            height: 800,
-            backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#ddd",
-            mt: 7,
-            borderRadius: 2,
-          }}
-        />
+        <Box mt={7} borderRadius={2}>
+        {
+          product?
+          <img
+            src={product.category2 === 'Cameras' ? "/image/product/vfcamera.jpg" : "/image/product/vflen.jpg" }
+            alt={`Product Detail image: ${product.productName}`} />
+          :
+          <Skeleton width="100%" variant="rectangular" height="800px" />
+        }
+        </Box>
 
         <Divider sx={{ my: 3 }} />
 
-        {/* 상세 설명 */}
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <Box sx={{ width: "100%", height: 150, bgcolor: {"light":"#ddd", "dark":"#1e1e1e",}, borderRadius: 2, mt: 2 }} />
-          </Grid>
-          <Grid item xs={9}>
-            <Typography variant="h5" fontWeight="bold">
-              상품
-            </Typography>
-
-            <div style={{ marginTop: "20px" }}>
-              <Typography variant="h6" sx={{ textAlign: "center", color: "gray", mb: 2 }}>
-                상품이름과 설명
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
       </Box>
 
       <Box sx={{ pt: 7, pb: 7, bgcolor: {"light":"#ffffff", "dark":"#161616"}, borderRadius: 2, p: 3 }}>

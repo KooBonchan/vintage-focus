@@ -8,3 +8,8 @@ export const readProductList:() => Promise<ProductResponse[]> = () => (
   .catch(console.error)
 );
 
+export const readProductDetail: (id:number) => Promise<ProductResponse> = (id) => (
+  axios.get(`${apiRoot}/product/${id}`)
+  .then(response => response.data)
+  .catch(console.error)
+);

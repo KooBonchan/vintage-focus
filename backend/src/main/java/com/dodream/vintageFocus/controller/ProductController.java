@@ -28,8 +28,10 @@ public class ProductController {
 
   @Operation(summary = "Get all products", description = "Retrieves a list of all products")
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<ResponseEntity<Flux<ProductDTO>>> getAllProducts() {
-    Flux<ProductDTO> products = productService.getAllProducts();
+  public Mono<ResponseEntity<Flux<ProductDTO>>> getAllProducts(
+    @RequestParam(name="limit", defaultValue = "200") int limit
+  ) {
+    Flux<ProductDTO> products = productService.getAllProducts(limit);
     return products.hasElements() // Check if the Flux has any elements
       .map(hasElements -> {
         if (hasElements) {

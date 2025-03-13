@@ -12,5 +12,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['/src/test/testSetup.tsx'],
+  },
+  build: {
+    rollupOptions:{
+      external: [/src\/stories/],
+    }
   }
 })

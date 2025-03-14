@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @Slf4j
@@ -21,6 +22,9 @@ class VintageFocusApplicationTests {
 	@Value("${PORTONE_API_SECRET}")
 	private String portoneApiSecret;
 
+	@Value("${spring.r2dbc.url}")
+	private String r2dbcUrl;
+
 	@Test
 	void contextLoads() {
 	}
@@ -30,6 +34,12 @@ class VintageFocusApplicationTests {
 		log.info("google client id: {}", maskSensitiveData(oauth2Config.google().clientId()));
 		log.info("google client secret: {}", maskSensitiveData(oauth2Config.google().clientSecret()));
 		log.info("google token exchange url: {}", oauth2Config.google().tokenUrl());
+	}
+
+
+	@Test
+	void r2dbcHolds(){
+		System.out.println("R2DBC URL: " + maskSensitiveData(r2dbcUrl));
 	}
 
 	@Test

@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 *.puml
 .env
+*.json
 
 ### STS ###
 .apt_generated

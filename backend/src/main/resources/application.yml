@@ -13,12 +13,12 @@ spring:
     static-locations: classpath:/static/,classpath:/public/,classpath:/swagger-ui/
 
 #  Persistence
-#  sql.init.mode: always
+  sql.init.mode: never
   r2dbc:
     enabled: true
-    url: r2dbc:mysql://localhost:3306/vintage_focus
+    url: r2dbc:mysql://aws-mysql.cdss0m0yyvd2.ap-northeast-2.rds.amazonaws.com:3306/vintage_focus
     username: vintage_focus
-    password: vf12311
+    password: doc13qQq
     pool:
       enabled: true
       max-size: 20
@@ -65,7 +65,7 @@ springdoc:
   default-produces-media-type: application/json
 
 logging.level:
-  root: INFO
+  root: DEBUG
   org:
     springframework:
       data.r2dbc: TRACE

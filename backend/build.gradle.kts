@@ -47,7 +47,6 @@ dependencies {
 
 //	Database
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-	implementation("io.r2dbc:r2dbc-h2:1.0.0.RELEASE")
 	testImplementation("io.r2dbc:r2dbc-h2:1.0.0.RELEASE")
 	implementation("io.asyncer:r2dbc-mysql:1.3.2")
 

@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `member` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `oauth_provider` VARCHAR(50) NOT NULL,
     `oauth_id` VARCHAR(255) NOT NULL,
     `username` VARCHAR(255) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `member` (
 );
 
 CREATE TABLE IF NOT EXISTS `product` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `code` VARCHAR(63) NULL,
     `model_name` VARCHAR(63) NULL,
     `product_name` VARCHAR(255) NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `product` (
 );
 
 CREATE TABLE IF NOT EXISTS `rental` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `member_id` BIGINT NULL,
     `rental_fee` Int NULL,
     `delivery_fee` Int NULL,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `rental` (
 );
 
 CREATE TABLE IF NOT EXISTS `board` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `category` VARCHAR(63) NULL,
     `write_date` Date NULL,
     `update_date` Date NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `board` (
 );
 
 CREATE TABLE IF NOT EXISTS `Review` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `content` TEXT NULL,
     `write_date` Date NULL,
     `update_date` Date NULL,
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `Review` (
 
 
 CREATE TABLE IF NOT EXISTS `product_image` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `product_image` (
 );
 
 CREATE TABLE IF NOT EXISTS `product_detail_image` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `product_detail_image` (
 );
 
 CREATE TABLE IF NOT EXISTS `board_image` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `board_image` (
 );
 
 CREATE TABLE IF NOT EXISTS `review_image` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `original_image_name` VARCHAR(255) NULL,
     `path` VARCHAR(255) NULL,
     `saved_image_name` VARCHAR(255) NULL,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `review_image` (
 );
 
 CREATE TABLE IF NOT EXISTS `Payment` (
-    `id` BINARY(16) NOT NULL,
+    `id` BINARY(16) NOT NULL PRIMARY KEY,
     `delivery_id` BINARY(16) NOT NULL,
     `sum_product` Int NULL,
     `delivery_fee` Int NULL,
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `Delivery` (
 );
 
 CREATE TABLE IF NOT EXISTS `Cart` (
-    `id` BINARY(16) NOT NULL,
+    `id` BINARY(16) NOT NULL PRIMARY KEY,
     `sum_product` Int NULL,
     `delivery_fee` Int NULL,
     `total_price` Int NULL,
@@ -184,18 +184,7 @@ CREATE TABLE IF NOT EXISTS `refresh_token` (
   `expires_at` Timestamp NULL
 );
 
-
-ALTER TABLE `rental` ADD CONSTRAINT `PK_RENTAL` PRIMARY KEY (`id`);
-ALTER TABLE `product_image` ADD CONSTRAINT `PK_PRODUCT_IMAGE` PRIMARY KEY (`id`);
-ALTER TABLE `board_image` ADD CONSTRAINT `PK_BOARD_IMAGE` PRIMARY KEY (`id`);
-ALTER TABLE `member` ADD CONSTRAINT `PK_MEMBER` PRIMARY KEY (`id`);
-ALTER TABLE `product` ADD CONSTRAINT `PK_PRODUCT` PRIMARY KEY (`id`);
-ALTER TABLE `product_detail_image` ADD CONSTRAINT `PK_PRODUCT_DETAIL_IMAGE` PRIMARY KEY (`id`);
-ALTER TABLE `Review` ADD CONSTRAINT `PK_REVIEW` PRIMARY KEY (`id`);
-ALTER TABLE `review_image` ADD CONSTRAINT `PK_REVIEW_IMAGE` PRIMARY KEY (`id`);
-ALTER TABLE `Payment` ADD CONSTRAINT `PK_PAYMENT` PRIMARY KEY (`id`);
-ALTER TABLE `Cart` ADD CONSTRAINT `PK_CART` PRIMARY KEY (`id`);
-ALTER TABLE `board` ADD CONSTRAINT `PK_BOARD` PRIMARY KEY (`id`);
+ALTER TABLE `product_cart` ADD INDEX `idx_cart_id` (`cart_id`);
 
 ALTER TABLE `rental_cart` ADD CONSTRAINT `PK_RENTAL_CART` UNIQUE KEY (`rental_id`, `cart_id`);
 ALTER TABLE `product_cart` ADD CONSTRAINT `PK_PRODUCT_CART` UNIQUE KEY (`product_id`, `cart_id`);

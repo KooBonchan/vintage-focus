@@ -13,18 +13,19 @@ spring:
     static-locations: classpath:/static/,classpath:/public/,classpath:/swagger-ui/
 
 #  Persistence
-  sql.init.mode: always
+#  sql.init.mode: always
   r2dbc:
     enabled: true
-    url: r2dbc:h2:mem:///test;MODE=MySQL
-    username: sa
-    password:
+    url: r2dbc:mysql://localhost:3306/vintage_focus
+    username: vintage_focus
+    password: vf12311
     pool:
       enabled: true
       max-size: 20
   data:
     r2dbc.repositories:
       enabled: true
+
   main.allow-bean-definition-overriding: true
   security:
     oauth2:
@@ -33,6 +34,7 @@ spring:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
+jwt.expiration-time: 600000
 oauth2:
   google:
     token-url: https://oauth2.googleapis.com/token
@@ -69,8 +71,3 @@ logging.level:
       data.r2dbc: TRACE
 
 # PortOne(아임포트) API 설정 추가
-portone:
-  api-key: "YOUR_PORTONE_API_KEY"
-  api-secret: "YOUR_PORTONE_API_SECRET"
-
-

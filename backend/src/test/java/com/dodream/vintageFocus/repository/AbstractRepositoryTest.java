@@ -10,7 +10,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.r2dbc.core.DatabaseClient;
 import reactor.test.StepVerifier;
 
-@SpringBootTest
+//@SpringBootTest
 abstract class AbstractRepositoryTest<T, I, R extends ReactiveCrudRepository<T, I>> {
   @Autowired protected R repository;
   @Autowired

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Component
+//@Component
 public class ProductTestFactory {
   private static final String DEFAULT_COMPANY = "TestCompany";
   private static final String DEFAULT_COUNTRY = "TestCountry";

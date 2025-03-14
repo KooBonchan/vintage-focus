@@ -19,7 +19,6 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 @Configuration
 @EnableWebFluxSecurity
 @RequiredArgsConstructor
-@EnableConfigurationProperties(OAuth2Config.class)
 public class SecurityConfig implements WebFluxConfigurer {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
 

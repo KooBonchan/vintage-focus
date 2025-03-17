@@ -18,11 +18,11 @@ class VintageFocusApplicationTests {
 	@Autowired
 	private OAuth2Config oauth2Config;
 
-	@Value("${JWT_SECRET_KEY}")
+	@Value("${jwt.secret-key}")
 	private String jwtSecretKey;
-	@Value("${PORTONE_API_KEY}")
+	@Value("${portone.api-key}")
 	private String portoneApiKey;
-	@Value("${PORTONE_API_SECRET}")
+	@Value("${portone.api-secret}")
 	private String portoneApiSecret;
 
 	@Value("${spring.r2dbc.url}")

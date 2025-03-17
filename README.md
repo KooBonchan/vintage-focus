@@ -7,6 +7,7 @@
 
 ## Links
 [팀 피그마](https://www.figma.com/design/bxcAtwnftTL3TpUb7MCydz/Vintage-Focus-(Copy)?node-id=0-1&t=249OAPPgPHnKvbSD-1)
+[배포 페이지](https://lrl.kr/cgzdf)
 
 ## Collaborators
 | 구본찬 | 김보민 | 이창현 | 양정민 | 이승관 |

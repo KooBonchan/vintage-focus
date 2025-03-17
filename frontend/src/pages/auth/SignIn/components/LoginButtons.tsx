@@ -1,6 +1,9 @@
 import { authConfig } from '@/types/auth';
 import { GitHub, Google } from '@mui/icons-material';
 import { Box, Button, useTheme } from '@mui/material';
+import SHA256 from "crypto-js/sha256";
+import encBase64 from "crypto-js/enc-base64";
+
 
 const generateCodeVerifier = () => {
   const array = new Uint8Array(32);
@@ -12,13 +15,12 @@ const generateCodeVerifier = () => {
 };
 
 const generateCodeChallenge = async (verifier: string): Promise<string> => {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(verifier);
-  const digest = await crypto.subtle.digest('SHA-256', data);
-  return btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
+   const hash = SHA256(verifier);
+   const base64Hash = encBase64.stringify(hash);
+   return base64Hash
+     .replace(/\+/g, "-")
+     .replace(/\//g, "_")
+     .replace(/=+$/, "");
 };
 
 const LoginButtons = () => {

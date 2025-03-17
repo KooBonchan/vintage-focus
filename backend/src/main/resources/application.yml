@@ -16,9 +16,9 @@ spring:
   sql.init.mode: never
   r2dbc:
     enabled: true
-    url: r2dbc:mysql://aws-mysql.cdss0m0yyvd2.ap-northeast-2.rds.amazonaws.com:3306/vintage_focus
+    url: ${SPRING_R2DBC_URL}
     username: vintage_focus
-    password: doc13qQq
+    password: ${SPRING_R2DBC_PASSWORD}
     pool:
       enabled: true
       max-size: 20

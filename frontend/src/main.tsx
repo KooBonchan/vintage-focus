@@ -8,11 +8,11 @@ import AppTheme from './theme/AppTheme.tsx'
 
 createRoot(document.getElementById('root')!).render(
  <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/'>
       <AppTheme>
         <CssBaseline enableColorScheme />
         <App />
       </AppTheme>
     </BrowserRouter>
-    </StrictMode>
+  </StrictMode>
 )

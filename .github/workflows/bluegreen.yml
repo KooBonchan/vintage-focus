@@ -26,7 +26,13 @@ jobs:
           --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} \
           --build-arg PORTONE_API_KEY=${{ secrets.PORTONE_API_KEY }} \
           --build-arg PORTONE_API_SECRET=${{ secrets.PORTONE_API_SECRET }} \
-          --build-arg OAUTH_PROVIDERS="${{ secrets.OAUTH_PROVIDERS }}" \
+          --build-arg OAUTH_PROVIDERS=${{ secrets.OAUTH_PROVIDERS }} \
+          --build-arg GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}\
+          --build-arg GOOGLE_CLIENT_SECRET=${{secrets.GOOGLE_CLIENT_SECRET}}\
+          --build-arg KAKAO_CLIENT_ID=${{secrets.KAKAO_CLIENT_ID}}\
+          --build-arg KAKAO_CLIENT_SECRET=${{secrets.KAKAO_CLIENT_SECRET}}\
+          --build-arg GH_CLIENT_ID=${{secrets.GH_CLIENT_ID}}\
+          --build-arg GH_CLIENT_SECRET=${{secrets.GH_CLIENT_SECRET}}\
           --build-arg SPRING_R2DBC_URL=${{ secrets.SPRING_R2DBC_URL }} \
           --build-arg SPRING_R2DBC_PASSWORD="${{ secrets.SPRING_R2DBC_PASSWORD }}" \
           -t ${{ secrets.DOCKERHUB_USERNAME }}/vintage-focus:latest ./backend

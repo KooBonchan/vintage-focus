@@ -26,7 +26,7 @@ COPY --from=builder /build/build/libs/*-SNAPSHOT.jar ./app.jar
 EXPOSE 8094
 
 ENTRYPOINT [ \
-  "JAVA",    \
-  "-JAR",    \
+  "java",    \
+  "-jar",    \
   "app.jar"  \
 ]

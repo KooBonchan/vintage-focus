@@ -43,8 +43,6 @@ public class ProviderTokenHandler {
       .append("&grant_type=authorization_code")
       .toString();
 
-    log.warn(requestBody);
-
     return webClient.post()
       .uri(providerConfig.tokenUrl())
       .contentType(MediaType.APPLICATION_FORM_URLENCODED)

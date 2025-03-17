@@ -13,10 +13,10 @@ import java.util.HashMap;
 @RequestMapping("/api/payment")
 public class PaymentController {
 
-  @Value("${PORTONE_API_KEY}")
+  @Value("${portone.api-key}")
   private String apiKey;
 
-  @Value("${PORTONE_API_SECRET}")
+  @Value("${portone.api-secret}")
   private String apiSecret;
 
   // ✅ PortOne(아임포트) 결제 검증 API

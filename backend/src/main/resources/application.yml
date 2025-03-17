@@ -33,8 +33,9 @@ spring:
         jwt:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
-
-jwt.expiration-time: 600000
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  expiration-time: 600000
 oauth2:
   google:
     token-url: https://oauth2.googleapis.com/token
@@ -70,4 +71,7 @@ logging.level:
     springframework:
       data.r2dbc: TRACE
 
-# PortOne(아임포트) API 설정 추가
+
+portone:
+  api-key: ${PORTONE_API_KEY}
+  api-secret: ${PORTONE_API_SECRET}

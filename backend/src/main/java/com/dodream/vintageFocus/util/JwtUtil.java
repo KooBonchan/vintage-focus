@@ -20,7 +20,7 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtUtil {
-  @Value("${JWT_SECRET_KEY}")
+  @Value("${jwt.secret-key}")
   private String STRING_SECRET_KEY;
   @Value("${jwt.expiration-time}")
   private long EXPIRATION_TIME;

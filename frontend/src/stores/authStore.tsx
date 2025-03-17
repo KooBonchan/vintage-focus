@@ -27,7 +27,7 @@ const useAuthStore = create<AuthState>((set) => ({
   // Action to fetch user profile and update store
   fetchUser: async (token: string) => {
     try {
-      const response = await axios.get<MemberResponse>('http://localhost:8094/api/auth/user', {
+      const response = await axios.get<MemberResponse>(`${import.meta.env.VITE_API_ROOT}/auth/user`, {
         headers: { Authorization: token },
       });
       const user = response.data;

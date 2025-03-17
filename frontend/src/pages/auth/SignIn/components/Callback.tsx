@@ -33,7 +33,7 @@ const Callback = () => {
 
       try {
         const response = await axios.post(
-          'http://localhost:8094/api/auth/signin', // proxying with server request
+          `${import.meta.env.VITE_API_ROOT}/auth/signin`, // proxying with server request
           {
             provider,
             code,

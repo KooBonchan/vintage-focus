@@ -33,6 +33,16 @@ export interface BoardCardProps {
   onClick?: () => void;
 }
 
+// 사용자 ID나 이름을 기반으로 고유한 아바타 이미지 URL을 생성하는 함수
+const getAvatarImageUrl = (authorName: string | undefined): string => {
+  if (!authorName) return "https://avatar.iran.liara.run/public"; // 기본 이미지
+
+  // 사용자 이름을 기반으로 고유한 아바타 이미지를 생성
+  const hash = Array.from(authorName)
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0) % 10; // 이름의 ASCII 코드 합을 10으로 나눈 나머지 값을 사용
+  return `https://randomuser.me/api/portraits/lego/${hash}.jpg`; // `randomuser.me`에서 제공하는 아바타 이미지 URL
+};
+
 const formatDate = (dateString: string) => {
   if (!dateString) return "날짜 없음";
   const date = new Date(dateString);
@@ -109,7 +119,7 @@ const BoardCard: React.FC<BoardCardProps> = ({
       <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", mt: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Avatar
-            src={article?.author.avatar ?? "https://avatar.iran.liara.run/public"}
+            src={getAvatarImageUrl(article?.author.name)} // 고유한 아바타 이미지 URL
             sx={{ width: authorAvatarSize, height: authorAvatarSize }}
           />
           <Typography

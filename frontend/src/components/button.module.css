@@ -53,7 +53,7 @@
 }
 
 .storybook-button--kingbiglarge {
-  width: 400px;
+  width: 350px;
   padding: 12px 24px;
   font-size: 16px;
   border: 1px solid #445366; /* 올바른 border 속성 사용 */
@@ -65,6 +65,7 @@
   font-size: 12px;
   background-color: rgba(68, 83, 102, 0.8); /* 80% 불투명도 */
   color: white;
+  border: 1px solid #ffffff; /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--colormedium {
@@ -72,6 +73,7 @@
   font-size: 14px;
   background-color: rgba(68, 83, 102, 0.8); /* 80% 불투명도 */
   color: white;
+  border: 1px solid #ffffff; /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--colorlarge {
@@ -79,6 +81,7 @@
   font-size: 16px;
   background-color: rgba(68, 83, 102, 0.8); /* 80% 불투명도 */
   color: white;
+  border: 1px solid #ffffff; /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--colorbiglarge {
@@ -87,12 +90,14 @@
   font-size: 16px;
   background-color: rgba(68, 83, 102, 0.8); /* 80% 불투명도 */
   color: white;
+  border: 1px solid #ffffff; /* 올바른 border 속성 사용 */
 }
 
 .storybook-button--colorkingbiglarge {
-  width: 400px;
+  width: 350px;
   padding: 12px 24px;
   font-size: 16px;
   background-color: rgba(68, 83, 102, 0.8); /* 80% 불투명도 */
   color: white;
+  border: 1px solid #ffffff; /* 올바른 border 속성 사용 */
 }

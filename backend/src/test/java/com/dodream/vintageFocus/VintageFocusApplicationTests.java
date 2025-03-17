@@ -42,7 +42,7 @@ class VintageFocusApplicationTests {
 
 	@Test
 	void r2dbcHolds(){
-		System.out.println("R2DBC URL: " + maskSensitiveData(r2dbcUrl));
+		log.info("R2DBC URL: " + maskSensitiveData(r2dbcUrl));
 	}
 
 	@Test

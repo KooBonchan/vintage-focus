@@ -58,11 +58,11 @@ const WeeklyBestGallery = () => {
         Best Item
       </Typography>
 
-      <Box sx={{ display: "flex", justifyContent: "center", width: '100%', gap: 2, marginTop: 3 }}>
+      {/* <Box sx={{ display: "flex", justifyContent: "center", width: '100%', gap: 2, marginTop: 3 }}>
         <Button size="small" label="버튼 1" />
         <Button size="small" label="버튼 2" />
         <Button size="small" label="버튼 3" />
-      </Box>
+      </Box> */}
 
       <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
         {

@@ -7,7 +7,7 @@ import { CssBaseline } from '@mui/material'
 import AppTheme from './theme/AppTheme.tsx'
 
 createRoot(document.getElementById('root')!).render(
- <StrictMode>
+  <StrictMode>
     <BrowserRouter basename='/'>
       <AppTheme>
         <CssBaseline enableColorScheme />

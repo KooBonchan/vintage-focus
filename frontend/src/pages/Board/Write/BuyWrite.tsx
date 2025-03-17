@@ -62,11 +62,21 @@ export default function BuyWrite() {
         width: "100%",
         maxWidth: 900,
         margin: "0 auto",
-        backgroundColor: theme.palette.mode === 'dark' ? '#333' : 'white', // Dark mode background
-        color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode text color
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? theme.palette.grey[900] // Unified dark mode background
+            : "white",
+        color:
+          theme.palette.mode === "dark"
+            ? theme.palette.text.primary // Unified dark mode text
+            : "black",
         padding: 3,
         borderRadius: "8px",
-        border: `1px solid ${theme.palette.mode === 'dark' ? '#fff' : '#808080'}`, // Light mode border is gray
+        border: `1px solid ${
+          theme.palette.mode === "dark"
+            ? theme.palette.grey[700] // Unified dark mode border
+            : "#808080"
+        }`,
       }}
     >
       {/* 공개/비공개 설정 (오른쪽 정렬로 제목 위로 이동) */}
@@ -93,13 +103,31 @@ export default function BuyWrite() {
           sx={{
             mb: 1,
             "& .MuiOutlinedInput-root": {
-              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800] // Unified dark mode input background
+                  : "white",
             },
             "& .MuiInputLabel-root": {
-              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary // Unified dark mode label
+                  : "black",
             },
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600] // Unified dark mode border
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
             },
           }}
         />
@@ -117,13 +145,31 @@ export default function BuyWrite() {
           onChange={(e) => { setContent(e.target.value); }}
           sx={{
             "& .MuiOutlinedInput-root": {
-              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800]
+                  : "white",
             },
             "& .MuiInputLabel-root": {
-              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "black",
             },
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600]
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
             },
           }}
         />
@@ -153,13 +199,31 @@ export default function BuyWrite() {
               maxWidth: "300px",
               mb: 2,
               "& .MuiOutlinedInput-root": {
-                backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+                backgroundColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[800]
+                    : "white",
               },
               "& .MuiInputLabel-root": {
-                color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+                color:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.text.secondary
+                    : "black",
               },
               "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[600]
+                    : "#808080",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[500]
+                    : "rgba(0, 0, 0, 0.87)",
+              },
+              "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: theme.palette.primary.main,
               },
             }}
           />
@@ -184,21 +248,3 @@ export default function BuyWrite() {
     </Box>
   );
 }
-
-// /* buy 안내사항 
-// <Box sx={{ backgroundColor: "#e3f2fd", padding: 2, borderRadius: 2, mb: 3 }}>
-// <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
-//   안내사항
-// </Typography>
-// <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
-//   <Typography variant="body1" color="text.primary">
-//     ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
-//   </Typography>
-//   <Typography variant="body1" color="text.primary">
-//     ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
-//   </Typography>
-//   <Typography variant="body1" color="text.primary">
-//     ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
-//   </Typography>
-// </Box>
-// </Box>

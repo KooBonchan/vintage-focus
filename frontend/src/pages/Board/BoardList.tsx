@@ -110,11 +110,7 @@ export default function BoardList() {
           <IconButton sx={{ mr: 1 }} onClick={() => navigate(`${currentPath}/write`)}>
             <EditIcon />
           </IconButton>
-          <Typography
-            variant="body1"
-            sx={{ cursor: "pointer" }}
-            onClick={() => navigate(`${currentPath}/write`)}
-          >
+          <Typography variant="body1" sx={{ cursor: "pointer" }} onClick={() => navigate(`${currentPath}/write`)}>
             문의하기
           </Typography>
         </Box>
@@ -124,14 +120,20 @@ export default function BoardList() {
         {filteredArticles
           .slice((page - 1) * itemsPerPage, page * itemsPerPage)
           .map((article) => (
-            <Grid
-              item
-              xs={12}
-              key={article.id}
-              sx={{ width: "100%", cursor: "pointer" }}
-              onClick={() => { handleArticleClick(article); }}
-            >
-              <BoardCard article={article} />
+            <Grid item xs={12} key={article.id} sx={{ width: "100%", cursor: "pointer" }} onClick={() => handleArticleClick(article)}>
+              <BoardCard
+                article={{
+                  author: { name: article.author?.name || 'Unknown' },
+                  date: article.date || '2025-03-11T10:00:00',
+                  id: article.id,
+                  locked: article.locked,
+                  tag: article.tag,
+                  title: article.title,
+                  views: article.views,
+                }}
+                link={`/article/${article.id}`}
+                onClick={() => handleArticleClick(article)}
+              />
             </Grid>
           ))}
       </Grid>
@@ -140,7 +142,7 @@ export default function BoardList() {
         <Pagination
           count={Math.ceil(filteredArticles.length / itemsPerPage)}
           page={page}
-          onChange={(event, value) => { setPage(value); }}
+          onChange={(event, value) => setPage(value)}
           color="primary"
         />
       </Box>
@@ -185,16 +187,8 @@ export default function BoardList() {
           />
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             {/* 확인과 취소 버튼을 가운데 정렬 */}
-            <CustomButton
-              label="확인"
-              size="medium"
-              onClick={handlePasswordSubmit}
-            />
-            <CustomButton
-              label="취소"
-              size="medium"
-              onClick={handleModalClose}
-            />
+            <CustomButton label="확인" size="medium" onClick={handlePasswordSubmit} />
+            <CustomButton label="취소" size="medium" onClick={handleModalClose} />
           </Box>
         </Box>
       </Modal>

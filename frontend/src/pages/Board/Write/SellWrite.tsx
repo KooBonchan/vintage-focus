@@ -4,7 +4,6 @@ import {
   Box,
   Typography,
   TextField,
-  Button,
   Switch,
   FormControlLabel,
   FormControl,
@@ -13,10 +12,10 @@ import {
   MenuItem,
   IconButton,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close"; // "X" 아이콘 사용
 import { Post } from "../../../types/post";
 import CustomButton from "../../../components/CustomButton"; // Importing CustomButton
+import { useTheme } from "@mui/material/styles";
 
 export default function SellWrite() {
   const navigate = useNavigate();
@@ -74,7 +73,10 @@ export default function SellWrite() {
     }
   };
 
-  const handleFileChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const updatedImages = [...images];
@@ -87,6 +89,7 @@ export default function SellWrite() {
       updatedPreviews[index] = previewUrl;
       setImagePreviews(updatedPreviews);
 
+藉
       // Convert image to Base64
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -151,7 +154,13 @@ export default function SellWrite() {
       alert("제목과 내용을 모두 입력해주세요!");
       return;
     }
-    if (!sellerName.trim() || !contact.trim() || !accountHolder.trim() || !bankName.trim() || !accountNumber.trim()) {
+    if (
+      !sellerName.trim() ||
+      !contact.trim() ||
+      !accountHolder.trim() ||
+      !bankName.trim() ||
+      !accountNumber.trim()
+    ) {
       alert("성함, 연락처, 계좌 정보를 모두 입력해주세요!");
       return;
     }
@@ -163,7 +172,6 @@ export default function SellWrite() {
     const now = new Date();
     const formattedDate = now.toISOString();
 
-
     const newPost: Post = {
       id: Date.now(),
       title,
@@ -174,7 +182,7 @@ export default function SellWrite() {
       tag: "매각문의",
       locked: !isPublic,
       password: !isPublic ? password : undefined,
-      images: images.map((file) => file.name).filter(Boolean),
+      images: images.map((file) => file?.name).filter(Boolean),
       contact,
       accountHolder,
       bankName,
@@ -195,17 +203,31 @@ export default function SellWrite() {
         width: "100%",
         maxWidth: 900,
         margin: "0 auto",
-        backgroundColor: theme.palette.mode === 'dark' ? '#333' : 'white', // Dark mode background, light mode defaults to white
-        color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode text color, light mode defaults to black
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? theme.palette.grey[900] // Unified dark mode background
+            : "white",
+        color:
+          theme.palette.mode === "dark"
+            ? theme.palette.text.primary // Unified dark mode text
+            : "black",
         padding: 3,
         borderRadius: "8px",
-        border: `1px solid ${theme.palette.mode === 'dark' ? '#fff' : '#808080'}`, // Border color for light mode (gray), and white for dark mode
+        border: `1px solid ${
+          theme.palette.mode === "dark"
+            ? theme.palette.grey[700] // Unified dark mode border
+            : "#808080"
+        }`,
       }}
     >
       {/* 공개/비공개 설정 (오른쪽 정렬로 제목 위로 이동) */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 3 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-          <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
+        <Box
+          sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}
+        >
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            공개/비공개
+          </Typography>
           <FormControlLabel
             control={<Switch checked={!isPublic} onChange={handleSwitchChange} />}
             label=""
@@ -222,17 +244,37 @@ export default function SellWrite() {
           size="small"
           fullWidth
           value={title}
-          onChange={(e) => { setTitle(e.target.value); }}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
           sx={{
             mb: 1,
             "& .MuiOutlinedInput-root": {
-              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800] // Unified dark mode input background
+                  : "white",
             },
             "& .MuiInputLabel-root": {
-              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary // Unified dark mode label
+                  : "black",
             },
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600] // Unified dark mode border
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
             },
           }}
         />
@@ -247,16 +289,36 @@ export default function SellWrite() {
           variant="outlined"
           fullWidth
           value={content}
-          onChange={(e) => { setContent(e.target.value); }}
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
           sx={{
             "& .MuiOutlinedInput-root": {
-              backgroundColor: theme.palette.mode === 'dark' ? '#555' : 'white', // Dark mode input background
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800]
+                  : "white",
             },
             "& .MuiInputLabel-root": {
-              color: theme.palette.mode === 'dark' ? 'white' : 'black', // Dark mode label color
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "black",
             },
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.mode === 'dark' ? 'white' : '#808080', // Light mode border is gray
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600]
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
             },
           }}
         />
@@ -270,8 +332,39 @@ export default function SellWrite() {
           size="small"
           fullWidth
           value={sellerName}
-          onChange={(e) => { setSellerName(e.target.value); }}
-          sx={{ mb: 2, "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          onChange={(e) => {
+            setSellerName(e.target.value);
+          }}
+          sx={{
+            mb: 2,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800]
+                  : "white",
+            },
+            "& .MuiInputLabel-root": {
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "black",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600]
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
+            },
+          }}
         />
         <TextField
           label="연락처 (예: 010-1234-5678)"
@@ -285,7 +378,36 @@ export default function SellWrite() {
           }}
           placeholder="010-1234-5678"
           inputProps={{ maxLength: 13 }}
-          sx={{ mb: 2, "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          sx={{
+            mb: 2,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800]
+                  : "white",
+            },
+            "& .MuiInputLabel-root": {
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "black",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600]
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
+            },
+          }}
         />
         <TextField
           label="입금받으실 계좌 성함"
@@ -293,11 +415,52 @@ export default function SellWrite() {
           size="small"
           fullWidth
           value={accountHolder}
-          onChange={(e) => { setAccountHolder(e.target.value); }}
-          sx={{ mb: 2, "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          onChange={(e) => {
+            setAccountHolder(e.target.value);
+          }}
+          sx={{
+            mb: 2,
+            "& .MuiOutlinedInput-root": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800]
+                  : "white",
+            },
+            "& .MuiInputLabel-root": {
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "black",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600]
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
+            },
+          }}
         />
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="bank-select-label" sx={{ fontSize: "0.9rem", top: "-6px" }}>
+          <InputLabel
+            id="bank-select-label"
+            sx={{
+              fontSize: "0.9rem",
+              top: "-6px",
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "black",
+            }}
+          >
             은행이름
           </InputLabel>
           <Select
@@ -305,20 +468,29 @@ export default function SellWrite() {
             value={bankName}
             label="은행이름"
             size="small"
-            onChange={(e) => { setBankName(e.target.value); }}
+            onChange={(e) => {
+              setBankName(e.target.value);
+            }}
             sx={{
-              backgroundColor: "white",
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800]
+                  : "white",
               fontSize: "0.9rem",
               "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgba(0, 0, 0, 0.23)",
-                borderWidth: "1px",
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[600]
+                    : "rgba(0, 0, 0, 0.23)",
               },
               "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgba(0, 0, 0, 0.87)",
-                borderWidth: "1px",
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[500]
+                    : "rgba(0, 0, 0, 0.87)",
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#1976d2",
+                borderColor: theme.palette.primary.main,
                 borderWidth: "1px",
               },
               "& .MuiSelect-select": {
@@ -346,7 +518,35 @@ export default function SellWrite() {
             const input = e.target.value.replace(/[^0-9-]/g, "");
             setAccountNumber(input);
           }}
-          sx={{ "& .MuiOutlinedInput-root": { backgroundColor: "white" } }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[800]
+                  : "white",
+            },
+            "& .MuiInputLabel-root": {
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "black",
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[600]
+                  : "#808080",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.grey[500]
+                  : "rgba(0, 0, 0, 0.87)",
+            },
+            "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
+            },
+          }}
         />
       </Box>
 
@@ -354,14 +554,23 @@ export default function SellWrite() {
       <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3 }}>
         {[0, 1, 2].map((index) => (
           <Box key={index} sx={{ textAlign: "center" }}>
-
             <CustomButton
               label={images[index] ? images[index].name : `이미지 ${index + 1}`}
               size="medium"
-              onClick={() => { handleAddImage(index); }} // 이미지 선택 클릭 핸들러
+              onClick={() => {
+                handleAddImage(index);
+              }} // 이미지 선택 클릭 핸들러
             />
             {imagePreviews[index] && (
-              <Box sx={{ maxWidth: 400, maxHeight: 400, overflow: "hidden", mt: 1, position: "relative" }}>
+              <Box
+                sx={{
+                  maxWidth: 400,
+                  maxHeight: 400,
+                  overflow: "hidden",
+                  mt: 1,
+                  position: "relative",
+                }}
+              >
                 <img
                   src={imagePreviews[index]}
                   alt={`미리 보기 ${index + 1}`}
@@ -369,7 +578,9 @@ export default function SellWrite() {
                 />
                 <IconButton
                   aria-label="delete"
-                  onClick={() => { handleRemoveImage(index); }}
+                  onClick={() => {
+                    handleRemoveImage(index);
+                  }}
                   sx={{
                     position: "absolute",
                     top: 0,
@@ -390,59 +601,18 @@ export default function SellWrite() {
               accept="image/*"
               style={{ display: "none" }}
               ref={(el) => (fileInputRefs.current[index] = el)}
-              onChange={(e) => { handleFileChange(index, e); }}
+              onChange={(e) => {
+                handleFileChange(index, e);
+              }}
             />
           </Box>
         ))}
       </Box>
 
-      {/* 안내사항 */}
-      <Box sx={{ backgroundColor: "#e3f2fd", padding: 2, borderRadius: 2, mb: 3 }}>
-        <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
-          안내사항
-        </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
-          <Typography variant="body1" color="primary" fontWeight="bold">
-            ※ 매입 가능 제품: DSLR, 미러리스, 필름 카메라 및 렌즈 (브랜드: 캐논, 니콘, 소니, 후지필름 등)
-          </Typography>
-          <Typography variant="body1" color="error" fontWeight="bold">
-            ※ 매입 불가 제품: 심각한 침수 제품, 수리 이력 있는 제품, 정품이 아닌 제품
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 제품 상태 기준: 기능 정상 작동 필수, 심각한 파손 제품은 매입 불가
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 박스 및 구성품 포함 여부에 따라 가격이 달라질 수 있습니다.
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 매입 가격은 제품 상태 및 시장 변동에 따라 조정될 수 있습니다.
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 택배 거래 가능 (왕복 배송비는 고객 부담), 방문 접수 가능 (운영시간: 평일 10:00 - 18:00)
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            ※ 당사에서 제품 수령 이후 매입 금액이 마음에 드시지 않을 시, 왕복 배송비는 고객님께서 부담해주셔야합니다.
-          </Typography>
-        </Box>
-      </Box>
-
       {/* 게시물 공개 설정 */}
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 3 }}>
-        <Typography variant="body1" sx={{ mb: 1 }}>공개/비공개</Typography>
-        <FormControlLabel
-          control={<Switch checked={!isPublic} onChange={handleSwitchChange} />}
-          label=""
-          sx={{ m: 0 }}
-        />
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 3 }}
+      >
         {!isPublic && (
           <TextField
             label="비밀번호 (4자리 숫자)"
@@ -460,16 +630,57 @@ export default function SellWrite() {
               }
             }}
             inputProps={{ maxLength: 4, pattern: "[0-9]*" }}
-            sx={{ mt: 1, maxWidth: "300px", mb: 2 }}
+            sx={{
+              mt: 1,
+              maxWidth: "300px",
+              mb: 2,
+              "& .MuiOutlinedInput-root": {
+                backgroundColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[800]
+                    : "white",
+              },
+              "& .MuiInputLabel-root": {
+                color:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.text.secondary
+                    : "black",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[600]
+                    : "#808080",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.grey[500]
+                    : "rgba(0, 0, 0, 0.87)",
+              },
+              "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: theme.palette.primary.main,
+              },
+            }}
           />
         )}
       </Box>
 
-      {/* 등록 버튼 */}
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        게시글 등록하기
-      </Button>
+      {/* 게시글 등록 버튼 (CustomButton으로 변경) */}
+      <CustomButton
+        label="게시글 등록하기"
+        size="colorkingbiglarge" // Use the same size as in BuyWrite
+        onClick={handleSubmit} // Submit the form on button click
+      />
+
+      {/* 이미지 추가 */}
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
+        <img
+          src="/image/notice/mooni.jpg" // Use relative path to the image
+          alt="공지사항"
+          style={{ width: "100%", height: "auto", objectFit: "cover" }}
+        />
+      </Box>
     </Box>
   );
 }
-

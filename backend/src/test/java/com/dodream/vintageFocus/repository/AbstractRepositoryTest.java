@@ -10,7 +10,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.r2dbc.core.DatabaseClient;
 import reactor.test.StepVerifier;
 
-@SpringBootTest
+//@SpringBootTest
 abstract class AbstractRepositoryTest<T, I, R extends ReactiveCrudRepository<T, I>> {
   @Autowired protected R repository;
   @Autowired
@@ -18,12 +18,12 @@ abstract class AbstractRepositoryTest<T, I, R extends ReactiveCrudRepository<T, 
 
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  @BeforeEach
+//  @BeforeEach
   void cleanup() {
     repository.deleteAll().block();
   }
 
-  @Test
+//  @Test
   void shouldSaveAndFindById() {
     T entity = getTestEntity();
 

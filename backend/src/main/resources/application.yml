@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: common, secret
+    active: common, prod
 
 ---
 
@@ -13,12 +13,7 @@ spring:
     static-locations: classpath:/static/,classpath:/public/,classpath:/swagger-ui/
 
 #  Persistence
-  sql.init.mode: never
   r2dbc:
-    enabled: true
-    url: ${SPRING_R2DBC_URL}
-    username: vintage_focus
-    password: ${SPRING_R2DBC_PASSWORD}
     pool:
       enabled: true
       max-size: 20
@@ -33,9 +28,7 @@ spring:
         jwt:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
-jwt:
-  secret-key: ${JWT_SECRET_KEY}
-  expiration-time: 600000
+
 oauth2:
   google:
     token-url: https://oauth2.googleapis.com/token
@@ -64,14 +57,3 @@ springdoc:
     enabled: true
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
-
-logging.level:
-  root: DEBUG
-  org:
-    springframework:
-      data.r2dbc: TRACE
-
-
-portone:
-  api-key: ${PORTONE_API_KEY}
-  api-secret: ${PORTONE_API_SECRET}

@@ -3,14 +3,17 @@ package com.dodream.vintageFocus;
 import com.dodream.vintageFocus.config.OAuth2Config;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@Slf4j
 class VintageFocusApplicationTests {
+	protected final Logger log = LoggerFactory.getLogger(getClass());
+
 
 	@Autowired
 	private OAuth2Config oauth2Config;

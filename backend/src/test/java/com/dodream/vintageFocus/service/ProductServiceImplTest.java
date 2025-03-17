@@ -2,6 +2,8 @@ package com.dodream.vintageFocus.service;
 
 import com.dodream.vintageFocus.dto.ProductDTO;
 import com.dodream.vintageFocus.repository.ProductRepository;
+import com.dodream.vintageFocus.repository.image.ProductDetailImageRepository;
+import com.dodream.vintageFocus.repository.image.ProductImageRepository;
 import com.dodream.vintageFocus.vo.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.transaction.reactive.TransactionalOperator;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -21,6 +24,11 @@ import static org.mockito.Mockito.when;
 public class ProductServiceImplTest {
   @Mock
   private ProductRepository productRepository;
+  @Mock
+  private ProductImageRepository imageRepository;
+  @Mock
+  private ProductDetailImageRepository detailImageRepository;
+
   @Mock
   private TransactionalOperator transactionalOperator;
 
@@ -52,6 +60,8 @@ public class ProductServiceImplTest {
   void getProductById_shouldReturnMappedDTO() {
     // Arrange
     when(productRepository.findById(anyLong())).thenReturn(Mono.just(product));
+    when(imageRepository.findByProductId(anyLong())).thenReturn(Flux.empty());
+    when(detailImageRepository.findByProductId(anyLong())).thenReturn(Flux.empty());
 
     // Act & Assert
     StepVerifier.create(productService.getProductById(1L))

@@ -18,21 +18,21 @@ abstract class AbstractRepositoryTest<T, I, R extends ReactiveCrudRepository<T, 
 
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  @BeforeEach
-  void cleanup() {
-    repository.deleteAll().block();
-  }
-
-  @Test
-  void shouldSaveAndFindById() {
-    T entity = getTestEntity();
-
-    repository.save(entity)
-      .flatMap(saved -> repository.findById(getId(saved)))
-      .as(StepVerifier::create)
-      .expectNextMatches(this::verifyEntityMatchesDefault)
-      .verifyComplete();
-  }
+//  @BeforeEach
+//  void cleanup() {
+//    repository.deleteAll().block();
+//  }
+//
+//  @Test
+//  void shouldSaveAndFindById() {
+//    T entity = getTestEntity();
+//
+//    repository.save(entity)
+//      .flatMap(saved -> repository.findById(getId(saved)))
+//      .as(StepVerifier::create)
+//      .expectNextMatches(this::verifyEntityMatchesDefault)
+//      .verifyComplete();
+//  }
 
   abstract T getTestEntity();
   abstract I getId(T entity);

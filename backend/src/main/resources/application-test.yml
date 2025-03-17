@@ -1,0 +1,6 @@
+spring:
+  sql.init.mode: always  # Initialize database schema for tests
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL  # H2 in-memory database in MySQL mode
+    username: sa
+    password: ""

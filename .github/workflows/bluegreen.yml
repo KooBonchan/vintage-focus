@@ -27,5 +27,7 @@ jobs:
           --build-arg PORTONE_API_KEY=${{ secrets.PORTONE_API_KEY }} \
           --build-arg PORTONE_API_SECRET=${{ secrets.PORTONE_API_SECRET }} \
           --build-arg OAUTH_PROVIDERS="${{ secrets.OAUTH_PROVIDERS }}" \
+          --build-arg SPRING_R2DBC_URL=${{ secrets.SPRING_R2DBC_URL }} \
+          --build-arg SPRING_R2DBC_PASSWORD="${{ secrets.SPRING_R2DBC_PASSWORD }}" \
           -t ${{ secrets.DOCKERHUB_USERNAME }}/vintage-focus:latest ./backend
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/vintage-focus:latest

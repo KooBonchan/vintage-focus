@@ -24,7 +24,7 @@ jobs:
       run: |
         docker build \
           --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} \
-          --build-arg PORTONE_API_SECRET=${{ secrets.PORTONE_API_KEY }} \
+          --build-arg PORTONE_API_KEY=${{ secrets.PORTONE_API_KEY }} \
           --build-arg PORTONE_API_SECRET=${{ secrets.PORTONE_API_SECRET }} \
           --build-arg OAUTH_PROVIDERS="${{ secrets.OAUTH_PROVIDERS }}" \
           -t ${{ secrets.DOCKERHUB_USERNAME }}/vintage-focus:latest ./backend

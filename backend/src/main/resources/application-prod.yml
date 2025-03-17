@@ -1,0 +1,16 @@
+spring:
+  sql.init.mode: never
+  r2dbc:
+    url: ${SPRING_R2DBC_URL}
+    username: vintage_focus
+    password: ${SPRING_R2DBC_PASSWORD}
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  expiration-time: 600000
+
+logging.level.root: WARN
+
+portone:
+  api-key: ${PORTONE_API_KEY}
+  api-secret: ${PORTONE_API_SECRET}

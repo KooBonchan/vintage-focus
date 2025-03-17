@@ -1,0 +1,21 @@
+jwt:
+  secret-key: test-secret-key
+  expiration-time: 111111
+
+portone:
+  api-key: test-api-key
+  api-secret: test-api-secret
+
+spring:
+  sql.init.mode: never
+  r2dbc:
+    enabled: true
+    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: test
+    password: test
+
+logging.level:
+  root: DEBUG
+  org:
+    springframework:
+      data.r2dbc: TRACE

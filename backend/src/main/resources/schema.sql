@@ -191,21 +191,92 @@ ALTER TABLE `product_cart` ADD CONSTRAINT `PK_PRODUCT_CART` UNIQUE KEY (`product
 ALTER TABLE `rental_payment` ADD CONSTRAINT `PK_RENTAL_PAYMENT` UNIQUE KEY (`rental_id`, `payment_id`);
 ALTER TABLE `product_payment` ADD CONSTRAINT `PK_PRODUCT_PAYMENT` UNIQUE KEY (`product_id`, `payment_id`);
 
-ALTER TABLE `rental` ADD CONSTRAINT `FK_product_TO_rental_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `product_image` ADD CONSTRAINT `FK_product_TO_product_image_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `product_cart` ADD CONSTRAINT `FK_product_TO_product_cart_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `product_cart` ADD CONSTRAINT `FK_Cart_TO_product_cart_1` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
-ALTER TABLE `rental_payment` ADD CONSTRAINT `FK_rental_TO_rental_payment_1` FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`);
-ALTER TABLE `rental_payment` ADD CONSTRAINT `FK_Payment_TO_rental_payment_1` FOREIGN KEY (`payment_id`) REFERENCES `payment` (`id`);
-ALTER TABLE `product_payment` ADD CONSTRAINT `FK_product_TO_product_payment_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `product_payment` ADD CONSTRAINT `FK_Payment_TO_product_payment_1` FOREIGN KEY (`payment_id`) REFERENCES `payment` (`id`);
-ALTER TABLE `board_image` ADD CONSTRAINT `FK_board_TO_board_image_1` FOREIGN KEY (`board_id`) REFERENCES `board` (`id`);
-ALTER TABLE `rental_cart` ADD CONSTRAINT `FK_rental_TO_rental_cart_1` FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`);
-ALTER TABLE `rental_cart` ADD CONSTRAINT `FK_Cart_TO_rental_cart_1` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
-ALTER TABLE `product_detail_image` ADD CONSTRAINT `FK_product_TO_product_detail_image_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `review` ADD CONSTRAINT `FK_member_TO_Review_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`);
-ALTER TABLE `review` ADD CONSTRAINT `FK_product_TO_Review_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `review_image` ADD CONSTRAINT `FK_Review_TO_review_image_1` FOREIGN KEY (`review_id`) REFERENCES `review` (`id`);
-ALTER TABLE `payment` ADD CONSTRAINT `FK_member_TO_Payment_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`);
-ALTER TABLE `cart` ADD CONSTRAINT `FK_member_TO_Cart_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`);
-ALTER TABLE `board` ADD CONSTRAINT `FK_member_TO_board_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`);
+ALTER TABLE `rental`
+ADD CONSTRAINT `FK_product_TO_rental_1`
+FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `product_image`
+ADD CONSTRAINT `FK_product_TO_product_image_1`
+FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `product_cart`
+ADD CONSTRAINT `FK_product_TO_product_cart_1`
+FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `product_cart`
+ADD CONSTRAINT `FK_Cart_TO_product_cart_1`
+FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `rental_payment`
+ADD CONSTRAINT `FK_rental_TO_rental_payment_1`
+FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `rental_payment`
+ADD CONSTRAINT `FK_Payment_TO_rental_payment_1`
+FOREIGN KEY (`payment_id`) REFERENCES `payment` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `product_payment`
+ADD CONSTRAINT `FK_product_TO_product_payment_1`
+FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `product_payment`
+ADD CONSTRAINT `FK_Payment_TO_product_payment_1`
+FOREIGN KEY (`payment_id`) REFERENCES `payment` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `board_image`
+ADD CONSTRAINT `FK_board_TO_board_image_1`
+FOREIGN KEY (`board_id`) REFERENCES `board` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `rental_cart`
+ADD CONSTRAINT `FK_rental_TO_rental_cart_1`
+FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `rental_cart`
+ADD CONSTRAINT `FK_Cart_TO_rental_cart_1`
+FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `product_detail_image`
+ADD CONSTRAINT `FK_product_TO_product_detail_image_1`
+FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `review_image`
+ADD CONSTRAINT `FK_Review_TO_review_image_1`
+FOREIGN KEY (`review_id`) REFERENCES `review` (`id`)
+ON DELETE CASCADE;
+
+ALTER TABLE `review`
+ADD CONSTRAINT `FK_member_TO_Review_1`
+FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+ON DELETE RESTRICT;
+
+ALTER TABLE `review`
+ADD CONSTRAINT `FK_product_TO_Review_1`
+FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+ON DELETE RESTRICT;
+
+ALTER TABLE `payment`
+ADD CONSTRAINT `FK_member_TO_Payment_1`
+FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+ON DELETE RESTRICT;
+
+ALTER TABLE `cart`
+ADD CONSTRAINT `FK_member_TO_Cart_1`
+FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+ON DELETE RESTRICT;
+
+ALTER TABLE `board`
+ADD CONSTRAINT `FK_member_TO_board_1`
+FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+ON DELETE RESTRICT;

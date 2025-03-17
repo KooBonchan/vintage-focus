@@ -10,7 +10,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.r2dbc.core.DatabaseClient;
 import reactor.test.StepVerifier;
 
-//@SpringBootTest
+@SpringBootTest
 abstract class AbstractRepositoryTest<T, I, R extends ReactiveCrudRepository<T, I>> {
   @Autowired protected R repository;
   @Autowired
@@ -18,21 +18,21 @@ abstract class AbstractRepositoryTest<T, I, R extends ReactiveCrudRepository<T, 
 
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
-//  @BeforeEach
-//  void cleanup() {
-//    repository.deleteAll().block();
-//  }
-//
-//  @Test
-//  void shouldSaveAndFindById() {
-//    T entity = getTestEntity();
-//
-//    repository.save(entity)
-//      .flatMap(saved -> repository.findById(getId(saved)))
-//      .as(StepVerifier::create)
-//      .expectNextMatches(this::verifyEntityMatchesDefault)
-//      .verifyComplete();
-//  }
+  @BeforeEach
+  void cleanup() {
+    repository.deleteAll().block();
+  }
+
+  @Test
+  void shouldSaveAndFindById() {
+    T entity = getTestEntity();
+
+    repository.save(entity)
+      .flatMap(saved -> repository.findById(getId(saved)))
+      .as(StepVerifier::create)
+      .expectNextMatches(this::verifyEntityMatchesDefault)
+      .verifyComplete();
+  }
 
   abstract T getTestEntity();
   abstract I getId(T entity);

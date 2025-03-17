@@ -8,6 +8,8 @@ import com.dodream.vintageFocus.service.AuthService;
 import com.dodream.vintageFocus.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,6 +25,9 @@ public class AuthController {
   private final ProviderTokenHandler providerTokenHandler;
   private final AuthService authService;
   private final JwtUtil jwtUtil;
+
+  @Value("${client-uri}")
+  private String clientUri;
 
   @PostMapping("signin")
   public Mono<ResponseEntity<MemberDTO>> signIn(@RequestBody TokenRequest request) {
@@ -41,6 +46,7 @@ public class AuthController {
                 .secure(false)
                 .sameSite("Lax")
                 .path("/")
+                .domain(clientUri)
                 .maxAge(604800)
                 .build()
                 .toString()
@@ -91,7 +97,7 @@ public class AuthController {
       .secure(false)
       .sameSite("Lax")
       .path("/")
-      .domain("localhost")
+      .domain(clientUri)
       .maxAge(3600)
       .build()
       .toString();

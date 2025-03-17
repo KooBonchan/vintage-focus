@@ -14,3 +14,7 @@ logging.level.root: WARN
 portone:
   api-key: ${PORTONE_API_KEY}
   api-secret: ${PORTONE_API_SECRET}
+
+oauth2:
+  redirect-uri: http://vintage-focus.s3-website.ap-northeast-2.amazonaws.com/callback
+#  redirect-uri: http://localhost:3000/callback

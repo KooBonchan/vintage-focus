@@ -44,7 +44,7 @@ oauth2:
       column-username: login
       column-profile: avatar_url
     token-url: https://github.com/login/oauth/access_token
-  redirect-uri: https://staging.d36nt6r1jah8p6.amplifyapp.com/callback
+  redirect-uri: http://localhost:3000/callback
 
 server:
   port: 8094

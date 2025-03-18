@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router';
 
 export default function Register() {
   const navigate = useNavigate();
-  const { user, setUser } = useAuthStore();
+  const { user, accessToken, setUser } = useAuthStore();
   const [formData, setFormData] = useState({
     phone: '',
     address: '',
@@ -40,7 +40,11 @@ export default function Register() {
       `${import.meta.env.VITE_API_ROOT}/auth/register`,
       formData,
       {
-        withCredentials: true,
+        headers:{
+          Authorization: `Bearer ${accessToken}`, // Include your accessToken
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,        
       }
     )
     .then(response => { setUser(response.data); })

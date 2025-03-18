@@ -60,8 +60,6 @@ export default function BoardList() {
   const handlePasswordSubmit = () => {
     if (selectedArticle && selectedArticle.password === inputPassword) {
       console.log("Password correct, navigating with authenticated=true");
-      // 인증 상태를 sessionStorage에 저장
-      sessionStorage.setItem(`post_${selectedArticle.id}_authenticated`, "true");
       setOpenPasswordModal(false);
       setInputPassword("");
       // URL에 authenticated 쿼리 파라미터 추가

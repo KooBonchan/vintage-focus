@@ -1,11 +1,12 @@
 import { Box, Button, Typography, TextField, Alert, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams, useLocation, useSearchParams } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 export default function RentalDetail() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, authenticated } = useParams();
+  const [ searchParams ] = useSearchParams();
   const location = useLocation();
   const [post, setPost] = useState(null);
   const [inputPassword, setInputPassword] = useState("");
@@ -31,19 +32,23 @@ export default function RentalDetail() {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const foundPost = storedPosts.find((p) => p.id.toString() === id);
     console.log("Found post from sessionStorage:", foundPost); // 디버깅용 로그
-    setPost(foundPost);
-
-    const queryParams = new URLSearchParams(location.search);
-    const isUnlocked = queryParams.get("unlocked") === "true";
-
+    
     if (foundPost) {
-      if (!foundPost.locked || isUnlocked) {
-        setShowContent(true);
-      } else {
-        setShowContent(false);
-      }
+      const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
+      const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
+      const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
+      console.log("URL 쿼리 파라미터 (authenticated):", searchParams.get("authenticated"));
+      console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
+      console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
+      setShowContent(!foundPost.locked || isAuthenticated);
+      setPost(foundPost);
     }
-  }, [id, location.search]);
+  }, [id, location.search, searchParams]);
+
+  useEffect(()=>{
+    if(authenticated === "true") setShowContent(true);
+  }, [authenticated, setShowContent]);
+  
 
   if (!post) {
     return (

@@ -19,7 +19,7 @@ function ProductList() {
   const [filters, setFilters] = useState({
     manufacturer: "",
     year: "",
-    price: "",
+    sortByPrice: "",
     sortBy: "",
   });
 

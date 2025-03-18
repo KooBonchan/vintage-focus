@@ -6,7 +6,7 @@ import CustomButton from "../../../components/CustomButton";
 
 export default function SellDetail() {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const [searchParams] = useSearchParams();
   const [post, setPost] = useState<Post | null>(null);
   const [inputPassword, setInputPassword] = useState("");

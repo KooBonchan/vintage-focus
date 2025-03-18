@@ -1,12 +1,16 @@
-import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-function FilterBar() {
-  const [manufacturer, setManufacturer] = useState("");
-  const [year, setYear] = useState("");
-  const [price, setPrice] = useState("");
-  const [sortBy, setSortBy] = useState("");
+interface FilterProps {
+  company?: string;
+  condition?: string
+  sortBy?: string; //추천정렬
+}
 
+function FilterBar({filters, setFilters}:{
+  filters: FilterProps,
+  setFilters: (state: FilterProps) => void
+}) {
+  
   return (
     <Box
       sx={{
@@ -24,8 +28,8 @@ function FilterBar() {
       <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
         <InputLabel>제조사</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
-          value={manufacturer}
-          onChange={(e) => { setManufacturer(e.target.value); }}
+          value={filters.company}
+          onChange={(e) => { setFilters({...filters, company:e.target.value}); }}
           sx={{
             border: "1px solid #bdbdbd",
             borderRadius: "15px",
@@ -34,18 +38,18 @@ function FilterBar() {
           }}
         >
           <MenuItem value="all">All</MenuItem>
-          <MenuItem value="sony">Sony</MenuItem>
-          <MenuItem value="canon">Canon</MenuItem>
-          <MenuItem value="nikon">Nikon</MenuItem>
+          <MenuItem value="니콘">Nikon</MenuItem>
+          <MenuItem value="소니">Sony</MenuItem>
+          <MenuItem value="라이카">Leica</MenuItem>
+          <MenuItem value="후지필름">Fujifilm</MenuItem>
         </Select>
       </FormControl>
 
-      {/* 년식 선택 */}
       <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
-        <InputLabel>년식</InputLabel> {/* 라벨 스타일 제거 */}
+        <InputLabel>상품 상태</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
-          value={year}
-          onChange={(e) => { setYear(e.target.value); }}
+          value={filters.condition}
+          onChange={(e) => { setFilters({...filters, condition:e.target.value}); }}
           sx={{
             border: "1px solid #bdbdbd",
             borderRadius: "15px",
@@ -53,38 +57,16 @@ function FilterBar() {
             backgroundColor: "transparent",
           }}
         >
-          {Array.from({ length: 10 }, (_, i) => (
-            <MenuItem key={2024 - i} value={2024 - i}>
-              {2024 - i}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* 가격 필터 */}
-      <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
-        <InputLabel>가격</InputLabel> {/* 라벨 스타일 제거 */}
-        <Select
-          value={price}
-          onChange={(e) => { setPrice(e.target.value); }}
-          sx={{
-            border: "1px solid #bdbdbd",
-            borderRadius: "15px",
-            fontWeight: 600,
-            backgroundColor: "transparent",
-          }}
-        >
-          <MenuItem value="low">낮은 가격순</MenuItem>
-          <MenuItem value="high">높은 가격순</MenuItem>
+          <MenuItem value="all">전체</MenuItem>
         </Select>
       </FormControl>
 
       {/* 정렬 기준 */}
       <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
-        <InputLabel>필터</InputLabel> {/* 라벨 스타일 제거 */}
+        <InputLabel>정렬</InputLabel> {/* 라벨 스타일 제거 */}
         <Select
-          value={sortBy}
-          onChange={(e) => { setSortBy(e.target.value); }}
+          value={filters.sortBy}
+          onChange={(e) => { setFilters({...filters, sortBy:e.target.value}); }}
           sx={{
             border: "1px solid #bdbdbd",
             borderRadius: "15px",
@@ -92,9 +74,11 @@ function FilterBar() {
             backgroundColor: "transparent",
           }}
         >
+          <MenuItem value="base">--</MenuItem>
+          <MenuItem value="lowPrice">낮은 가격순</MenuItem>
+          <MenuItem value="highPrice">높은 가격순</MenuItem>
           <MenuItem value="recommended">추천순</MenuItem>
           <MenuItem value="popular">인기순</MenuItem>
-          <MenuItem value="latest">최신순</MenuItem>
         </Select>
       </FormControl>
     </Box>

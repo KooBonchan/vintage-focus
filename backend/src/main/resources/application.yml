@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: common, prod
+    active: common
 
 ---
 
@@ -14,6 +14,9 @@ spring:
 
 #  Persistence
   r2dbc:
+    url: ${SPRING_R2DBC_URL}
+    username: vintage_focus
+    password: ${SPRING_R2DBC_PASSWORD}
     pool:
       enabled: true
       max-size: 20
@@ -29,16 +32,26 @@ spring:
           issuer-uri: https://accounts.google.com
           jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  expiration-time: 600000
+
 oauth2:
   google:
+    client-id: ${GOOGLE_CLIENT_ID}
+    client-secret: ${GOOGLE_CLIENT_SECRET}
     token-url: https://oauth2.googleapis.com/token
   kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    client-secret: ${KAKAO_CLIENT_SECRET}
     user-info:
       url: https://kapi.kakao.com/v2/user/me
       column-username: properties.nickname
       column-profile: properties.thumbnail_image
     token-url: https://kauth.kakao.com/oauth/token
   github:
+    client-id: ${GH_CLIENT_ID}
+    client-secret: ${GH_CLIENT_SECRET}
     user-info:
       url: https://api.github.com/user
       column-username: login
@@ -58,4 +71,9 @@ springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
 
+portone:
+  api-key: ${PORTONE_API_KEY}
+  api-secret: ${PORTONE_API_SECRET}
+
 client-uri: localhost:3000
+logging.level.root: info

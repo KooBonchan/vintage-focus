@@ -16,10 +16,10 @@ function ProductList() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const [products, setProducts] = useState<ProductResponse[] | null>(null)
+  const [filteredProducts, setFilteredProducts] = useState<ProductResponse[] | null>(null)
   const [filters, setFilters] = useState({
-    manufacturer: "",
-    year: "",
-    sortByPrice: "",
+    company: "",
+    condition: "",
     sortBy: "",
   });
 
@@ -28,15 +28,45 @@ function ProductList() {
     .then(setProducts)
   },[setProducts])
 
+  useEffect(() => {
+    if(!products) return;
+    let filtered = [...products];
+    if(filters.company && filters.company !== "all") {
+      console.log(filters);
+      console.log(products);
+      filtered = filtered.filter(product => 
+        product.company?.toLowerCase() === filters.company.toLowerCase()
+      );
+    }
+    
+    if (filters.sortBy) {
+      filtered.sort((a, b) => {
+        switch (filters.sortBy) {
+          case "lowPrice":
+            return (a.sellingPrice || 0) - (b.sellingPrice || 0);
+          case "highPrice":
+            return (b.sellingPrice || 0) - (a.sellingPrice || 0);
+          case "views":
+            return (b.viewCount || 0) - (a.viewCount || 0);
+          case "likes":
+            return (b.likeCount || 0) - (a.likeCount || 0);
+          default:
+            return 0;
+        }
+      });
+    }
+    setFilteredProducts(filtered);
+  }, [products, filters, setFilters, setFilteredProducts])
+
   const startIndex: number = (page - 1) * ITEMS_PER_PAGE;
   const endIndex: number = startIndex + ITEMS_PER_PAGE;
-  const currentPageProducts = products?.slice(startIndex, endIndex);
+  const currentPageProducts = filteredProducts?.slice(startIndex, endIndex);
 
-  const totalPages = products ? Math.ceil(products.length / ITEMS_PER_PAGE) : 0;
+  const totalPages = filteredProducts ? Math.ceil(products.length / ITEMS_PER_PAGE) : 0;
 
   return (
     <>
-      <Navbar />
+      <Navbar filters={filters} setFilters={setFilters} />
       <Container sx={{ maxWidth: "1100px", margin: "0 auto", padding: "20px 0",
         backgroundColor: theme.palette.background.default, }}
         >

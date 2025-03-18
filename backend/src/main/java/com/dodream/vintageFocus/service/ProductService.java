@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 public interface ProductService {
 
   Flux<ProductDTO> getAllProducts();
+  Flux<ProductDTO> getAllProducts(int limit);
   Mono<ProductDTO> getProductById(Long id);
   Mono<ProductDTO> getProductByModelName(String ModelName);
   Mono<ProductDTO> createProduct(ProductDTO productDTO);

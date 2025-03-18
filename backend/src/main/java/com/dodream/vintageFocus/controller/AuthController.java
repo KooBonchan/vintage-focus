@@ -8,6 +8,8 @@ import com.dodream.vintageFocus.service.AuthService;
 import com.dodream.vintageFocus.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -24,6 +26,9 @@ public class AuthController {
   private final AuthService authService;
   private final JwtUtil jwtUtil;
 
+  @Value("${client-uri}")
+  private String clientUri;
+
   @PostMapping("signin")
   public Mono<ResponseEntity<MemberDTO>> signIn(@RequestBody TokenRequest request) {
     String provider = request.provider();
@@ -33,23 +38,14 @@ public class AuthController {
       .flatMap(authService::findMemberOrSave)
       .flatMap(memberDTO ->
         jwtUtil.generateAccessToken(memberDTO)
-          .map(this::publishAccessTokenCookie)
-          .zipWith(
-            authService.generateRefreshToken(memberDTO)
-              .map(refreshToken -> ResponseCookie.from("refreshToken", refreshToken)
-                .httpOnly(true)
-                .secure(false)
-                .sameSite("Lax")
-                .path("/")
-                .maxAge(604800)
-                .build()
-                .toString()
-              )
+          .zipWith(authService.generateRefreshToken(memberDTO)
           )
-          .map(cookies -> ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, cookies.getT1())
-            .header(HttpHeaders.SET_COOKIE, cookies.getT2())
-            .body(memberDTO))
+          .map(tokens -> {
+            memberDTO.setRefreshToken(tokens.getT2());
+            return ResponseEntity.ok()
+              .header(HttpHeaders.AUTHORIZATION, tokens.getT1())
+              .body(memberDTO);
+          })
       )
       .onErrorResume(Mono::error);
   }
@@ -70,33 +66,19 @@ public class AuthController {
       .flatMap(authentication -> authService.findMember((JwtAuthenticationToken) authentication));
   }
 
-  @PostMapping("refresh")
-  public Mono<ResponseEntity<Void>> refreshToken(ServerWebExchange exchange){
-    HttpCookie cookie = exchange.getRequest().getCookies().getFirst("refreshToken");
-    if(cookie == null) return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+  public static record RefreshTokenDTO(String token){}
 
-    String token = cookie.getValue();
-    return authService.validateRefreshToken(token)
+  @PostMapping("refresh")
+  public Mono<ResponseEntity<Void>> refreshToken(RefreshTokenDTO token){
+
+    if(token == null || token.token().isEmpty()) return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+
+    return authService.validateRefreshToken(token.token())
       .flatMap(jwtUtil::generateAccessToken)
-      .map(this::publishAccessTokenCookie)
-      .map(_cookie -> ResponseEntity.ok()
-        .header(HttpHeaders.SET_COOKIE, _cookie)
+      .map(accessToken -> ResponseEntity.ok()
+        .header(HttpHeaders.AUTHORIZATION, accessToken)
         .<Void>build())
       .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
   }
 
-  private String publishAccessTokenCookie(String accessToken){
-    return ResponseCookie.from("accessToken", accessToken)
-      .httpOnly(true)
-      .secure(false)
-      .sameSite("Lax")
-      .path("/")
-      .domain("localhost")
-      .maxAge(3600)
-      .build()
-      .toString();
-  }
 }
-
-
-

@@ -5,11 +5,11 @@ const AdminMenu = () => {
   return (
     <Box
     sx={{
-        width: 220, // 기존보다 약간 좁게 설정
-        height: "30vh", // 전체 높이보다 약간 짧게
-        position: "absolute", // ✅ 화면에서 떠 있는 느낌
-        top: "130px", // 네비게이션 아래에서 시작
-        left: "150px", // 왼쪽에서 조금 띄움
+        width: 200, // 기존보다 약간 좁게 설정
+        height: "25vh", // 전체 높이보다 약간 짧게
+        position: "fixed", // ✅ 화면에서 떠 있는 느낌
+        bottom: "35vh", // 네비게이션 아래에서 시작
+        left: "2rem", // 왼쪽에서 조금 띄움
         backgroundColor: "#ffffff",
         borderRadius: "12px", // ✅ 둥근 모서리 적용
         boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // ✅ 떠 있는 효과
@@ -30,14 +30,14 @@ const AdminMenu = () => {
         >
           <ListItemText primary="대시보드" />
         </ListItem>
-        <ListItem
+        {/* <ListItem
           button
           component={NavLink}
           to="/admin/products"
           className={({ isActive }) => (isActive ? "active-menu" : "")}
         >
           <ListItemText primary="상품 관리" />
-        </ListItem>
+        </ListItem> */}
         <ListItem
           button
           component={NavLink}

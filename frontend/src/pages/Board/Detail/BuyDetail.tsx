@@ -1,78 +1,67 @@
-import { Box, Button, Card, CardContent, Divider, Typography, TextField } from "@mui/material";
+import { Box, Card, CardContent, Divider, Typography, TextField, Modal, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import CustomButton from "../../../components/CustomButton"; // 경로 확인 필요
 
 export default function BuyDetail() {
   const navigate = useNavigate();
-  const { id } = useParams(); // URL에서 게시글 ID 가져오기
+  const { id, authenticated } = useParams(); // URL에서 게시글 ID 가져오기
   const [searchParams] = useSearchParams(); // URL 쿼리 파라미터 사용
   const [post, setPost] = useState(null);
   const [inputPassword, setInputPassword] = useState("");
   const [showContent, setShowContent] = useState(false);
+  const [openPasswordModal, setOpenPasswordModal] = useState(false); // 비밀번호 모달 상태
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); // 삭제 모달 상태
+  const [deletePassword, setDeletePassword] = useState(""); // 삭제용 비밀번호 입력
+  const theme = useTheme(); // 다크 모드 감지를 위한 hook
 
   useEffect(() => {
     try {
-      // sessionStorage에서 게시글 목록 가져오기
       const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
       const foundPost = storedPosts.find((p) => p.id.toString() === id);
-      console.log("Found post from sessionStorage:", foundPost); // 디버깅 로그
+      console.log("Found post from sessionStorage:", foundPost);
       if (foundPost) {
-        setPost(foundPost);
-        // URL 쿼리 파라미터와 sessionStorage에서 인증 여부 확인
+        
         const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
         const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
         const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
         console.log("URL 쿼리 파라미터 (authenticated):", searchParams.get("authenticated"));
         console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
         console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
-        setShowContent(!foundPost.locked || isAuthenticated); // locked가 false이거나 인증된 경우
+        setShowContent(!foundPost.locked || isAuthenticated);
+        setPost(foundPost);
         console.log("showContent 초기값:", !foundPost.locked || isAuthenticated);
       }
     } catch (error) {
       console.error("sessionStorage 파싱 오류:", error);
     }
-  }, [id, searchParams]);
+  }, [id, searchParams, setShowContent, setPost]);
+
+  useEffect(()=>{
+    if(authenticated === "true") setShowContent(true);
+  }, [authenticated, setShowContent]);
 
   if (!post) {
     return (
       <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3, textAlign: "center" }}>
         <Typography variant="h5">게시글을 찾을 수 없습니다.</Typography>
-        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate("/buy-inquiry")}>
-          목록으로 돌아가기
-        </Button>
+        <CustomButton label="목록으로 돌아가기" size="medium" onClick={() => navigate("/buy-inquiry")} />
       </Box>
     );
   }
 
-  const handleDelete = () => {
-    // 잠금 상태이고 내용이 아직 표시되지 않은 경우 비밀번호 확인
-    if (post.locked && !showContent) {
-      if (post.password === inputPassword) {
-        setShowContent(true); // 비밀번호가 맞으면 내용 표시
-        if (window.confirm("이 게시글을 삭제하시겠습니까?")) {
-          // 삭제 확인 후 진행
-          const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-          const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
-          sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
-          // 인증 상태 제거
-          sessionStorage.removeItem(`post_${id}_authenticated`);
-          alert("게시글이 삭제되었습니다.");
-          navigate("/buy-inquiry");
-        }
-      } else {
-        alert("비밀번호가 틀렸습니다.");
-      }
+  const handleDeleteConfirm = () => {
+    if (post.password === deletePassword) {
+      const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
+      const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
+      sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+      sessionStorage.removeItem(`post_${id}_authenticated`);
+      alert("게시글이 삭제되었습니다.");
+      navigate("/buy-inquiry");
+      setOpenDeleteModal(false);
     } else {
-      // 잠금 상태가 아니거나 이미 내용이 표시된 경우 바로 삭제 확인
-      if (window.confirm("이 게시글을 삭제하시겠습니까?")) {
-        const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-        const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
-        sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
-        // 인증 상태 제거
-        sessionStorage.removeItem(`post_${id}_authenticated`);
-        alert("게시글이 삭제되었습니다.");
-        navigate("/buy-inquiry");
-      }
+      alert("비밀번호가 틀렸습니다.");
+      setDeletePassword("");
     }
   };
 
@@ -84,22 +73,38 @@ export default function BuyDetail() {
     if (post.password === inputPassword) {
       setShowContent(true);
       console.log("showContent 업데이트됨:", true);
-      // 인증 상태를 sessionStorage에 저장
       sessionStorage.setItem(`post_${id}_authenticated`, "true");
-      // URL에 authenticated 쿼리 파라미터 추가
       navigate(`/buy-inquiry/${id}?authenticated=true`, { replace: true });
+      setOpenPasswordModal(false);
     } else {
       alert("비밀번호가 틀렸습니다.");
       setInputPassword("");
     }
   };
 
+  const handlePasswordChange = (e) => {
+    const input = e.target.value.replace(/\D/g, "");
+    if (input.length <= 4) setInputPassword(input);
+    if (e.target.value !== input) alert("숫자만 입력 가능합니다.");
+  };
+
+  const handleDeletePasswordChange = (e) => {
+    const input = e.target.value.replace(/\D/g, "");
+    if (input.length <= 4) setDeletePassword(input);
+    if (e.target.value !== input) alert("숫자만 입력 가능합니다.");
+  };
+
+  const handleModalClose = () => {
+    setOpenPasswordModal(false);
+    setOpenDeleteModal(false);
+    setInputPassword("");
+    setDeletePassword("");
+  };
+
   return (
     <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3 }}>
-      {/* 단일 박스 */}
       <Card sx={{ borderRadius: 2, boxShadow: 3, backgroundColor: "#ffffff" }}>
         <CardContent>
-          {/* 제목 */}
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             제목
           </Typography>
@@ -109,7 +114,6 @@ export default function BuyDetail() {
 
           <Divider sx={{ mb: 2 }} />
 
-          {/* 문의 내용 */}
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             문의 내용
           </Typography>
@@ -119,15 +123,14 @@ export default function BuyDetail() {
 
           <Divider sx={{ mb: 2 }} />
 
-       {/* 이미지 추가 */}
-       <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
-                <img
-                  src="/image/notice/mooni2.jpg" // Use relative path to the image
-                  alt="공지사항"
-                  style={{ width: "100%", height: "auto", objectFit: "cover" }}
-                />
-              </Box>
-          {/* 안내사항 (파란색 블록) */}
+          <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 3 }}>
+            <img
+              src="/image/notice/mooni2.jpg"
+              alt="공지사항"
+              style={{ width: "100%", height: "auto", objectFit: "cover" }}
+            />
+          </Box>
+
           <Box
             sx={{
               backgroundColor: "#e3f2fd",
@@ -137,7 +140,6 @@ export default function BuyDetail() {
               textAlign: "center",
             }}
           >
-            
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
               <Typography variant="body1" color="text.primary">
                 ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
@@ -148,10 +150,9 @@ export default function BuyDetail() {
               <Typography variant="body1" color="text.primary">
                 ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
               </Typography>
-            </Box> 
+            </Box>
           </Box>
 
-          {/* 작성 정보 */}
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             작성 정보
           </Typography>
@@ -161,55 +162,111 @@ export default function BuyDetail() {
         </CardContent>
       </Card>
 
-      {/* 비밀번호 입력 (locked가 true이고 내용이 아직 표시되지 않은 경우) */}
+      {/* 비밀번호 입력 모달 */}
       {post.locked && !showContent && (
-        <Box
-          sx={{
-            mt: 2,
-            display: "flex",
-            flexDirection: "row",
-            gap: 1,
-            alignItems: "center",
-            justifyContent: "flex-start", // 왼쪽 정렬
-          }}
-        >
-          <TextField
-            type="password"
-            label="비밀번호 입력 (4자리 숫자)"
-            variant="outlined"
-            size="small"
-            value={inputPassword}
-            onChange={(e) => {
-              const input = e.target.value.replace(/\D/g, ""); // 숫자만 허용
-              if (input.length <= 4) setInputPassword(input);
-            }}
-            inputProps={{ maxLength: 4 }}
-            sx={{ width: "300px" }} // 입력창 크기 고정
-          />
-          <Button variant="contained" color="primary" onClick={handlePasswordSubmit} sx={{ height: "40px" }}>
-            확인
-          </Button>
-          <Button variant="outlined" color="error" onClick={handleDelete} sx={{ height: "40px" }}>
-            삭제하기
-          </Button>
-        </Box>
+        <>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>
+            <CustomButton label="비밀번호 입력" size="medium" onClick={() => setOpenPasswordModal(true)} />
+            <CustomButton label="삭제하기" size="medium" onClick={() => setOpenDeleteModal(true)} />
+          </Box>
+
+          <Modal open={openPasswordModal} onClose={handleModalClose}>
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: theme.palette.mode === "dark" ? "black" : "white",
+                borderRadius: "8px",
+                boxShadow: 24,
+                p: 4,
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                border: theme.palette.mode === "dark" ? "1px solid white" : "none",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}
+              >
+                비밀번호 입력 (4자리 숫자)
+              </Typography>
+              <TextField
+                type="password"
+                label="비밀번호"
+                variant="outlined"
+                value={inputPassword}
+                onChange={handlePasswordChange}
+                inputProps={{ maxLength: 4, pattern: "[0-9]*" }}
+                fullWidth
+                sx={{
+                  input: { color: theme.palette.mode === "dark" ? "white" : "black" },
+                  label: { color: theme.palette.mode === "dark" ? "white" : "black" },
+                }}
+              />
+              <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+                <CustomButton label="확인" size="medium" onClick={handlePasswordSubmit} />
+                <CustomButton label="취소" size="medium" onClick={handleModalClose} />
+              </Box>
+            </Box>
+          </Modal>
+        </>
       )}
 
-      {/* 버튼 섹션 (내용이 표시된 경우) */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-        {showContent && (
-          <Button variant="outlined" color="error" onClick={handleDelete} sx={{ borderRadius: 20, px: 2 }}>
-            삭제하기
-          </Button>
-        )}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate("/buy-inquiry")}
-          sx={{ borderRadius: 20, px: 2 }}
+      {/* 삭제 확인 모달 */}
+      <Modal open={openDeleteModal} onClose={handleModalClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: theme.palette.mode === "dark" ? "black" : "white",
+            borderRadius: "8px",
+            boxShadow: 24,
+            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            border: theme.palette.mode === "dark" ? "1px solid white" : "none",
+          }}
         >
-          목록으로 돌아가기
-        </Button>
+          <Typography variant="h6" sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}>
+            게시글 삭제
+          </Typography>
+          <Typography sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}>
+            정말로 이 게시글을 삭제하시겠습니까?
+          </Typography>
+          <TextField
+            type="password"
+            label="비밀번호 (4자리 숫자)"
+            variant="outlined"
+            value={deletePassword}
+            onChange={handleDeletePasswordChange}
+            inputProps={{ maxLength: 4, pattern: "[0-9]*" }}
+            fullWidth
+            sx={{
+              input: { color: theme.palette.mode === "dark" ? "white" : "black" },
+              label: { color: theme.palette.mode === "dark" ? "white" : "black" },
+            }}
+          />
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+            <CustomButton label="삭제" size="medium" onClick={handleDeleteConfirm} />
+            <CustomButton label="취소" size="medium" onClick={handleModalClose} />
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* 버튼 섹션 (내용이 표시된 경우) */}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>
+        {showContent && (
+          <CustomButton label="삭제하기" size="medium" onClick={() => setOpenDeleteModal(true)} />
+        )}
+        <CustomButton label="목록으로 돌아가기" size="medium" onClick={() => navigate("/buy-inquiry")} />
       </Box>
     </Box>
   );

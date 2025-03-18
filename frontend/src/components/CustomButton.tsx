@@ -43,8 +43,6 @@ const CustomButton = ({
   const sizeClass = validSizes.includes(size) ? styles[`storybook-button--${size}`] : styles['storybook-button--medium'];
   const buttonClass = [styles['storybook-button'], sizeClass, mode].filter(Boolean).join(' ');
 
-  console.log('Button classes:', buttonClass); // 디버깅 로그 추가
-
   return (
     <button
       type="button"

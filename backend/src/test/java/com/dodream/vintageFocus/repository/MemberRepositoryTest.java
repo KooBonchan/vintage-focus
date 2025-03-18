@@ -1,10 +1,15 @@
 package com.dodream.vintageFocus.repository;
 
 import com.dodream.vintageFocus.vo.Member;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberRepositoryTest extends AbstractRepositoryTest<Member, Long, MemberRepository>{
+
+  @BeforeEach
+  @Override
+  void cleanup() {}
 
   @Override
   Member getTestEntity() {

@@ -4,7 +4,7 @@ import AdminMenu from "./AdminMenu"; // 새로 만든 관리 메뉴 컴포넌트
 
 const AdminLayout = () => {
   return (
-    <Box sx={{ display: "flex", position: "relative" }}>
+    <Box sx={{ display: "flex" }}>
       {/* 관리 메뉴: 독립적인 요소로 배치 */}
       <AdminMenu />
 

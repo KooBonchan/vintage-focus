@@ -1,6 +1,6 @@
 // response.ts
 
-export type ProductResponse = {
+export interface ProductResponse {
   id: number; // Long in Java becomes number in TypeScript (JavaScript doesn’t have a direct Long equivalent)
 
   // 상품명 (Product Info)
@@ -27,4 +27,4 @@ export type ProductResponse = {
   reviewCount?: number;
   likeCount?: number;
   viewCount?: number;
-};
+}

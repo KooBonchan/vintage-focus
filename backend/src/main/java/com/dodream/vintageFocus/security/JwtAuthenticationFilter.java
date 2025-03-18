@@ -5,6 +5,7 @@ import com.dodream.vintageFocus.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -46,8 +47,8 @@ public class JwtAuthenticationFilter implements WebFilter {
   }
 
   private String getTokenFromRequest(ServerWebExchange exchange) {
-    HttpCookie cookie = exchange.getRequest().getCookies().getFirst("accessToken");
-    if(cookie == null) return null;
-    return cookie.getValue();
+    String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+    if(token == null || !token.startsWith("Bearer ")) return null;
+    return token.substring(7);
   }
 }

@@ -53,7 +53,7 @@ export function ProductDetail({
   // 장바구니 추가
   const handleAddToCart = () => {
     try {
-      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       cart.push({ ...product, quantity });
       localStorage.setItem("cart", JSON.stringify(cart));
       setOpen(true);
@@ -198,7 +198,7 @@ export function ProductDetail({
               </IconButton>
               <IconButton
                 sx={{ padding: 0, margin: "0 4px", border: "none", "&:hover": { backgroundColor: "#e0e0e0" } }}
-                onClick={() => console.log("찜하기 기능 추가 예정")}
+                onClick={() => { console.log("찜하기 기능 추가 예정"); }}
               >
                 <FavoriteBorder />
               </IconButton>
@@ -310,11 +310,11 @@ export function ProductDetail({
         </Grid>
       </Grid>
 
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={open} onClose={() => { setOpen(false); }}>
         <DialogTitle>장바구니에 상품이 담겼습니다.</DialogTitle>
         <DialogContent>장바구니로 이동하시겠습니까?</DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} sx={buttonStyle}>
+          <Button onClick={() => { setOpen(false); }} sx={buttonStyle}>
             계속 쇼핑하기
           </Button>
           <Button onClick={() => cartLink && navigate(cartLink)} sx={buttonStyle}>

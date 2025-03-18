@@ -174,7 +174,7 @@ const Reviews = () => {
               boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
             },
           }}
-          onClick={() => setSortOption("recent")}
+          onClick={() => { setSortOption("recent"); }}
         >
           최근 거래순
         </Button>
@@ -193,7 +193,7 @@ const Reviews = () => {
               boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
             },
           }}
-          onClick={() => setSortOption("oldest")}
+          onClick={() => { setSortOption("oldest"); }}
         >
           오래된 거래순
         </Button>
@@ -212,7 +212,7 @@ const Reviews = () => {
               boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
             },
           }}
-          onClick={() => setSortOption("ratingHigh")}
+          onClick={() => { setSortOption("ratingHigh"); }}
         >
           평점 높은순
         </Button>
@@ -231,7 +231,7 @@ const Reviews = () => {
               boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
             },
           }}
-          onClick={() => setSortOption("ratingLow")}
+          onClick={() => { setSortOption("ratingLow"); }}
         >
           평점 낮은순
         </Button>

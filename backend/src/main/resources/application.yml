@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: common, secret
+    active: common, prod
 
 ---
 
@@ -13,18 +13,14 @@ spring:
     static-locations: classpath:/static/,classpath:/public/,classpath:/swagger-ui/
 
 #  Persistence
-  sql.init.mode: always
   r2dbc:
-    enabled: true
-    url: r2dbc:h2:mem:///test;MODE=MySQL
-    username: sa
-    password:
     pool:
       enabled: true
       max-size: 20
   data:
     r2dbc.repositories:
       enabled: true
+
   main.allow-bean-definition-overriding: true
   security:
     oauth2:
@@ -62,15 +58,4 @@ springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
 
-logging.level:
-  root: INFO
-  org:
-    springframework:
-      data.r2dbc: TRACE
-
-# PortOne(아임포트) API 설정 추가
-portone:
-  api-key: "YOUR_PORTONE_API_KEY"
-  api-secret: "YOUR_PORTONE_API_SECRET"
-
-
+client-uri: localhost:3000

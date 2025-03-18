@@ -16,7 +16,7 @@ import { NavLink, useNavigate } from 'react-router-dom';  // 수정: react-route
 import ColorModeIconDropdown from '../components/ColorModeIconDropdown';
 import Logo from '../components/Logo';
 import useAuthStore from '@/stores/authStore';
-import { LogoutOutlined } from '@mui/icons-material';
+import { LogoutOutlined, Settings } from '@mui/icons-material';
 
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
@@ -31,10 +31,10 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: '8px 12px',
 }));
 
-type RouteMetadata = {
+interface RouteMetadata {
   name: string,
   route: string,
-};
+}
 
 const routes: RouteMetadata[] = [
   { name: "홈", route: "/" },
@@ -83,16 +83,13 @@ export default function HeaderBar() {
             </Box>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+            {user && user.role === "ADMIN" &&
             <IconButton
               onClick={() => navigate("/admin/dashboard")}
-              disableRipple
-              size="small"
-              aria-controls={open ? 'color-scheme-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
             >
-              ⚙️
+              <Settings />
             </IconButton>
+            }
             {user?
             ( <>
               <Avatar
@@ -122,6 +119,17 @@ export default function HeaderBar() {
 
           {/* xs size */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
+            {user && user.role === "ADMIN" &&
+            <IconButton
+              onClick={() => navigate("/admin/dashboard")}
+              disableRipple
+              size="small"
+              aria-controls={open ? 'color-scheme-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
+              <Settings />
+            </IconButton>}
             <ColorModeIconDropdown size="medium" />
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />

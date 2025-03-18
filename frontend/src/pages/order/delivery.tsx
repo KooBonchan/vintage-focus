@@ -94,7 +94,7 @@ const DeliveryPage = () => {
 
   // ✅ 우편번호 검색 함수
   const handleSearchAddress = () => {
-    if (!window.daum || !window.daum.Postcode) {
+    if (!window.daum?.Postcode) {
       alert("우편번호 API가 로드되지 않았습니다. 페이지를 새로고침해 주세요.");
       return;
     }
@@ -337,7 +337,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
       {/* 모달 */}
-      <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+      <Dialog open={openModal} onClose={() => { setOpenModal(false); }}>
         <DialogTitle>입력 확인</DialogTitle>
         <DialogContent>
           <Typography>다음 필수 항목을 입력해주세요:</Typography>
@@ -348,7 +348,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           </ul>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenModal(false)} color="primary">
+          <Button onClick={() => { setOpenModal(false); }} color="primary">
             확인
           </Button>
         </DialogActions>

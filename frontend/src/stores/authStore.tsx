@@ -19,15 +19,15 @@ const useAuthStore = create<AuthState>((set) => ({
 
   // Action to set user and token
   setAuth: (user: MemberResponse, token: string) =>
-    set({ user, accessToken: token, hasLoggedInBefore: true }),
+    { set({ user, accessToken: token, hasLoggedInBefore: true }); },
 
   // Action to clear auth state (e.g., on logout)
-  clearAuth: () => set({ user: null, accessToken: null, hasLoggedInBefore: false }),
+  clearAuth: () => { set({ user: null, accessToken: null, hasLoggedInBefore: false }); },
 
   // Action to fetch user profile and update store
   fetchUser: async (token: string) => {
     try {
-      const response = await axios.get<MemberResponse>('http://localhost:8094/api/auth/user', {
+      const response = await axios.get<MemberResponse>(`${import.meta.env.VITE_API_ROOT}/auth/user`, {
         headers: { Authorization: token },
       });
       const user = response.data;
@@ -39,7 +39,7 @@ const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  setUser: (user: MemberResponse) => set({user})
+  setUser: (user: MemberResponse) => { set({user}); }
 }));
 
 export default useAuthStore;

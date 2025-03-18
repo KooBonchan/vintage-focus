@@ -1,8 +1,9 @@
-import { Box, Grid, Pagination, Typography, useTheme } from "@mui/material";
-import { useState } from "react";
+import { Box, Grid, Pagination, Skeleton, Typography, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
 import Button from "../../components/CustomButton";
 import ProductCard from "../../components/ProductCard";
 import { ProductResponse } from "@/types/response";
+import { readProductList } from "@/api/productApi";
 
 // Change the ITEMS_PER_PAGE to 8 to display exactly 2 rows
 const ITEMS_PER_PAGE = 8;
@@ -38,13 +39,12 @@ const WeeklyBestContainer = (props: any) => {
 
 const WeeklyBestGallery = () => {
   const theme = useTheme();
-  const [page, setPage] = useState(1);
-
-  const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentPageProducts = sampleProducts.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(sampleProducts.length / ITEMS_PER_PAGE);
+  const [products, setProducts] = useState<ProductResponse[]>([]);
+  
+  useEffect(() => {
+    readProductList(6)
+    .then(setProducts)
+  },[setProducts])
 
   return (
     <WeeklyBestContainer>
@@ -58,30 +58,32 @@ const WeeklyBestGallery = () => {
         Best Item
       </Typography>
 
-      <Box sx={{ display: "flex", justifyContent: "center", width: '100%', gap: 2, marginTop: 3 }}>
+      {/* <Box sx={{ display: "flex", justifyContent: "center", width: '100%', gap: 2, marginTop: 3 }}>
         <Button size="small" label="버튼 1" />
         <Button size="small" label="버튼 2" />
         <Button size="small" label="버튼 3" />
-      </Box>
+      </Box> */}
 
       <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 3 }}>
-        {currentPageProducts.map((product) => (
-          <Grid item xs={12} sm={6} md={3} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-              <ProductCard product={product} />
-            </Box>
-          </Grid>
-        ))}
+        {
+          products.length < 6 ? 
+          [...Array(6).keys()].map((_, i) => (
+            <Grid item xs={12} sm={6} md={4} key={"skeleton-" + i} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Skeleton variant="rectangular" width="250px" height="330px" />
+            </Grid>
+          ))
+          :
+          products.map((product) => (
+            <Grid item xs={12} sm={6} md={4} key={product.id} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                { 
+                <ProductCard product={product} />
+                }
+              </Box>
+            </Grid>
+          ))
+        }
       </Grid>
-
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(event, value) => setPage(value)}
-          color="primary"
-        />
-      </Box>
     </WeeklyBestContainer>
   );
 };

@@ -5,6 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths"
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  base: '/',
   server: {
     port: 3000,
   },
@@ -12,5 +13,13 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['/src/test/testSetup.tsx'],
+  },
+  build: {
+    rollupOptions:{
+      external: [/src\/stories/],
+    }
+  },
+  preview: {
+    port: 3000,
   }
 })

@@ -14,6 +14,7 @@ export default function BuyWrite() {
   const [isPublic, setIsPublic] = useState(true); // 공개/비공개 상태 (기본값: 공개, 스위치 비활성화)
   const [password, setPassword] = useState(""); // 비밀번호 (비공개 시 필수)
 
+  
   // 스위치 상태 변경 핸들러 (논리 반대로 설정)
   const handleSwitchChange = (e) => {
     const newIsPublic = !e.target.checked; // 스위치가 체크되면 isPublic을 false로 설정

@@ -92,12 +92,14 @@ export default function HeaderBar() {
             }
             {user?
             ( <>
-              <Avatar
+              <NavLink to={'/mypage'} key={'mypage'}>
+                <Avatar
                   alt='profile image'
                   src={user.profileImage}
                   sizes='25px'
-                >
-              </Avatar>
+                />
+              </NavLink>
+              
               <IconButton aria-label="logout" onClick={clearAuth}>
                 <LogoutOutlined />
               </IconButton>
@@ -122,11 +124,6 @@ export default function HeaderBar() {
             {user && user.role === "ADMIN" &&
             <IconButton
               onClick={() => navigate("/admin/dashboard")}
-              disableRipple
-              size="small"
-              aria-controls={open ? 'color-scheme-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
             >
               <Settings />
             </IconButton>}
@@ -156,6 +153,12 @@ export default function HeaderBar() {
                     <MenuItem>{name}</MenuItem>
                   </NavLink>
                 ))}
+                {user && (
+                <NavLink to={'/mypage'} key={'mypage'}>
+                  <MenuItem>마이페이지</MenuItem>
+                </NavLink>
+                )}
+                
                 
                 <Divider sx={{ my: 3 }} />
                 {

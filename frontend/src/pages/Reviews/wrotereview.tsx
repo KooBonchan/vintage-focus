@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Box, Typography, Button, TextField, Rating, IconButton } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import DeleteIcon from "@mui/icons-material/Delete";
+import useAuthStore from "@/stores/authStore";
 
 const WroteReview = () => {
   const [rating, setRating] = useState<number | null>(0);
   const [reviewText, setReviewText] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const navigate = useNavigate();
+  const {user} = useAuthStore();
 
   // ✅ 파일을 Base64로 변환하는 함수 추가
   const readFileAsBase64 = (file: File): Promise<string> => {
@@ -42,8 +44,8 @@ const WroteReview = () => {
     const newReview = {
       id: Date.now(),
       user: {
-        name: "CurrentUser",
-        avatar: "/static/images/avatar/default.png",
+        name: user?.username ?? "CurrentUser",
+        avatar: user?.profileImage ?? "/static/images/avatar/default.png",
       },
       rating,
       images,

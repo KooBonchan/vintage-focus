@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { Box, Typography, Avatar, Button, List, ListItem, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/stores/authStore";
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const [profileImage, setProfileImage] = useState("https://via.placeholder.com/150");
+  // const [profileImage, setProfileImage] = useState("https://via.placeholder.com/150");
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
-    }
-  };
+  const {user} = useAuthStore();
 
+  const profileImage = user?.profileImage;
+  
   return (
     <Box
       sx={{
@@ -80,17 +77,20 @@ const MyPage = () => {
               boxShadow: 2,
             }}
           />
-          <input
+          <Typography variant="h4">
+            {user?.username ?? "로그인해주세요."}
+          </Typography>
+          {/* <input
             id="profile-upload"
             type="file"
             accept="image/*"
             style={{ display: "none" }}
             onChange={handleImageChange}
-          />
+          /> */}
         </label>
-        <Typography variant="body2" sx={{ mt: 1, color: "#666" }}>
+        {/* <Typography variant="body2" sx={{ mt: 1, color: "#666" }}>
           프로필 사진을 클릭하여 변경하세요
-        </Typography>
+        </Typography> */}
       </Box>
     </Box>
   );

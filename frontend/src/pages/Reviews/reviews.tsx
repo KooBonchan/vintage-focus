@@ -17,7 +17,7 @@ const Reviews = () => {
   // 더미 데이터 (기존과 동일)
   const dummyReviews = Array.from({ length: 20 }, (_, index) => {
     const date = new Date();
-    date.setDate(date.getDate() - index);
+    date.setDate(date.getDate() - index - 3);
     return {
       id: index + 1,
       user: {
@@ -44,7 +44,7 @@ const Reviews = () => {
   // localStorage에서 리뷰 가져오기
   const [reviews, setReviews] = useState(() => {
     const savedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
-    return [...savedReviews, ...dummyReviews]; // 저장된 리뷰와 더미 데이터 결합
+    return [...savedReviews, ...dummyReviews];
   });
 
   const [visibleReviews, setVisibleReviews] = useState(reviews.slice(0, 4));

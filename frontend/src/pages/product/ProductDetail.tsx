@@ -198,7 +198,7 @@ export function ProductDetail() {
             <Button
               variant="text"
               sx={{ borderRadius: 2, backgroundColor: theme.palette.mode === "dark" ? "#555" : "#bbb", color: "black", px: 4 }}
-              onClick={() => navigate("/rental-inquiry/write")}
+              onClick={() => navigate("/rental-inquiry/write/" + product?.id)}
             >
               대여문의
             </Button>

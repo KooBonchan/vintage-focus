@@ -12,17 +12,21 @@ import {
   ListItemText,
   Alert,
   Grid,
+  Grid2,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { readProductDetail } from "@/api/productApi";
+import { ProductResponse } from "@/types/response";
 
 export default function RentalWrite() {
   const navigate = useNavigate();
+  const { productId } = useParams();
   const location = useLocation();
 
   const { productName = "제품이름", productImage = "https://via.placeholder.com/500x450" } = location.state || {};
@@ -41,8 +45,9 @@ export default function RentalWrite() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [product, setProduct] = useState<ProductResponse | null>(null);
 
-  const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_API_KEY"; // 실제 API 키로 교체
+  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
   const locations = [
     { name: "인천국제공항점", lat: 37.44735, lng: 126.45052 },
@@ -134,25 +139,77 @@ export default function RentalWrite() {
     if (openModal && selectedLocation) window.dispatchEvent(new Event("resize"));
   }, [openModal, selectedLocation]);
 
+  useEffect(() => {
+    if(!productId) return;
+    const idNum = parseInt(productId);
+    if(!idNum) return;
+    readProductDetail(idNum)
+    .then(setProduct)
+  },[productId, setProduct])
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ maxWidth: 900, mx: "auto", p: 3, bgcolor: "#FFFFFF", borderRadius: "12px", boxShadow: 2 }}>
         <Typography variant="h4" sx={{ mb: 3, fontWeight: "bold", color: "#333", textAlign: "center" }}>
           대여 문의
         </Typography>
+        {product?.productImages && (
+          <Grid2 container spacing={2} alignItems="center" justifyContent="center">
+            {/* 이미지 영역 */}
+            <Grid2 xs={12} sm={4} md={3}>
+              <Box
+                sx={{
+                  width: { xs: "120px", sm: "150px" }, // 반응형 크기
+                  height: { xs: "120px", sm: "150px" },
+                  bgcolor: "#ddd",
+                  borderRadius: 2,
+                  overflow: "hidden",
+                  mx: "auto", // 중앙 정렬
+                }}
+              >
+                <img
+                  src={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${product.productImages[0]}`}
+                  alt={product.modelName}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain", // 비율 유지하며 컨테이너에 맞춤
+                    borderRadius: "8px",
+                  }}
+                />
+              </Box>
+            </Grid2>
 
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={12} md={6}>
-            <Box sx={{ width: "100%", height: "300px", bgcolor: "#ddd", borderRadius: 2, overflow: "hidden" }}>
-              <img src={productImage} alt={productName} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h5" fontWeight="bold" sx={{ mb: 1 }}>
-              {productName}
-            </Typography>
-          </Grid>
-        </Grid>
+            {/* 텍스트 영역 */}
+            <Grid2 xs={12} sm={8} md={9}>
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                sx={{
+                  color: "#333",
+                  whiteSpace: "nowrap", // 한 줄로 유지
+                  overflow: "hidden",
+                  textOverflow: "ellipsis", // 길면 생략 표시
+                  fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                }}
+              >
+                {product.modelName}
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{
+                  color: "#666",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                }}
+              >
+                대여비: {product.rentalPrice?.toLocaleString()}￦
+              </Typography>
+            </Grid2>
+          </Grid2>
+        )}
 
         <Box sx={{ width: "100%", p: 2, mb: 2, borderRadius: "8px", bgcolor: "#e1f5fe", boxShadow: "0 2px 4px rgba(2, 136, 209, 0.2)" }}>
           <Typography variant="subtitle1" sx={{ color: "#0288d1", fontWeight: "bold", mb: 2, textAlign: "center" }}>

@@ -5,7 +5,7 @@ import CustomButton from "../../../components/CustomButton"; // 경로 확인 �
 
 export default function BuyDetail() {
   const navigate = useNavigate();
-  const { id, authenticated } = useParams(); // URL에서 게시글 ID 가져오기
+  const { id } = useParams(); // URL에서 게시글 ID 가져오기
   const [searchParams] = useSearchParams(); // URL 쿼리 파라미터 사용
   const [post, setPost] = useState(null);
   const [inputPassword, setInputPassword] = useState("");

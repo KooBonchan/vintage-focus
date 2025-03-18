@@ -54,7 +54,9 @@ public class SecurityConfig implements WebFluxConfigurer {
       .allowedOrigins("http://localhost:3000", "http://vintage-focus.s3-website.ap-northeast-2.amazonaws.com/")
       .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
       .allowedHeaders("*")
+      .exposedHeaders("Authorization")
       .allowCredentials(true)
+
     ;
   }
 }

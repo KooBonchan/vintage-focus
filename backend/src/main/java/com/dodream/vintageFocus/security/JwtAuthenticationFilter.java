@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter implements WebFilter {
 
   private String getTokenFromRequest(ServerWebExchange exchange) {
     String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-    if(token == null) return null;
-    return token;
+    if(token == null || !token.startsWith("Bearer ")) return null;
+    return token.substring(7);
   }
 }

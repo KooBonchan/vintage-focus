@@ -49,7 +49,7 @@ const Callback = () => {
 
         const memberInfo:MemberResponse = response.data;
         
-        const accessToken = response.headers.getAuthorization?.toString();
+        const accessToken = response.headers['authorization'];
         if(!accessToken) { throw new Error('JWT not found in Authorization header') }
 
         sessionStorage.removeItem(`${provider}_code_verifier`);

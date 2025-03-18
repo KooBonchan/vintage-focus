@@ -25,7 +25,7 @@ oauth2:
   github:
     client-id: ${GH_CLIENT_ID}
     client-secret: ${GH_CLIENT_SECRET}
-  redirect-uri: http://vintage-focus.s3-website.ap-northeast-2.amazonaws.com/callback
-#  redirect-uri: http://localhost:3000/callback
+#  redirect-uri: http://vintage-focus.s3-website.ap-northeast-2.amazonaws.com/callback
+  redirect-uri: http://localhost:3000/callback
 
 client-uri: vintage-focus.s3-website.ap-northeast-2.amazonaws.com

@@ -5,7 +5,7 @@ import CustomButton from "../../../components/CustomButton"; // 경로 확인 �
 
 export default function BuyDetail() {
   const navigate = useNavigate();
-  const { id } = useParams(); // URL에서 게시글 ID 가져오기
+  const { id, authenticated } = useParams(); // URL에서 게시글 ID 가져오기
   const [searchParams] = useSearchParams(); // URL 쿼리 파라미터 사용
   const [post, setPost] = useState(null);
   const [inputPassword, setInputPassword] = useState("");
@@ -21,7 +21,7 @@ export default function BuyDetail() {
       const foundPost = storedPosts.find((p) => p.id.toString() === id);
       console.log("Found post from sessionStorage:", foundPost);
       if (foundPost) {
-        setPost(foundPost);
+        
         const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
         const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
         const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
@@ -29,12 +29,17 @@ export default function BuyDetail() {
         console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
         console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
         setShowContent(!foundPost.locked || isAuthenticated);
+        setPost(foundPost);
         console.log("showContent 초기값:", !foundPost.locked || isAuthenticated);
       }
     } catch (error) {
       console.error("sessionStorage 파싱 오류:", error);
     }
-  }, [id, searchParams]);
+  }, [id, searchParams, setShowContent, setPost]);
+
+  useEffect(()=>{
+    if(authenticated === "true") setShowContent(true);
+  }, [authenticated, setShowContent]);
 
   if (!post) {
     return (

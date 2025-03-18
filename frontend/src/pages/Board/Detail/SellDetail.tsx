@@ -6,7 +6,7 @@ import CustomButton from "../../../components/CustomButton";
 
 export default function SellDetail() {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const { id, authenticated } = useParams();
   const [searchParams] = useSearchParams();
   const [post, setPost] = useState<Post | null>(null);
   const [inputPassword, setInputPassword] = useState("");
@@ -39,6 +39,9 @@ export default function SellDetail() {
       console.error("sessionStorage 파싱 오류:", error);
     }
   }, [id, searchParams]);
+  useEffect(()=>{
+    if(authenticated === "true") setShowContent(true);
+  }, [authenticated, setShowContent]);
 
   if (!post) {
     return (

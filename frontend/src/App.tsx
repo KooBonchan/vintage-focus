@@ -140,7 +140,7 @@ function Router() {
         {/* 대여문의 라우트 그룹 */}
         <Route path="rental-inquiry">
           <Route index element={<About />} />
-          <Route path="write" element={<RentalWrite />} />
+          <Route path="write/:productId" element={<RentalWrite />} />
           <Route path="detail/:id" element={<RentalDetail />} /> {/* ✅ 상세 페이지 추가 */}
         </Route>
 

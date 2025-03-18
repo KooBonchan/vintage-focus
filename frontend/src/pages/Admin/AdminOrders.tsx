@@ -107,7 +107,7 @@ const AdminOrders = () => {
 
   return (
     <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mt: 4 }}>
-       <Box sx={{ width: "90%", maxWidth: "1100px" }}> 
+       <Box sx={{ width: "fit=content", maxWidth: "1100px" }}> 
         <Typography variant="h5" sx={{ mb: 3, textAlign: "center", fontWeight: "bold" }}>
           주문 목록
         </Typography>

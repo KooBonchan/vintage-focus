@@ -46,7 +46,6 @@ public class AuthController {
                 .secure(false)
                 .sameSite("Lax")
                 .path("/")
-                .domain(clientUri)
                 .maxAge(604800)
                 .build()
                 .toString()
@@ -97,12 +96,8 @@ public class AuthController {
       .secure(false)
       .sameSite("Lax")
       .path("/")
-      .domain(clientUri)
       .maxAge(3600)
       .build()
       .toString();
   }
 }
-
-
-

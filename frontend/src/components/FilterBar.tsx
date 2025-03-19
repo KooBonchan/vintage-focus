@@ -4,6 +4,7 @@ interface FilterProps {
   company?: string;
   condition?: string
   sortBy?: string; //추천정렬
+  category: string;
 }
 
 function FilterBar({filters, setFilters}:{
@@ -24,6 +25,30 @@ function FilterBar({filters, setFilters}:{
         mx: "auto",
       }}
     >
+
+
+{/* 렌즈, 카메라, 디카 */}
+  <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
+    <InputLabel>상품</InputLabel>
+    <Select
+      value={filters.category}
+      onChange={(e) => { setFilters({ ...filters, category: e.target.value });
+      navigate(`/product?category=${e.target.value}`);  }}
+      sx={{
+        border: "1px solid #bdbdbd",
+        borderRadius: "15px",
+        fontWeight: 600,
+        backgroundColor: "transparent",
+      }}
+    >
+      <MenuItem value="all">All</MenuItem>
+      <MenuItem value="lens">렌즈</MenuItem>
+      <MenuItem value="camera">카메라</MenuItem>
+      <MenuItem value="dicam">디카</MenuItem>
+    </Select>
+  </FormControl>
+
+
       {/* 제조사 선택 */}
       <FormControl variant="filled" sx={{ minWidth: 100 }} size="small">
         <InputLabel>제조사</InputLabel> {/* 라벨 스타일 제거 */}

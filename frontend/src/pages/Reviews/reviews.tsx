@@ -1,18 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  Rating,
-  Card,
-  CardMedia,
-  CardContent,
-  Avatar,
-} from "@mui/material";
+import { Box, Typography, Avatar, Card, CardMedia, CardContent, Rating, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CustomButton from '../../components/CustomButton'; // adjust path
 
 const Reviews = () => {
   const navigate = useNavigate();
+  const theme = useTheme(); // Hook to access the current theme
 
   // 더미 데이터 (기존과 동일)
   const dummyReviews = Array.from({ length: 20 }, (_, index) => {
@@ -41,7 +34,6 @@ const Reviews = () => {
     };
   });
 
-  // localStorage에서 리뷰 가져오기
   const [reviews, setReviews] = useState(() => {
     const savedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
     return [...savedReviews, ...dummyReviews];
@@ -140,13 +132,13 @@ const Reviews = () => {
         margin: "0 auto",
         padding: 3,
         textAlign: "center",
-        backgroundColor: "#ffffff",
+        backgroundColor: theme.palette.mode === "dark" ? "none" : "#ffffff", // Conditional background
       }}
     >
-      <Typography variant="h4" gutterBottom sx={{ color: "#000000" }}>
+      <Typography variant="h4" gutterBottom sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
         카메라 리뷰 페이지
       </Typography>
-      <Typography variant="body1" paragraph sx={{ color: "#000000" }}>
+      <Typography variant="body1" paragraph sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
         이곳에서 최신 카메라 제품의 리뷰를 확인할 수 있습니다.
       </Typography>
 
@@ -159,82 +151,26 @@ const Reviews = () => {
           flexWrap: "wrap",
         }}
       >
-        <Button
-          variant="outlined"
-          sx={{
-            backgroundColor: "#ffffff",
-            color: "#2196F3",
-            border: "1px solid #2196F3",
-            borderRadius: 20,
-            padding: "8px 16px",
-            textTransform: "none",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
-              boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
-            },
-          }}
+        <CustomButton
+          label="최근 거래순"
+          size="medium"
           onClick={() => { setSortOption("recent"); }}
-        >
-          최근 거래순
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            backgroundColor: "#ffffff",
-            color: "#2196F3",
-            border: "1px solid #2196F3",
-            borderRadius: 20,
-            padding: "8px 16px",
-            textTransform: "none",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
-              boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
-            },
-          }}
+        />
+        <CustomButton
+          label="오래된 거래순"
+          size="medium"
           onClick={() => { setSortOption("oldest"); }}
-        >
-          오래된 거래순
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            backgroundColor: "#ffffff",
-            color: "#2196F3",
-            border: "1px solid #2196F3",
-            borderRadius: 20,
-            padding: "8px 16px",
-            textTransform: "none",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
-              boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
-            },
-          }}
+        />
+        <CustomButton
+          label="평점 높은순"
+          size="medium"
           onClick={() => { setSortOption("ratingHigh"); }}
-        >
-          평점 높은순
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            backgroundColor: "#ffffff",
-            color: "#2196F3",
-            border: "1px solid #2196F3",
-            borderRadius: 20,
-            padding: "8px 16px",
-            textTransform: "none",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            "&:hover": {
-              backgroundColor: "#f5f5f5",
-              boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
-            },
-          }}
+        />
+        <CustomButton
+          label="평점 낮은순"
+          size="medium"
           onClick={() => { setSortOption("ratingLow"); }}
-        >
-          평점 낮은순
-        </Button>
+        />
       </Box>
 
       <Box
@@ -253,7 +189,7 @@ const Reviews = () => {
               flexDirection: "column",
               alignItems: "center",
               padding: 2,
-              backgroundColor: "#ffffff",
+              backgroundColor: theme.palette.mode === "dark" ? "#424242" : "#ffffff", // Dark mode background color
               borderRadius: 2,
               boxShadow: 1,
               minWidth: 250,
@@ -264,7 +200,7 @@ const Reviews = () => {
           >
             <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
               <Avatar src={review.user.avatar} sx={{ mr: 1 }} />
-              <Typography variant="subtitle1" sx={{ color: "#000000" }}>
+              <Typography variant="subtitle1" sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000" }}>
                 {review.user.name}
               </Typography>
             </Box>
@@ -293,14 +229,14 @@ const Reviews = () => {
               }}
             >
               <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="body2" sx={{ color: "#000000", mb: 2 }}>
+                <Typography variant="body2" sx={{ color: theme.palette.mode === "dark" ? "#ffffff" : "#000000", mb: 2 }}>
                   {formatReviewContent(review.content)}
                 </Typography>
               </Box>
               {/* 작성 날짜를 하단에 고정 */}
               <Typography
                 variant="body1"
-                sx={{ color: "#666666", mt: "auto", paddingTop: 1 }}
+                sx={{ color: theme.palette.mode === "dark" ? "#cccccc" : "#666666", mt: "auto", paddingTop: 1 }}
               >
                 작성 날짜: {formatDate(review.createdAt)}
               </Typography>

@@ -37,7 +37,6 @@ export interface BoardCardProps {
 const getAvatarImageUrl = (authorName: string | undefined): string => {
   if (!authorName) return "https://avatar.iran.liara.run/public"; // 기본 이미지
 
-  // 사용자 이름을 기반으로 고유한 아바타 이미지를 생성
   const hash = Array.from(authorName)
     .reduce((acc, char) => acc + char.charCodeAt(0), 0) % 10; // 이름의 ASCII 코드 합을 10으로 나눈 나머지 값을 사용
   return `https://randomuser.me/api/portraits/lego/${hash}.jpg`; // `randomuser.me`에서 제공하는 아바타 이미지 URL
@@ -132,7 +131,9 @@ const BoardCard: React.FC<BoardCardProps> = ({
         </Box>
         <Typography variant="caption" sx={{ color: isManager ? "#B0BEC5" : "text.secondary" }}>
           {formatDate(article?.date)} • 조회수{" "}
-          <span style={{ color: isManager ? "#B0BEC5" : viewsCountColor }}>{article?.views}</span>
+          <span style={{ color: isManager ? "#B0BEC5" : viewsCountColor }}>
+            {article?.views}
+          </span>
         </Typography>
       </Box>
 
@@ -141,6 +142,22 @@ const BoardCard: React.FC<BoardCardProps> = ({
           <Typography variant="caption" color={isManager ? "#B0BEC5" : "text.primary"}>
             #{article.tag}
           </Typography>
+        </Box>
+      )}
+
+      {/* 관리자 표시 (오른쪽 상단에 텍스트) */}
+      {isManager && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            color: "white",
+            fontSize: 30,
+            fontWeight: "bold",
+          }}
+        >
+          {/* 관리자 */}
         </Box>
       )}
     </Card>

@@ -1,21 +1,23 @@
 import { Box, Card, CardContent, Divider, Typography, TextField, Modal, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import CustomButton from "../../../components/CustomButton"; // 경로 확인 필요
+import CustomButton from "../../../components/CustomButton"; // Ensure correct path
+import NoticeList from "../../../components/NoticeList"; // Ensure correct path
 
 export default function BuyDetail() {
   const navigate = useNavigate();
-  const { id } = useParams(); // URL에서 게시글 ID 가져오기
-  const [searchParams] = useSearchParams(); // URL 쿼리 파라미터 사용
+  const { id } = useParams(); // Get post ID from URL
+  const [searchParams] = useSearchParams(); // Access URL query parameters
   const [post, setPost] = useState(null);
   const [inputPassword, setInputPassword] = useState("");
   const [showContent, setShowContent] = useState(false);
-  const [openPasswordModal, setOpenPasswordModal] = useState(false); // 비밀번호 모달 상태
-  const [openDeleteModal, setOpenDeleteModal] = useState(false); // 삭제 모달 상태
-  const [deletePassword, setDeletePassword] = useState(""); // 삭제용 비밀번호 입력
-  const theme = useTheme(); // 다크 모드 감지를 위한 hook
+  const [openPasswordModal, setOpenPasswordModal] = useState(false); // State for password modal
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); // State for delete modal
+  const [deletePassword, setDeletePassword] = useState(""); // State for delete password input
+  const theme = useTheme(); // Hook for theme (dark/light mode)
 
   useEffect(() => {
+    // Load post from sessionStorage and check if it's locked or not
     try {
       const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
       const foundPost = storedPosts.find((p) => p.id.toString() === id);
@@ -25,21 +27,27 @@ export default function BuyDetail() {
         const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
         const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
         const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
-        console.log("URL 쿼리 파라미터 (authenticated):", searchParams.get("authenticated"));
-        console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
-        console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
+
+        console.log("URL query param (authenticated):", searchParams.get("authenticated"));
+        console.log("sessionStorage auth state:", sessionStorage.getItem(`post_${id}_authenticated`));
+        console.log("Final auth state (isAuthenticated):", isAuthenticated);
 
         // 초기 showContent 설정
+
         setShowContent(!foundPost.locked || isAuthenticated);
         setPost(foundPost);
+        console.log("showContent 초기값:", !foundPost.locked || isAuthenticated);
       }
     } catch (error) {
-      console.error("sessionStorage 파싱 오류:", error);
+      console.error("Error parsing sessionStorage:", error);
     }
   }, [id, searchParams]);
 
-  // 두 번째 useEffect 제거 및 인증 로직 통합
+  useEffect(()=>{
+    if(authenticated === "true") setShowContent(true);
+  }, [authenticated, setShowContent]);
 
+  // Handle post not found
   if (!post) {
     return (
       <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3, textAlign: "center" }}>
@@ -49,6 +57,7 @@ export default function BuyDetail() {
     );
   }
 
+  // Handle deletion of post
   const handleDeleteConfirm = () => {
     if (post.password === deletePassword) {
       const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
@@ -64,14 +73,13 @@ export default function BuyDetail() {
     }
   };
 
+  // Handle password submission
   const handlePasswordSubmit = () => {
-    console.log("입력된 비밀번호:", inputPassword);
-    console.log("저장된 비밀번호:", post.password);
-    console.log("비밀번호 일치 여부:", post.password === inputPassword);
+    console.log("Entered password:", inputPassword);
+    console.log("Stored password:", post.password);
 
     if (post.password === inputPassword) {
       setShowContent(true);
-      console.log("showContent 업데이트됨:", true);
       sessionStorage.setItem(`post_${id}_authenticated`, "true");
       navigate(`/buy-inquiry/detail/${id}?authenticated=true`, { replace: true }); // 경로 수정
       setOpenPasswordModal(false);
@@ -81,18 +89,21 @@ export default function BuyDetail() {
     }
   };
 
+  // Handle password input change
   const handlePasswordChange = (e) => {
     const input = e.target.value.replace(/\D/g, "");
     if (input.length <= 4) setInputPassword(input);
     if (e.target.value !== input) alert("숫자만 입력 가능합니다.");
   };
 
+  // Handle delete password input change
   const handleDeletePasswordChange = (e) => {
     const input = e.target.value.replace(/\D/g, "");
     if (input.length <= 4) setDeletePassword(input);
     if (e.target.value !== input) alert("숫자만 입력 가능합니다.");
   };
 
+  // Handle modal close actions
   const handleModalClose = () => {
     setOpenPasswordModal(false);
     setOpenDeleteModal(false);
@@ -104,6 +115,14 @@ export default function BuyDetail() {
     <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3 }}>
       <Card sx={{ borderRadius: 2, boxShadow: 3, backgroundColor: "#ffffff" }}>
         <CardContent>
+          {/* Add NoticeList component */}
+          <NoticeList
+            backgroundColor="#f3f8fb"
+            fontColor="#445366"
+            fontSize={13}
+            iconColor="#445366"
+          />
+
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             제목
           </Typography>
@@ -139,17 +158,15 @@ export default function BuyDetail() {
               textAlign: "center",
             }}
           >
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" }}>
-              <Typography variant="body1" color="text.primary">
-                ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
-              </Typography>
-            </Box>
+            <Typography variant="body1" color="text.primary">
+              ※ 최종 구매 상담은 빈티지포커스 고객센터에서 고객님께 연락을 드려 유선 상담 후에 확정됩니다.
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 변경 사항이 있을 시 게시글을 수정하시면 담당 직원의 확인이 어렵습니다. 번거롭더라도 게시글을 새롭게 작성해 주세요.
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              ※ 기타 문의사항은 고객센터 <strong>(1588-5454)</strong> 로 연락 주시면 친절히 상담해 드리겠습니다.
+            </Typography>
           </Box>
 
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
@@ -161,7 +178,7 @@ export default function BuyDetail() {
         </CardContent>
       </Card>
 
-      {/* 비밀번호 입력 모달 */}
+      {/* Password input modal */}
       {post.locked && !showContent && (
         <>
           <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>
@@ -215,7 +232,7 @@ export default function BuyDetail() {
         </>
       )}
 
-      {/* 삭제 확인 모달 */}
+      {/* Delete confirmation modal */}
       <Modal open={openDeleteModal} onClose={handleModalClose}>
         <Box
           sx={{
@@ -260,7 +277,7 @@ export default function BuyDetail() {
         </Box>
       </Modal>
 
-      {/* 버튼 섹션 (내용이 표시된 경우) */}
+      {/* Button section */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3, gap: 2 }}>
         {showContent && (
           <CustomButton label="삭제하기" size="medium" onClick={() => setOpenDeleteModal(true)} />

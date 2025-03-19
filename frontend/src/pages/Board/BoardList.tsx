@@ -10,12 +10,15 @@ import {
   IconButton,
   Modal,
   TextField,
-  useTheme,
+  useTheme, // 다크모드 감지를 위한 훅
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
 import BoardCard from "../../components/BoardCard";
-import CustomButton from "../../components/CustomButton";
+
+// Storybook에서 만든 CustomButton import
+import CustomButton from "../../components/CustomButton"; // 경로는 실제 위치에 맞게 수정
+import WriteButton from "@/components/WriteButton";
 
 const categoryRoutes = {
   "/sell-inquiry": "매각문의",
@@ -26,20 +29,17 @@ const categoryRoutes = {
 export default function BoardList() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [openPasswordModal, setOpenPasswordModal] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState(null);
-  const [inputPassword, setInputPassword] = useState("");
+  const [posts, setPosts] = React.useState([]);
+  const [page, setPage] = React.useState(1);
   const itemsPerPage = 8;
-
   const currentPath = location.pathname;
+
   const showInquiryBox = currentPath !== "/rental-inquiry";
   const selectedTab = categoryRoutes[currentPath] || "구매문의";
 
   const theme = useTheme();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     setPosts(storedPosts);
   }, []);
@@ -51,7 +51,6 @@ export default function BoardList() {
       setSelectedArticle(article);
       setOpenPasswordModal(true);
     } else {
-      // 비공개가 아닌 경우 바로 detail로 이동 (조회수 증가는 detail에서 처리)
       navigate(`${currentPath}/detail/${article.id}`);
     }
   };
@@ -61,7 +60,7 @@ export default function BoardList() {
       console.log("Password correct, navigating with authenticated=true");
       setOpenPasswordModal(false);
       setInputPassword("");
-      // 조회수 증가 및 저장은 detail 페이지로 이동 후 처리
+      // URL에 authenticated 쿼리 파라미터 추가
       navigate(`${currentPath}/detail/${selectedArticle.id}?authenticated=true`);
     } else {
       alert("비밀번호가 틀렸습니다.");
@@ -104,12 +103,10 @@ export default function BoardList() {
 
       {showInquiryBox && (
         <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
-          <IconButton sx={{ mr: 1 }} onClick={() => navigate(`${currentPath}/write`)}>
-            <EditIcon />
-          </IconButton>
-          <Typography variant="body1" sx={{ cursor: "pointer" }} onClick={() => navigate(`${currentPath}/write`)}>
-            문의하기
-          </Typography>
+          <WriteButton
+            currentPath={currentPath}
+            onClick={() => navigate(`${currentPath}/write`)}
+          />
         </Box>
       )}
 
@@ -129,6 +126,7 @@ export default function BoardList() {
                   views: article.views,
                 }}
                 link={`/article/${article.id}`}
+                backgroundColor={currentPath === "/sell-inquiry" ? "#c1d2dd" : currentPath === "/buy-inquiry" ? "#d9dceb" : ""}
                 onClick={() => handleArticleClick(article)}
               />
             </Grid>
@@ -152,14 +150,14 @@ export default function BoardList() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 400,
-            bgcolor: theme.palette.mode === "dark" ? "black" : "white",
+            bgcolor: theme.palette.mode === "dark" ? "black" : "white", // 다크 모드일 때 배경색 검정
             borderRadius: "8px",
             boxShadow: 24,
             p: 4,
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            border: theme.palette.mode === "dark" ? "1px solid white" : "none",
+            border: theme.palette.mode === "dark" ? "1px solid white" : "none", // 다크 모드일 때 보더 색 화이트
           }}
         >
           <Typography variant="h6" sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}>
@@ -175,14 +173,15 @@ export default function BoardList() {
             fullWidth
             sx={{
               input: {
-                color: theme.palette.mode === "dark" ? "white" : "black",
+                color: theme.palette.mode === "dark" ? "white" : "black", // 다크 모드일 때 입력 폰트 색 화이트
               },
               label: {
-                color: theme.palette.mode === "dark" ? "white" : "black",
+                color: theme.palette.mode === "dark" ? "white" : "black", // 다크 모드일 때 라벨 색 화이트
               },
             }}
           />
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+            {/* 확인과 취소 버튼을 가운데 정렬 */}
             <CustomButton label="확인" size="medium" onClick={handlePasswordSubmit} />
             <CustomButton label="취소" size="medium" onClick={handleModalClose} />
           </Box>

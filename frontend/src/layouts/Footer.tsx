@@ -51,10 +51,10 @@ export function Footer() {
             홈
           </Typography>
           {/* TODO: NavLink 써서 프로젝트 내부 링크로 변경 필요 */}
-          <Link color="text.secondary" variant="body2" href="#">
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/notice">
             공지사항
           </Link>
-          <Link color="text.secondary" variant="body2" href="#">
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/reviews">
             구매후기
           </Link>
         </Box>
@@ -69,14 +69,14 @@ export function Footer() {
            상품
           </Typography>
           {/* TODO: NavLink 써서 프로젝트 내부 링크로 변경 필요 */}
-          <Link color="text.secondary" variant="body2" href="#">
-          제조사
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/product?category=camera">
+          카메라
           </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-          년식
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/product?category=lens">
+          렌즈
           </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-          가격
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/product?category=lens">
+          악세사리
           </Link>
         </Box>
         <Box
@@ -90,14 +90,14 @@ export function Footer() {
             문의
           </Typography>
           {/* TODO: NavLink 써서 프로젝트 내부 링크로 변경 필요 */}
-          <Link color="text.secondary" variant="body2" href="#">
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/buy-inquiry">
             구매문의
           </Link>
-          <Link color="text.secondary" variant="body2" href="#">
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/rental-inquiry">
             대여문의
           </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            구매후기
+          <Link color="text.secondary" variant="body2" href="http://localhost:3000/sell-inquiry">
+            매각문의
           </Link>
         </Box>
       </Box>

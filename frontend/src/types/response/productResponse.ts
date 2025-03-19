@@ -11,9 +11,11 @@ export interface ProductResponse {
   // 상품분류 (Product Classification)
   company?: string;
   country?: string;
+  category?: string;
   category1?: string;
   category2?: string;
   category3?: string;
+
 
   // 상품상세 (Product Details)
   condition?: 'POOR' | 'FAIR' | 'GOOD' | 'EXCELLENT' | 'MINT';

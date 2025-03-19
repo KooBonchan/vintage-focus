@@ -182,7 +182,14 @@ export function ProductDetail() {
             <Button
               variant="text"
               sx={{ borderRadius: 2, backgroundColor: theme.palette.mode === "dark" ? "#444" : "#ccc", color: "black", px: 4 }}
-              onClick={() => navigate("/order/delivery", { state: { orderItems: [product] } })}
+              onClick={() => {navigate("/order/delivery", 
+                { state: { 
+                  orderItems: [{
+                    name: product?.modelName,
+                    image: product?.productImages[0],
+                    quantity: 1,
+                    price: product?.sellingPrice
+              }] } });return;}}
             >
               구매하기
             </Button>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Post } from "../../../types/post";
 import CustomButton from "../../../components/CustomButton";
+import NoticeList from "../../../components/NoticeList"; // NoticeList 임포트
 
 export default function SellDetail() {
   const navigate = useNavigate();
@@ -110,8 +111,17 @@ export default function SellDetail() {
 
   return (
     <Box sx={{ maxWidth: 900, margin: "0 auto", padding: 3 }}>
+     
+      
       <Card sx={{ borderRadius: 2, boxShadow: 3, backgroundColor: "white" }}>
         <CardContent>
+           {/* NoticeList 컴포넌트 추가 */}
+      <NoticeList
+        backgroundColor="#f3f8fb"
+        fontColor="#445366"
+        fontSize={13}
+        iconColor="#445366"
+      />
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             제목
           </Typography>
@@ -128,9 +138,8 @@ export default function SellDetail() {
             {showContent ? (post.content || "내용이 없습니다.") : "내용을 보려면 비밀번호를 입력하세요."}
           </Typography>
 
-          
-        {/* 문의 내용 밑에 구분선 추가 */}
-        <Divider sx={{ mb: 2 }} />
+          {/* 문의 내용 밑에 구분선 추가 */}
+          <Divider sx={{ mb: 2 }} />
 
           {post.images && post.images.length > 0 && showContent && (
             <>

@@ -20,26 +20,25 @@ export default function BuyDetail() {
       const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
       const foundPost = storedPosts.find((p) => p.id.toString() === id);
       console.log("Found post from sessionStorage:", foundPost);
+
       if (foundPost) {
-        
         const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
         const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
         const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
         console.log("URL 쿼리 파라미터 (authenticated):", searchParams.get("authenticated"));
         console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
         console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
+
+        // 초기 showContent 설정
         setShowContent(!foundPost.locked || isAuthenticated);
         setPost(foundPost);
-        console.log("showContent 초기값:", !foundPost.locked || isAuthenticated);
       }
     } catch (error) {
       console.error("sessionStorage 파싱 오류:", error);
     }
-  }, [id, searchParams, setShowContent, setPost]);
+  }, [id, searchParams]);
 
-  useEffect(()=>{
-    if(authenticated === "true") setShowContent(true);
-  }, [authenticated, setShowContent]);
+  // 두 번째 useEffect 제거 및 인증 로직 통합
 
   if (!post) {
     return (
@@ -74,7 +73,7 @@ export default function BuyDetail() {
       setShowContent(true);
       console.log("showContent 업데이트됨:", true);
       sessionStorage.setItem(`post_${id}_authenticated`, "true");
-      navigate(`/buy-inquiry/${id}?authenticated=true`, { replace: true });
+      navigate(`/buy-inquiry/detail/${id}?authenticated=true`, { replace: true }); // 경로 수정
       setOpenPasswordModal(false);
     } else {
       alert("비밀번호가 틀렸습니다.");
@@ -157,7 +156,7 @@ export default function BuyDetail() {
             작성 정보
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            작성자: {post.author.name || "작성자 없음"} | 작성일: {new Date(post.date).toLocaleString()}
+            작성자: {post.author?.name || "작성자 없음"} | 작성일: {new Date(post.date).toLocaleString()}
           </Typography>
         </CardContent>
       </Card>

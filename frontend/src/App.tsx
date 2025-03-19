@@ -35,6 +35,7 @@ import EditReviewList from './pages/Reviews/EditReviewList';
 import ReviewNew from './pages/Reviews/reviewnew';
 import Reviews from './pages/Reviews/reviews';
 import WroteReview from './pages/Reviews/wrotereview';
+import { GoogleMapsProvider } from './utils/GoogleMapsProvider';
 
 
 const baseTheme = createTheme({
@@ -102,7 +103,9 @@ function App() {
 
   return (
     <ThemeProvider theme={{ baseTheme }}>
-      <Router />
+      <GoogleMapsProvider>
+        <Router />
+      </GoogleMapsProvider>
     </ThemeProvider>
   );
 }

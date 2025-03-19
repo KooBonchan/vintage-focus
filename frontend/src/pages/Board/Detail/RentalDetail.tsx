@@ -1,22 +1,29 @@
 import { Box, Button, Typography, TextField, Alert, Grid, Modal } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams, useLocation, useSearchParams } from "react-router-dom";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { useEffect, useState, useRef } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { GoogleMap, LoadScript, Marker, useLoadScript } from "@react-google-maps/api";
 
 export default function RentalDetail() {
   const navigate = useNavigate();
-  const { id, authenticated } = useParams();
-  const [ searchParams ] = useSearchParams();
+  const { id } = useParams();
   const location = useLocation();
   const [post, setPost] = useState(null);
   const [inputPassword, setInputPassword] = useState("");
   const [showContent, setShowContent] = useState(false);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false); // 삭제 확인 모달 상태
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const mapRef = useRef(null);
 
-  const { productName = "제품이름", productImage = "https://via.placeholder.com/500x450" } = location.state || {};
+  const { 
+    productName = "제품이름", 
+    productImage = "https://placehold.co/500x450" 
+  } = location?.state || {};
 
-  const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_API_KEY"; // 실제 API 키로 교체
+  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+  });
 
   const mapContainerStyle = {
     width: "100%",
@@ -27,29 +34,31 @@ export default function RentalDetail() {
     "대여하실 날짜와 시간, 반납하실 날짜와 시간을 선택해주세요.",
     "대여와 반납은 반드시 같은 지점에서 해 주셔야 합니다.",
     "일반카메라용 메모리카드는 기본으로 제공되지 않습니다.",
+    "대여비는 최종 견적 후 청구되며, 자세한 금액은 문의 시 확인 가능합니다.",
   ];
 
   useEffect(() => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const foundPost = storedPosts.find((p) => p.id.toString() === id);
-    console.log("Found post from sessionStorage:", foundPost); // 디버깅용 로그
-    
-    if (foundPost) {
-      const isAuthenticatedByQuery = searchParams.get("authenticated") === "true";
-      const isAuthenticatedByStorage = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
-      const isAuthenticated = isAuthenticatedByQuery || isAuthenticatedByStorage;
-      console.log("URL 쿼리 파라미터 (authenticated):", searchParams.get("authenticated"));
-      console.log("sessionStorage 인증 상태:", sessionStorage.getItem(`post_${id}_authenticated`));
-      console.log("최종 인증 여부 (isAuthenticated):", isAuthenticated);
-      setShowContent(!foundPost.locked || isAuthenticated);
-      setPost(foundPost);
-    }
-  }, [id, location.search, searchParams]);
+    console.log("Found post from sessionStorage:", foundPost);
+    setPost(foundPost);
 
-  useEffect(()=>{
-    if(authenticated === "true") setShowContent(true);
-  }, [authenticated, setShowContent]);
-  
+    const queryParams = new URLSearchParams(location.search);
+    const isAuthenticated = queryParams.get("authenticated") === "true";
+    const isAuthenticatedInSession = sessionStorage.getItem(`post_${id}_authenticated`) === "true";
+
+    if (foundPost) {
+      if (!foundPost.locked || isAuthenticated || isAuthenticatedInSession) {
+        setShowContent(true);
+        const updatedPosts = storedPosts.map((p) =>
+          p.id.toString() === id ? { ...p, views: (p.views || 0) + 1 } : p
+        );
+        sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
+      } else {
+        setShowContent(false);
+      }
+    }
+  }, [id, location.search]);
 
   if (!post) {
     return (
@@ -69,14 +78,13 @@ export default function RentalDetail() {
       alert("먼저 비밀번호를 입력하여 내용을 확인해주세요.");
       return;
     }
-    setOpenDeleteModal(true); // 삭제 확인 모달 열기
+    setOpenDeleteModal(true);
   };
 
   const handleDeleteConfirm = () => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
     sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
-
     alert("게시글이 삭제되었습니다.");
     setOpenDeleteModal(false);
     navigate("/rental-inquiry");
@@ -125,26 +133,53 @@ export default function RentalDetail() {
       pickupLocation: "없음",
     };
 
-    for (const line of lines) {
-      if (line.startsWith("✍️ 문의 내용:")) {
-        details.write = line.replace("✍️ 문의 내용: ", "").trim() || "없음";
-      } else if (line.startsWith("👤 성함:")) {
-        details.name = line.replace("👤 성함: ", "").trim() || "없음";
-      } else if (line.startsWith("📞 전화번호:")) {
-        details.phone = line.replace("📞 전화번호: ", "").trim() || "없음";
-      } else if (line.startsWith("📅 대여 날짜/시간:")) {
-        details.rentalDateTime = line.replace("📅 대여 날짜/시간: ", "").trim() || "없음";
-      } else if (line.startsWith("📆 반납 날짜/시간:")) {
-        details.returnDateTime = line.replace("📆 반납 날짜/시간: ", "").trim() || "없음";
-      } else if (line.startsWith("📍 희망 수령 지점:")) {
-        details.pickupLocation = line.replace("📍 희망 수령 지점: ", "").trim() || "없음";
-      }
+    for (let line of lines) {
+      if (line.startsWith("✍️ 문의 내용:")) details.write = line.replace("✍️ 문의 내용: ", "").trim() || "없음";
+      else if (line.startsWith("👤 성함:")) details.name = line.replace("👤 성함: ", "").trim() || "없음";
+      else if (line.startsWith("📞 전화번호:")) details.phone = line.replace("📞 전화번호: ", "").trim() || "없음";
+      else if (line.startsWith("📅 대여 날짜/시간:")) details.rentalDateTime = line.replace("📅 대여 날짜/시간: ", "").trim() || "없음";
+      else if (line.startsWith("📆 반납 날짜/시간:")) details.returnDateTime = line.replace("📆 반납 날짜/시간: ", "").trim() || "없음";
+      else if (line.startsWith("📍 희망 수령 지점:")) details.pickupLocation = line.replace("📍 희망 수령 지점: ", "").trim() || "없음";
     }
 
     return details;
   };
 
   const details = post ? extractDetails(post.content) : {};
+
+  const renderGoogleMap = () => {
+    if (!isLoaded) {
+      return (
+        <Box sx={{ height: "400px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Typography>지도를 불러오는 중...</Typography>
+        </Box>
+      );
+    }
+
+    if (post.rental && post.rental.lat && post.rental.lng) {
+      return (
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={{ lat: post.rental.lat, lng: post.rental.lng }}
+          zoom={15}
+          onLoad={(map) => {
+            mapRef.current = map;
+          }}
+          onUnmount={() => {
+            mapRef.current = null;
+          }}
+        >
+          <Marker position={{ lat: post.rental.lat, lng: post.rental.lng }} title={post.rental.rentalLocation} />
+        </GoogleMap>
+      );
+    }
+
+    return (
+      <Typography variant="body1" sx={{ color: "#e65100", fontSize: "16px", lineHeight: "1.8", ml: 2 }}>
+        위치 정보가 없습니다.
+      </Typography>
+    );
+  };
 
   return (
     <Box sx={{ maxWidth: 900, mx: "auto", p: 3, bgcolor: "#FFFFFF", borderRadius: "12px", boxShadow: 2 }}>
@@ -160,7 +195,7 @@ export default function RentalDetail() {
         <>
           <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid item xs={12} md={6}>
-              <Box sx={{ width: "500px", height: "450px", bgcolor: "#ddd", borderRadius: 2, overflow: "hidden" }}>
+              <Box sx={{ width: "80%", height: "350px", bgcolor: "#ddd", borderRadius: 2, overflow: "hidden" }}>
                 <img
                   src={post.product?.imageUrl || productImage}
                   alt={post.product?.name || productName}
@@ -174,6 +209,35 @@ export default function RentalDetail() {
             </Grid>
           </Grid>
 
+          {/* 대여비 정보를 별도의 강조 박스로 표시 */}
+          <Box
+            sx={{
+              width: "100%",
+              p: 2,
+              mb: 2,
+              borderRadius: "8px",
+              bgcolor: "#fff3e0",
+              border: "1px solid #ff9800",
+              boxShadow: "0 2px 4px rgba(255, 152, 0, 0.2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                color: "#ff9800",
+                fontWeight: "bold",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ marginRight: "8px" }}>⚠️</span> 대여비: 최종 견적 후 청구됩니다!
+            </Typography>
+          </Box>
+
+          {/* 필독 사항 섹션 */}
           <Box sx={{ width: "100%", p: 2, mb: 2, borderRadius: "8px", bgcolor: "#e1f5fe", boxShadow: "0 2px 4px rgba(2, 136, 209, 0.2)" }}>
             <Typography variant="subtitle1" sx={{ color: "#0288d1", fontWeight: "bold", mb: 2, textAlign: "center" }}>
               필독 사항
@@ -223,20 +287,10 @@ export default function RentalDetail() {
             <Typography variant="body1" sx={{ color: "#e65100", fontSize: "16px", lineHeight: "1.8", mb: 1 }}>
               📍 희망 수령 지점: {details.pickupLocation}
             </Typography>
-            {post.rental?.lat && post.rental.lng ? (
+            {post.rental && post.rental.lat && post.rental.lng && (
               <Box sx={{ borderRadius: "12px", overflow: "hidden", mt: 1 }}>
-                <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} onLoad={() => { setIsMapLoaded(true); }}>
-                  {isMapLoaded && (
-                    <GoogleMap mapContainerStyle={mapContainerStyle} center={{ lat: post.rental.lat, lng: post.rental.lng }} zoom={15}>
-                      <Marker position={{ lat: post.rental.lat, lng: post.rental.lng }} title={post.rental.rentalLocation} />
-                    </GoogleMap>
-                  )}
-                </LoadScript>
+                {renderGoogleMap()}
               </Box>
-            ) : (
-              <Typography variant="body1" sx={{ color: "#e65100", fontSize: "16px", lineHeight: "1.8", ml: 2 }}>
-                위치 정보가 없습니다.
-              </Typography>
             )}
           </Box>
 
@@ -271,7 +325,6 @@ export default function RentalDetail() {
         </Box>
       )}
 
-      {/* 삭제 확인 모달 */}
       <Modal open={openDeleteModal} onClose={handleDeleteCancel}>
         <Box
           sx={{
@@ -291,7 +344,7 @@ export default function RentalDetail() {
             삭제하시겠습니까?
           </Typography>
           <Typography variant="body1" sx={{ mb: 3 }}>
-            삭제된 게시글은 복구가 불가능합니다!
+            이 작업은 되돌릴 수 없습니다.
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             <Button variant="contained" color="error" onClick={handleDeleteConfirm} sx={{ px: 4, py: 1.5, borderRadius: "8px" }}>

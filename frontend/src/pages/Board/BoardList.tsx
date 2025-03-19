@@ -10,14 +10,12 @@ import {
   IconButton,
   Modal,
   TextField,
-  useTheme, // 다크모드 감지를 위한 훅
+  useTheme,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
 import BoardCard from "../../components/BoardCard";
-
-// Storybook에서 만든 CustomButton import
-import CustomButton from "../../components/CustomButton"; // 경로는 실제 위치에 맞게 수정
+import CustomButton from "../../components/CustomButton";
 
 const categoryRoutes = {
   "/sell-inquiry": "매각문의",
@@ -39,7 +37,7 @@ export default function BoardList() {
   const showInquiryBox = currentPath !== "/rental-inquiry";
   const selectedTab = categoryRoutes[currentPath] || "구매문의";
 
-  const theme = useTheme(); // 다크 모드 감지를 위한 hook
+  const theme = useTheme();
 
   useEffect(() => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
@@ -53,6 +51,7 @@ export default function BoardList() {
       setSelectedArticle(article);
       setOpenPasswordModal(true);
     } else {
+      // 비공개가 아닌 경우 바로 detail로 이동 (조회수 증가는 detail에서 처리)
       navigate(`${currentPath}/detail/${article.id}`);
     }
   };
@@ -62,7 +61,7 @@ export default function BoardList() {
       console.log("Password correct, navigating with authenticated=true");
       setOpenPasswordModal(false);
       setInputPassword("");
-      // URL에 authenticated 쿼리 파라미터 추가
+      // 조회수 증가 및 저장은 detail 페이지로 이동 후 처리
       navigate(`${currentPath}/detail/${selectedArticle.id}?authenticated=true`);
     } else {
       alert("비밀번호가 틀렸습니다.");
@@ -121,8 +120,8 @@ export default function BoardList() {
             <Grid item xs={12} key={article.id} sx={{ width: "100%", cursor: "pointer" }} onClick={() => handleArticleClick(article)}>
               <BoardCard
                 article={{
-                  author: { name: article.author?.name || 'Unknown' },
-                  date: article.date || '2025-03-11T10:00:00',
+                  author: { name: article.author?.name || "Unknown" },
+                  date: article.date || "2025-03-11T10:00:00",
                   id: article.id,
                   locked: article.locked,
                   tag: article.tag,
@@ -153,14 +152,14 @@ export default function BoardList() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 400,
-            bgcolor: theme.palette.mode === "dark" ? "black" : "white", // 다크 모드일 때 배경색 검정
+            bgcolor: theme.palette.mode === "dark" ? "black" : "white",
             borderRadius: "8px",
             boxShadow: 24,
             p: 4,
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            border: theme.palette.mode === "dark" ? "1px solid white" : "none", // 다크 모드일 때 보더 색 화이트
+            border: theme.palette.mode === "dark" ? "1px solid white" : "none",
           }}
         >
           <Typography variant="h6" sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}>
@@ -176,15 +175,14 @@ export default function BoardList() {
             fullWidth
             sx={{
               input: {
-                color: theme.palette.mode === "dark" ? "white" : "black", // 다크 모드일 때 입력 폰트 색 화이트
+                color: theme.palette.mode === "dark" ? "white" : "black",
               },
               label: {
-                color: theme.palette.mode === "dark" ? "white" : "black", // 다크 모드일 때 라벨 색 화이트
+                color: theme.palette.mode === "dark" ? "white" : "black",
               },
             }}
           />
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-            {/* 확인과 취소 버튼을 가운데 정렬 */}
             <CustomButton label="확인" size="medium" onClick={handlePasswordSubmit} />
             <CustomButton label="취소" size="medium" onClick={handleModalClose} />
           </Box>

@@ -69,22 +69,26 @@ export default function RentalWrite() {
 
   const updateContent = () => {
     if (!name || !phone || !rentalDate || !rentalTime || !returnDate || !returnTime || !pickupLocation) return;
-    const rentalDateTime = dayjs(rentalDate).format("YYYY-MM-DD HH:mm");
-    const returnDateTime = dayjs(returnDate).format("YYYY-MM-DD HH:mm");
-    // 사용자가 입력한 write 값은 유지하고, 다른 정보는 별도로 구조화
+    const rentalDateTime = dayjs(rentalDate).hour(dayjs(rentalTime).hour()).minute(dayjs(rentalTime).minute()).format("YYYY-MM-DD HH:mm");
+    const returnDateTime = dayjs(returnDate).hour(dayjs(returnTime).hour()).minute(dayjs(returnTime).minute()).format("YYYY-MM-DD HH:mm");
     return `${defaultNotice}\n✍️ 문의 내용: ${write}\n👤 성함: ${name}\n📞 전화번호: ${phone}\n📅 대여 날짜/시간: ${rentalDateTime}\n📆 반납 날짜/시간: ${returnDateTime}\n📍 희망 수령 지점: ${pickupLocation}\n🔒 공개 여부: ${isPublic ? "비공개" : "공개"}`;
   };
 
   const isValidDateTime = () => {
-    if (!rentalDate || !rentalTime || !returnDate || !returnTime) return true;
+    if (!rentalDate || !rentalTime || !returnDate || !returnTime) return false; // 모든 값이 입력되어야 함
     const rentalDateTime = dayjs(rentalDate).hour(dayjs(rentalTime).hour()).minute(dayjs(rentalTime).minute());
     const returnDateTime = dayjs(returnDate).hour(dayjs(returnTime).hour()).minute(dayjs(returnTime).minute());
-    return returnDateTime.diff(rentalDateTime, "hour", true) >= 3 && returnDateTime.isAfter(rentalDateTime);
+    const diffInHours = returnDateTime.diff(rentalDateTime, "hour", true);
+    return diffInHours >= 3 && returnDateTime.isAfter(rentalDateTime);
   };
 
   const handleSubmit = () => {
     if (!title.trim() || !write.trim()) {
       alert("제목과 문의 내용을 입력해주세요!");
+      return;
+    }
+    if (!isValidDateTime()) {
+      alert("대여 기간은 최소 3시간 이상이어야 하며, 반납 시간이 대여 시간보다 늦어야 합니다!");
       return;
     }
 
@@ -236,6 +240,11 @@ export default function RentalWrite() {
           <TimePicker label="반납 시간" value={returnTime} onChange={(time) => { setReturnTime(time); }} sx={{ flex: 1 }} />
         </Box>
 
+        {!isValidDateTime() && rentalDate && rentalTime && returnDate && returnTime && (
+          <Alert severity="error" sx={{ width: "100%", mb: 2, fontSize: "16px", textAlign: "center" }}>
+            반납 시간은 대여 시간보다 최소 3시간 이후여야 합니다!
+          </Alert>
+        )}
         <Alert severity="warning" sx={{ width: "100%", mb: 2, fontSize: "16px", textAlign: "center", "& .MuiAlert-icon": { color: "#e65100" } }}>
           최소 3시간부터 대여 시작! 고객님의 원활한 대여를 위해 시간을 체크해 주세요!
         </Alert>

@@ -1,4 +1,4 @@
-import { Box, Button, Typography, TextField, Alert, Grid } from "@mui/material";
+import { Box, Button, Typography, TextField, Alert, Grid, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation, useSearchParams } from "react-router-dom";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
@@ -12,6 +12,7 @@ export default function RentalDetail() {
   const [inputPassword, setInputPassword] = useState("");
   const [showContent, setShowContent] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); // 삭제 확인 모달 상태
 
   const { productName = "제품이름", productImage = "https://via.placeholder.com/500x450" } = location.state || {};
 
@@ -63,23 +64,33 @@ export default function RentalDetail() {
     );
   }
 
-  const handleDelete = () => {
-    if (post.locked && post.password !== inputPassword) {
-      alert("비밀번호가 틀렸습니다.");
+  const handleDeleteClick = () => {
+    if (post.locked && !showContent) {
+      alert("먼저 비밀번호를 입력하여 내용을 확인해주세요.");
       return;
     }
+    setOpenDeleteModal(true); // 삭제 확인 모달 열기
+  };
 
+  const handleDeleteConfirm = () => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const updatedPosts = storedPosts.filter((p) => p.id.toString() !== id);
     sessionStorage.setItem("posts", JSON.stringify(updatedPosts));
 
     alert("게시글이 삭제되었습니다.");
+    setOpenDeleteModal(false);
     navigate("/rental-inquiry");
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDeleteModal(false);
   };
 
   const handlePasswordSubmit = () => {
     if (post.password === inputPassword) {
       setShowContent(true);
+      sessionStorage.setItem(`post_${post.id}_authenticated`, "true");
+      navigate(`${location.pathname}?authenticated=true`, { replace: true });
     } else {
       alert("비밀번호가 틀렸습니다.");
     }
@@ -91,7 +102,6 @@ export default function RentalDetail() {
     if (input.length <= 4) setInputPassword(input);
   };
 
-  // content에서 필요한 정보를 개별적으로 추출
   const extractDetails = (content) => {
     if (!content) {
       console.warn("Content is undefined or null, returning default values.");
@@ -114,7 +124,6 @@ export default function RentalDetail() {
       returnDateTime: "없음",
       pickupLocation: "없음",
     };
-    console.log("Extracting from content:", content); // 디버깅용 로그
 
     for (const line of lines) {
       if (line.startsWith("✍️ 문의 내용:")) {
@@ -149,7 +158,6 @@ export default function RentalDetail() {
 
       {showContent ? (
         <>
-          {/* 제품 이미지 및 이름 */}
           <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid item xs={12} md={6}>
               <Box sx={{ width: "500px", height: "450px", bgcolor: "#ddd", borderRadius: 2, overflow: "hidden" }}>
@@ -161,16 +169,11 @@ export default function RentalDetail() {
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Typography variant="body1" sx={{ mb: 1 }}>
-                제품 이름
-              </Typography>
-              <Typography variant="h5" fontWeight="bold">
-                {post.product?.name || productName}
-              </Typography>
+              <Typography variant="body1" sx={{ mb: 1 }}>제품 이름</Typography>
+              <Typography variant="h5" fontWeight="bold">{post.product?.name || productName}</Typography>
             </Grid>
           </Grid>
 
-          {/* 필독 사항 */}
           <Box sx={{ width: "100%", p: 2, mb: 2, borderRadius: "8px", bgcolor: "#e1f5fe", boxShadow: "0 2px 4px rgba(2, 136, 209, 0.2)" }}>
             <Typography variant="subtitle1" sx={{ color: "#0288d1", fontWeight: "bold", mb: 2, textAlign: "center" }}>
               필독 사항
@@ -198,7 +201,6 @@ export default function RentalDetail() {
 
           <TextField label="제목" fullWidth value={post.title} InputProps={{ readOnly: true }} sx={{ mb: 2 }} />
 
-          {/* 소중한 고객님의 문의 내역 */}
           <Box sx={{ width: "100%", p: 2, mb: 2, borderRadius: "8px", bgcolor: "#fff3e0", boxShadow: "0 2px 4px rgba(255, 152, 0, 0.2)" }}>
             <Typography variant="subtitle1" sx={{ color: "#e65100", fontWeight: "bold", mb: 2, textAlign: "center" }}>
               소중한 고객님의 문의 내역입니다.
@@ -219,7 +221,7 @@ export default function RentalDetail() {
               📆 반납 날짜/시간: {details.returnDateTime}
             </Typography>
             <Typography variant="body1" sx={{ color: "#e65100", fontSize: "16px", lineHeight: "1.8", mb: 1 }}>
-              📍 희망 수령 지점: {details.pickupLocation} {/* 텍스트로 지점 이름 추가 */}
+              📍 희망 수령 지점: {details.pickupLocation}
             </Typography>
             {post.rental?.lat && post.rental.lng ? (
               <Box sx={{ borderRadius: "12px", overflow: "hidden", mt: 1 }}>
@@ -239,7 +241,7 @@ export default function RentalDetail() {
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-            <Button variant="outlined" color="error" sx={{ fontSize: "16px", px: 4, py: 1.5, borderRadius: "8px" }} onClick={handleDelete}>
+            <Button variant="outlined" color="error" sx={{ fontSize: "16px", px: 4, py: 1.5, borderRadius: "8px" }} onClick={handleDeleteClick}>
               삭제하기
             </Button>
             <Button variant="contained" sx={{ fontSize: "16px", px: 4, py: 1.5, borderRadius: "8px" }} onClick={() => navigate("/rental-inquiry")}>
@@ -268,6 +270,39 @@ export default function RentalDetail() {
           </Box>
         </Box>
       )}
+
+      {/* 삭제 확인 모달 */}
+      <Modal open={openDeleteModal} onClose={handleDeleteCancel}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "white",
+            borderRadius: "8px",
+            boxShadow: 24,
+            p: 4,
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            삭제하시겠습니까?
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 3 }}>
+            삭제된 게시글은 복구가 불가능합니다!
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+            <Button variant="contained" color="error" onClick={handleDeleteConfirm} sx={{ px: 4, py: 1.5, borderRadius: "8px" }}>
+              확인
+            </Button>
+            <Button variant="outlined" onClick={handleDeleteCancel} sx={{ px: 4, py: 1.5, borderRadius: "8px" }}>
+              취소
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }

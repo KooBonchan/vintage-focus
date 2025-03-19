@@ -24,7 +24,7 @@ import BuyWrite from './pages/Board/Write/BuyWrite';
 import RentalWrite from './pages/Board/Write/RentalWrite';
 import SellWrite from './pages/Board/Write/SellWrite';
 import { Home } from './pages/Home';
-import MyPage from './pages/MyPage/Mypage';
+import MyPage from './pages/MyPage/MyPage';
 import Cart from './pages/order/cart';
 import OrderCompletePage from './pages/order/complete';
 import DeliveryPage from './pages/order/delivery';

@@ -10,7 +10,8 @@ import {
   IconButton,
   Modal,
   TextField,
-  useTheme, // 다크모드 감지를 위한 훅
+  useTheme,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -60,7 +61,6 @@ export default function BoardList() {
       console.log("Password correct, navigating with authenticated=true");
       setOpenPasswordModal(false);
       setInputPassword("");
-      // URL에 authenticated 쿼리 파라미터 추가
       navigate(`${currentPath}/detail/${selectedArticle.id}?authenticated=true`);
     } else {
       alert("비밀번호가 틀렸습니다.");
@@ -114,7 +114,13 @@ export default function BoardList() {
         {filteredArticles
           .slice((page - 1) * itemsPerPage, page * itemsPerPage)
           .map((article) => (
-            <Grid item xs={12} key={article.id} sx={{ width: "100%", cursor: "pointer" }} onClick={() => handleArticleClick(article)}>
+            <Grid
+              item
+              xs={12}
+              key={article.id}
+              sx={{ width: "100%", cursor: "pointer" }}
+              onClick={() => handleArticleClick(article)}
+            >
               <BoardCard
                 article={{
                   author: { name: article.author?.name || "Unknown" },
@@ -160,7 +166,10 @@ export default function BoardList() {
             border: theme.palette.mode === "dark" ? "1px solid white" : "none", // 다크 모드일 때 보더 색 화이트
           }}
         >
-          <Typography variant="h6" sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}>
+          <Typography
+            variant="h6"
+            sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}
+          >
             비밀번호 입력 (4자리 숫자)
           </Typography>
           <TextField

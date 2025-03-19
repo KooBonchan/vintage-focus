@@ -12,10 +12,19 @@ const pageColors = {
 }
 
 
+interface ItemProps {
+  name: string;
+  image: string;
+  quantity: number;
+  price: number;
+}
+interface LocationState {
+  orderItems?: ItemProps[];
+}
 const DeliveryPage = () => {
-  const location = useLocation();
+  const location = useLocation()  as { state?: LocationState };
   const navigate = useNavigate();
-  const orderItems = location.state?.orderItems || [];
+  const orderItems: ItemProps[] = location.state?.orderItems ?? [];
 
   
 
@@ -59,7 +68,7 @@ const DeliveryPage = () => {
  useEffect(() => {
   if (orderItems.length === 0) return; 
     const totalPrice = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const totalShipping = orderItems.reduce((acc, item) => acc + item.shipping, 0);
+    const totalShipping = orderItems.reduce((acc, item) => acc + 3000, 0);
     setForm((prev) => ({
       ...prev,
       totalPrice: `${totalPrice.toLocaleString()}원`,
@@ -209,20 +218,18 @@ const handleSubmit = async (e: React.FormEvent) => {
             <Grid item xs={2} sx={{ fontWeight: "bold", textAlign: "center" }}>수량</Grid>
             <Grid item xs={2} sx={{ fontWeight: "bold", textAlign: "center" }}>상품 금액</Grid>
             <Grid item xs={2} sx={{ fontWeight: "bold", textAlign: "center" }}>합계 금액</Grid>
-            <Grid item xs={1} sx={{ fontWeight: "bold", textAlign: "center" }}>배송비</Grid>
           </Grid>
 
           {orderItems.length > 0 ? (
             orderItems.map((item) => (
-              <Grid container spacing={1} key={item.id} sx={{ py: 1, borderBottom: "1px solid #eee", alignItems: "center" }}>
+              <Grid container spacing={1} key={item.name} sx={{ py: 1, borderBottom: "1px solid #eee", alignItems: "center" }}>
                 <Grid item xs={2} sx={{ textAlign: "center" }}>
-                  <img src={item.image} alt={item.name} width={80} height={60} style={{ borderRadius: "5px" }} />
+                  <img src={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${item.image}`} alt={item.name} width={80} height={60} style={{ borderRadius: "5px" }} />
                 </Grid>
                 <Grid item xs={3} sx={{ textAlign: "center" }}>{item.name}</Grid>
                 <Grid item xs={2} sx={{ textAlign: "center" }}>{item.quantity}개</Grid>
                 <Grid item xs={2} sx={{ textAlign: "center" }}>{item.price.toLocaleString()}원</Grid>
                 <Grid item xs={2} sx={{ textAlign: "center" }}>{(item.price * item.quantity).toLocaleString()}원</Grid>
-                <Grid item xs={1} sx={{ textAlign: "center" }}>{item.shipping.toLocaleString()}원</Grid>
               </Grid>
             ))
           ) : (

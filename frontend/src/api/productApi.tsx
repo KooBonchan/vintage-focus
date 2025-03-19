@@ -18,3 +18,6 @@ export const readProductDetail: (id:number) => Promise<ProductResponse> = (id) =
   .then(response => response.data)
   .catch(console.error)
 );
+
+
+

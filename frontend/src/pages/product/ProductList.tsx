@@ -1,7 +1,7 @@
 import { Box, Container, Grid, Grid2, Skeleton, useTheme } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // 추가
+import { useNavigate, useLocation, useSearchParams  } from "react-router-dom"; // 추가
 import Navbar from "../../components/Navbar";
 import FilterBar from "../../components/FilterBar";
 import ProductCard from "../../components/ProductCard";
@@ -11,16 +11,23 @@ import { ProductResponse } from "@/types/response";
 const ITEMS_PER_PAGE = 12;
 
 
+
 function ProductList() {
+  const [searchParams] = useSearchParams();
+  const urlCategory = searchParams.get("category") || "all";
+  
   const theme = useTheme();
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [products, setProducts] = useState<ProductResponse[] | null>(null)
   const [filteredProducts, setFilteredProducts] = useState<ProductResponse[] | null>(null)
   const [filters, setFilters] = useState({
     company: "",
     condition: "",
     sortBy: "",
+    category: urlCategory,
   });
 
   useEffect(() => {
@@ -29,15 +36,43 @@ function ProductList() {
   },[setProducts])
 
   useEffect(() => {
+    console.log("🌍 URL에서 가져온 category 값:", urlCategory);
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      category: urlCategory, // filters.category 값을 URL 값과 동기화
+    }));
+  }, [urlCategory]);
+
+  useEffect(() => {
+    console.log(products);
     if(!products) return;
+
     let filtered = [...products];
+    const selectedCategory = urlCategory || filters.category;
+
+    // 카메라,렌즈 필터
+    if (filters.category && filters.category !== "all") {
+      filtered = filtered.filter(product => {
+        console.log(`🔍 필터링 중 - category1: ${product.category1}, category2: ${product.category2}, category3: ${product.category3}, 선택된 카테고리: ${filters.category}`);
+        
+        if (filters.category === "lens") {
+          return product.category3 === "Lenses"; 
+        } else if (filters.category === "camera") {
+          return product.category2 === "Cameras";
+        } else if (filters.category === "dicam") {
+          return product.category2 === "Digital Cameras" || product.category3 === "Digital Cameras"; // ✅ 디카 필터링 (필요하면 조정)
+        }
+        
+        return false;
+      });
+    }
+
     if(filters.company && filters.company !== "all") {
-      console.log(filters);
-      console.log(products);
       filtered = filtered.filter(product => 
         product.company?.toLowerCase() === filters.company.toLowerCase()
       );
     }
+    
     
     if (filters.sortBy) {
       filtered.sort((a, b) => {
@@ -57,6 +92,8 @@ function ProductList() {
     }
     setFilteredProducts(filtered);
   }, [products, filters, setFilters, setFilteredProducts])
+
+  
 
   const startIndex: number = (page - 1) * ITEMS_PER_PAGE;
   const endIndex: number = startIndex + ITEMS_PER_PAGE;
@@ -104,6 +141,8 @@ function ProductList() {
       </Container>
     </>
   );
+
+  
 }
 
 export default ProductList;

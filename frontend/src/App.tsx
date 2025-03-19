@@ -1,3 +1,4 @@
+import SignIn from '@/pages/auth/SignIn';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { useEffect } from 'react';
@@ -6,36 +7,35 @@ import './App.css';
 import { AuthLayout } from './layouts/AuthLayout';
 import { HeaderFooterLayout } from './layouts/HeaderFooterLayout';
 import About from './pages/About';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminDelivery from './pages/Admin/AdminDelivery';
+import AdminLayout from './pages/Admin/AdminLayout';
+import AdminOrders from './pages/Admin/AdminOrders';
+import AdminProducts from './pages/Admin/AdminProducts';
 import Register from './pages/auth/Register';
-import BuyWrite from './pages/Board/Write/BuyWrite';
-import RentalWrite from './pages/Board/Write/RentalWrite';
-import SellWrite from './pages/Board/Write/SellWrite';
-import { Home } from './pages/Home';
-import Cart from './pages/order/cart';
-import { ProductDetail } from './pages/product/ProductDetail';
-import ProductList from './pages/product/ProductList';
-import SignIn from '@/pages/auth/SignIn';
 import Callback from './pages/auth/SignIn/components/Callback';
 import BuyDetail from './pages/Board/Detail/BuyDetail';
 import NoticeDetail from './pages/Board/Detail/NoticeDetail';
 import RentalDetail from './pages/Board/Detail/RentalDetail';
-import Admin from './pages/Admin/Admin';
-import AdminDashboard from './pages/Admin/AdminDashboard';
-import AdminProducts from './pages/Admin/AdminProducts';
-import AdminOrders from './pages/Admin/AdminOrders';
-import AdminDelivery from './pages/Admin/AdminDelivery';
-import AdminLayout from './pages/Admin/AdminLayout';
+import ReviewDetail from './pages/Board/Detail/ReviewDetail';
 import SellDetail from './pages/Board/Detail/SellDetail';
 import NoticePage from './pages/Board/Notice/NoticePage';
+import BuyWrite from './pages/Board/Write/BuyWrite';
+import RentalWrite from './pages/Board/Write/RentalWrite';
+import SellWrite from './pages/Board/Write/SellWrite';
+import { Home } from './pages/Home';
+import MyPage from './pages/MyPage/Mypage';
+import Cart from './pages/order/cart';
 import OrderCompletePage from './pages/order/complete';
 import DeliveryPage from './pages/order/delivery';
-import Reviews from './pages/Reviews/reviews';
-import ReviewDetail from './pages/Board/Detail/ReviewDetail';
-import MyPage from './pages/MyPage/Mypage';
-import ReviewNew from './pages/Reviews/reviewnew';
-import WroteReview from './pages/Reviews/wrotereview';
-import EditReviewList from './pages/Reviews/EditReviewList';
+import { ProductDetail } from './pages/product/ProductDetail';
+import ProductList from './pages/product/ProductList';
 import EditReviewForm from './pages/Reviews/EditReviewForm';
+import EditReviewList from './pages/Reviews/EditReviewList';
+import ReviewNew from './pages/Reviews/reviewnew';
+import Reviews from './pages/Reviews/reviews';
+import WroteReview from './pages/Reviews/wrotereview';
+import { GoogleMapsProvider } from './utils/GoogleMapsProvider';
 
 
 const baseTheme = createTheme({
@@ -103,7 +103,9 @@ function App() {
 
   return (
     <ThemeProvider theme={{ baseTheme }}>
-      <Router />
+      <GoogleMapsProvider>
+        <Router />
+      </GoogleMapsProvider>
     </ThemeProvider>
   );
 }

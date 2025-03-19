@@ -5,10 +5,10 @@ import {
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
 const OrderCompletePage = () => {
-  const theme = useTheme(); // ✅ 다크 모드 지원
+  const theme = useTheme(); // 다크 모드 지원
   const location = useLocation();
   const navigate = useNavigate();
-  const { form, orderItems } = location.state || {}; // ✅ 주문 데이터 가져오기
+  const { form, orderItems } = location.state ?? {}; // 주문 데이터 가져오기
 
   // 주문 정보가 없을 경우 메시지 출력
   if (!form || !orderItems) {

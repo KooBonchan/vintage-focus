@@ -10,14 +10,17 @@ import {
   IconButton,
   Modal,
   TextField,
-  useTheme, // 다크모드 감지를 위한 훅
+  useTheme,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
+import SpButton from "../../components/spButton";
 import BoardCard from "../../components/BoardCard";
 
 // Storybook에서 만든 CustomButton import
 import CustomButton from "../../components/CustomButton"; // 경로는 실제 위치에 맞게 수정
+import WriteButton from "@/components/WriteButton";
 
 const categoryRoutes = {
   "/sell-inquiry": "매각문의",
@@ -28,20 +31,20 @@ const categoryRoutes = {
 export default function BoardList() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
+  const [posts, setPosts] = React.useState([]);
+  const [page, setPage] = React.useState(1);
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [inputPassword, setInputPassword] = useState("");
   const itemsPerPage = 8;
-
   const currentPath = location.pathname;
+
   const showInquiryBox = currentPath !== "/rental-inquiry";
   const selectedTab = categoryRoutes[currentPath] || "구매문의";
 
-  const theme = useTheme(); // 다크 모드 감지를 위한 hook
+  const theme = useTheme();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     setPosts(storedPosts);
   }, []);
@@ -62,7 +65,6 @@ export default function BoardList() {
       console.log("Password correct, navigating with authenticated=true");
       setOpenPasswordModal(false);
       setInputPassword("");
-      // URL에 authenticated 쿼리 파라미터 추가
       navigate(`${currentPath}/detail/${selectedArticle.id}?authenticated=true`);
     } else {
       alert("비밀번호가 틀렸습니다.");
@@ -103,26 +105,36 @@ export default function BoardList() {
         ))}
       </Tabs>
 
-      {showInquiryBox && (
+      
         <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
-          <IconButton sx={{ mr: 1 }} onClick={() => navigate(`${currentPath}/write`)}>
-            <EditIcon />
-          </IconButton>
-          <Typography variant="body1" sx={{ cursor: "pointer" }} onClick={() => navigate(`${currentPath}/write`)}>
-            문의하기
-          </Typography>
+        {showInquiryBox ? (
+          <WriteButton
+            currentPath={currentPath}
+            onClick={() => navigate(`${currentPath}/write`)}
+          />)
+          :
+          (<SpButton
+            onClick={() => navigate(`/product`)}
+          />)
+
+        }
         </Box>
-      )}
 
       <Grid container spacing={2} sx={{ mt: 3 }}>
         {filteredArticles
           .slice((page - 1) * itemsPerPage, page * itemsPerPage)
           .map((article) => (
-            <Grid item xs={12} key={article.id} sx={{ width: "100%", cursor: "pointer" }} onClick={() => handleArticleClick(article)}>
+            <Grid
+              item
+              xs={12}
+              key={article.id}
+              sx={{ width: "100%", cursor: "pointer" }}
+              onClick={() => handleArticleClick(article)}
+            >
               <BoardCard
                 article={{
-                  author: { name: article.author?.name || 'Unknown' },
-                  date: article.date || '2025-03-11T10:00:00',
+                  author: { name: article.author?.name || "Unknown" },
+                  date: article.date || "2025-03-11T10:00:00",
                   id: article.id,
                   locked: article.locked,
                   tag: article.tag,
@@ -130,6 +142,7 @@ export default function BoardList() {
                   views: article.views,
                 }}
                 link={`/article/${article.id}`}
+                backgroundColor={currentPath === "/sell-inquiry" ? "#c1d2dd" : currentPath === "/buy-inquiry" ? "#d9dceb" : ""}
                 onClick={() => handleArticleClick(article)}
               />
             </Grid>
@@ -163,7 +176,10 @@ export default function BoardList() {
             border: theme.palette.mode === "dark" ? "1px solid white" : "none", // 다크 모드일 때 보더 색 화이트
           }}
         >
-          <Typography variant="h6" sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}>
+          <Typography
+            variant="h6"
+            sx={{ textAlign: "center", color: theme.palette.mode === "dark" ? "white" : "black" }}
+          >
             비밀번호 입력 (4자리 숫자)
           </Typography>
           <TextField

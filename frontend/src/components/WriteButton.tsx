@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, IconButton } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
 interface WriteButtonProps {
@@ -8,36 +8,17 @@ interface WriteButtonProps {
 }
 
 function WriteButton({ currentPath, onClick }: WriteButtonProps) {
-  // 각 경로에 맞는 스타일을 정의
+  // 검은색 배경 스타일 정의
   const getStyles = (path: string) => {
-    switch (path) {
-      case '/buy-inquiry':
-        return {
-          backgroundColor: '#333',
-          color: '#f0f0f0',
-          '&:hover': {
-            backgroundColor: '#777777',
-            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // hover 시 그림자 추가
-          },
-          iconColor: '#f0f0f0',
-        };
-      case '/rental-inquiry':
-        return {
-          color: '#333',
-          '&:hover': {
-            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // hover 시 그림자 추가
-          },
-        };
-      default:
-        return {
-          border: '2px solid #f0f0f0',
-          color: '#333',
-          '&:hover': {
-            border: '2px solid #f0f0f0', // border 크기 변경 방지
-            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // hover 시 그림자 추가
-          },
-        };
-    }
+    return {
+      backgroundColor: '#333', // 검은색 배경
+      color: '#f0f0f0', // 흰색 글씨
+      '&:hover': {
+        backgroundColor: '#555', // hover 시 배경 어두운 회색
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)', // hover 시 그림자 추가
+      },
+      iconColor: '#f0f0f0', // 아이콘 색 흰색
+    };
   };
 
   const styles = getStyles(currentPath);
@@ -65,9 +46,7 @@ function WriteButton({ currentPath, onClick }: WriteButtonProps) {
       }}
       onClick={handleClick} // 전체 박스에 클릭 이벤트 핸들러 추가
     >
-      <IconButton sx={{ mr: 1, color: styles.iconColor }}>
-        <EditIcon />
-      </IconButton>
+      <EditIcon sx={{ height: '2.5rem', mr: '1rem', color: styles.iconColor }} />
       <Typography
         variant="body1"
         sx={{
@@ -75,6 +54,7 @@ function WriteButton({ currentPath, onClick }: WriteButtonProps) {
           '&:hover': {
             textDecoration: 'underline',
           },
+          color: styles.color, // 글씨 색 흰색
         }}
       >
         문의하기

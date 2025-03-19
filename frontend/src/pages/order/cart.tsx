@@ -8,6 +8,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import './Cart.css';  // CSS 파일 임포트
+import useCartStore from "@/stores/cartStore";
 
 const CardTotalBox = styled(Box)({
   display: 'flex',
@@ -24,35 +25,11 @@ const CardTotalBox = styled(Box)({
   flexShrink: 0,
 });
 
-
-// .cart-total-box {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-top: 24px;
-//   padding: 16px;
-//   border: 1px solid #ddd;
-//   border-radius: 16px;
-//   background-color: #f9f9f9;
-//   font-weight: bold;
-//   width: 1155px; /* 고정된 너비 */
-
-//   flex-shrink: 0; /* 크기 축소 방지 */
-// }
-
-// 장바구니 샘플 데이터
-const sampleCartItems = [
-  { id: 1, image: "https://placehold.co/100x100", name: "빈티지 카메라", price: 120000, quantity: 1, shipping: 3000 },
-  { id: 2, image: "https://placehold.co/100x100", name: "필름 카메라", price: 150000, quantity: 1, shipping: 3000 },
-  { id: 3, image: "https://placehold.co/100x100", name: "DSLR 카메라", price: 1200000, quantity: 1, shipping: 5000 },
-];
-
 export default function Cart() {
-  const [cartItems, setCartItems] = useState(sampleCartItems);
+  const { cartItems, updateQuantity, removeFromCart, clearCart } = useCartStore(); // Zustand에서 상태 불러오기
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const navigate = useNavigate();
   
-
   const handleSelectItem = (id: number) => {
     setSelectedItems((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
@@ -63,21 +40,12 @@ export default function Cart() {
     setSelectedItems(selectedItems.length === cartItems.length ? [] : cartItems.map((item) => item.id));
   };
 
-  const handleQuantityChange = (id: number, amount: number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + amount) } : item
-      )
-    );
-  };
-
   const totalPrice = cartItems
-    .filter((item) => selectedItems.includes(item.id))
-    .reduce((acc, item) => acc + item.price * item.quantity, 0);
+  .filter((item) => selectedItems.includes(item.id))
+  .reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const totalShipping = cartItems
-    .filter((item) => selectedItems.includes(item.id))
-    .reduce((acc, item) => acc + item.shipping, 0);
+  const totalShipping = 3000;
+  
 
   const handleOrder = (type: "selected" | "all") => {
     const orderItems = type === "selected" ? cartItems.filter(item => selectedItems.includes(item.id)) : cartItems;
@@ -87,7 +55,7 @@ export default function Cart() {
       return;
     }
 
-    navigate("/order/delivery", { state: { orderItems } });
+    void navigate("/order/delivery", { state: { orderItems } });
   };
 
   return (
@@ -109,7 +77,6 @@ export default function Cart() {
               <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>상품/옵션 정보</TableCell>
               <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>수량</TableCell>
               <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>상품 금액</TableCell>
-              <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>배송비</TableCell>
             </TableRow>
           </TableHead>
 
@@ -131,19 +98,17 @@ export default function Cart() {
 
                 <TableCell sx={{ textAlign: "center" }}>
                   <Box className="quantity-container">
-                    <IconButton onClick={() => { handleQuantityChange(item.id, -1); }}>
+                    <IconButton onClick={() => { updateQuantity(item.id, item.quantity - 1); }}>
                       <RemoveIcon />
                     </IconButton>
                     <Typography sx={{ mx: 1 }}>{item.quantity}</Typography>
-                    <IconButton onClick={() => { handleQuantityChange(item.id, 1); }}>
+                    <IconButton onClick={() => { updateQuantity(item.id, item.quantity + 1); }}>
                       <AddIcon />
                     </IconButton>
                   </Box>
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "center" }}>{(item.price * item.quantity).toLocaleString()}원</TableCell>
-
-                <TableCell sx={{ textAlign: "center" }}>{item.shipping.toLocaleString()}원</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -151,31 +116,29 @@ export default function Cart() {
       </TableContainer>
 
       <CardTotalBox>
-        <Typography>
-          총 {totalPrice.toLocaleString()}원 + 배송비 {totalShipping.toLocaleString()}원 = 합계{" "}
-          {(totalPrice + totalShipping).toLocaleString()}원
-        </Typography>
+      <Typography variant="body1" sx={{ fontSize: 16 }}>
+      총 {totalPrice.toLocaleString()}원 + 배송비 {totalShipping.toLocaleString()}원 = 합계{" "}
+      {(totalPrice + totalShipping).toLocaleString()}원
+      </Typography>
       </CardTotalBox>
 
 
-    {/* ✅ 장바구니 삭제 버튼 (왼쪽 하단) */}
+    {/* 장바구니 삭제 버튼 (왼쪽 하단) */}
     <Box sx={{ display: "flex", justifyContent: "flex-start", mt: 2 }}>
         <Button variant="text" color="secondary" onClick={() => {
-          const updatedCart = cartItems.filter((item) => !selectedItems.includes(item.id));
-          setCartItems(updatedCart);
+          selectedItems.forEach(id => { removeFromCart(id); });
           setSelectedItems([]); // 선택 해제
         }} disabled={selectedItems.length === 0}>
           선택 상품 삭제
         </Button>
 
         <Button className="cart-delete-button" variant="text" color="error" onClick={() => {
-          setCartItems([]);
+          clearCart();
           setSelectedItems([]); // 선택 해제
         }}>
           전체 삭제
         </Button>
       </Box>
-
 
       {/* 버튼을 오른쪽 하단에 배치 */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>

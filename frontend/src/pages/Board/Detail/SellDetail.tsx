@@ -116,12 +116,12 @@ export default function SellDetail() {
       <Card sx={{ borderRadius: 2, boxShadow: 3, backgroundColor: "white" }}>
         <CardContent>
            {/* NoticeList 컴포넌트 추가 */}
-            <NoticeList
-              backgroundColor="#f3f8fb"
-              fontColor="#445366"
-              fontSize={13}
-              iconColor="#445366"
-            />
+      <NoticeList
+        backgroundColor="#f3f8fb"
+        fontColor="#445366"
+        fontSize={13}
+        iconColor="#445366"
+      />
           <Typography variant="h6" component="div" color="text.primary" sx={{ fontWeight: "bold", mb: 1 }}>
             제목
           </Typography>

@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import './Cart.css';  // CSS 파일 임포트
+import './cart.css';
 import useCartStore from "@/stores/cartStore";
 
 const CardTotalBox = styled(Box)({

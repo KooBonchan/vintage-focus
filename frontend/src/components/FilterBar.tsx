@@ -44,7 +44,6 @@ function FilterBar({filters, setFilters}:{
       <MenuItem value="all">All</MenuItem>
       <MenuItem value="lens">렌즈</MenuItem>
       <MenuItem value="camera">카메라</MenuItem>
-      <MenuItem value="dicam">디카</MenuItem>
     </Select>
   </FormControl>
 

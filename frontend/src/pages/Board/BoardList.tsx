@@ -18,6 +18,7 @@ import BoardCard from "../../components/BoardCard";
 
 // Storybook에서 만든 CustomButton import
 import CustomButton from "../../components/CustomButton"; // 경로는 실제 위치에 맞게 수정
+import WriteButton from "@/components/WriteButton";
 
 const categoryRoutes = {
   "/sell-inquiry": "매각문의",
@@ -60,6 +61,8 @@ export default function BoardList() {
   const handlePasswordSubmit = () => {
     if (selectedArticle && selectedArticle.password === inputPassword) {
       console.log("Password correct, navigating with authenticated=true");
+      // 인증 상태를 sessionStorage에 저장
+      sessionStorage.setItem(`post_${selectedArticle.id}_authenticated`, "true");
       setOpenPasswordModal(false);
       setInputPassword("");
       // URL에 authenticated 쿼리 파라미터 추가
@@ -105,12 +108,10 @@ export default function BoardList() {
 
       {showInquiryBox && (
         <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
-          <IconButton sx={{ mr: 1 }} onClick={() => navigate(`${currentPath}/write`)}>
-            <EditIcon />
-          </IconButton>
-          <Typography variant="body1" sx={{ cursor: "pointer" }} onClick={() => navigate(`${currentPath}/write`)}>
-            문의하기
-          </Typography>
+          <WriteButton
+            currentPath={currentPath}
+            onClick={() => navigate(`${currentPath}/write`)}
+          />
         </Box>
       )}
 

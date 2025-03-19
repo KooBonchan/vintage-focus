@@ -52,6 +52,8 @@ export const Default: Story = {
   },
 };
 
+
+
 export const LockedCard: Story = {
   args: {
     article: { ...defaultArticle, locked: true },

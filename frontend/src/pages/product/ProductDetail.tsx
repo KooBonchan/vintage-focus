@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ProductResponse } from "@/types/response";
 import { readProductDetail } from "@/api/productApi";
+import useCartStore from "@/stores/cartStore";
+import { CartItem } from "../stores/useCartStore"; 
 
 export function ProductDetail() {
   const theme = useTheme(); // ✅ MUI 테마 적용
@@ -32,12 +34,29 @@ export function ProductDetail() {
     .catch(_=>{ setNoItem(true); });
   },[id, setProduct, setNoItem]);
 
+  //데이터 삽입
   const handleAddToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    const { addToCart } = useCartStore.getState();
+  
+    if (!product) {
+      alert("상품 정보를 불러오지 못했습니다.");
+      return;
+    }
+  
+    const newProduct: CartItem = {
+      id: product.id,
+      image: product.productImages?.length > 0 
+        ? `${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${product.productImages[0]}` 
+        : "https://placehold.co/100x100", // 기본 이미지 설정
+      name: product.productName || "상품명 없음",
+      price: product.sellingPrice ?? 0, // 판매 가격을 올바르게 가져오기
+      quantity: 1,
+    }
+  
+    addToCart(newProduct); // 장바구니에 추가
     setOpen(true);
   };
+  
   
   return (
     <Container

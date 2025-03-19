@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
+import SpButton from "../../components/spButton";
 import BoardCard from "../../components/BoardCard";
 
 // Storybook에서 만든 CustomButton import
@@ -32,6 +33,9 @@ export default function BoardList() {
   const location = useLocation();
   const [posts, setPosts] = React.useState([]);
   const [page, setPage] = React.useState(1);
+  const [openPasswordModal, setOpenPasswordModal] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [inputPassword, setInputPassword] = useState("");
   const itemsPerPage = 8;
   const currentPath = location.pathname;
 
@@ -101,14 +105,20 @@ export default function BoardList() {
         ))}
       </Tabs>
 
-      {showInquiryBox && (
+      
         <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mt: 2 }}>
+        {showInquiryBox ? (
           <WriteButton
             currentPath={currentPath}
             onClick={() => navigate(`${currentPath}/write`)}
-          />
+          />)
+          :
+          (<SpButton
+            onClick={() => navigate(`/product`)}
+          />)
+
+        }
         </Box>
-      )}
 
       <Grid container spacing={2} sx={{ mt: 3 }}>
         {filteredArticles

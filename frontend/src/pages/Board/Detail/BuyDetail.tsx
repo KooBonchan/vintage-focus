@@ -43,10 +43,6 @@ export default function BuyDetail() {
     }
   }, [id, searchParams]);
 
-  useEffect(()=>{
-    if(authenticated === "true") setShowContent(true);
-  }, [authenticated, setShowContent]);
-
   // Handle post not found
   if (!post) {
     return (

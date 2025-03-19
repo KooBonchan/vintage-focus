@@ -45,7 +45,7 @@ function ProductList() {
 
   useEffect(() => {
     console.log(products);
-    if(!products) return;
+    if (!products || products.length === 0) return;
 
     let filtered = [...products];
     const selectedCategory = urlCategory || filters.category;

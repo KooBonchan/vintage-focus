@@ -24,7 +24,7 @@ const meta = {
   },
   args: {
     article: defaultArticle,
-    link: "/article/1", // 기본 링크 설정
+    link: "/article/1", // 기본 링크
     onClick: () => console.log("Card clicked!"), // 기본 onClick 핸들러
   },
   decorators: [
@@ -92,6 +92,57 @@ export const ManagerMode: Story = {
           <Star style={{ color: "white", fontSize: 30 }} />
         </div>
       )}
+    </div>
+  ),
+};
+
+// 하늘색 계열과 회색 카드 추가
+export const SkyGrayCard: Story = {
+  args: {
+    article: defaultArticle,
+    link: "/article/1",
+    backgroundColor: "#c1d2dd", // 하늘색 계열 배경색
+    onClick: action("Sky gray card clicked"), // 하늘색 카드 클릭 이벤트
+  },
+  play: async ({ canvasElement }) => {
+    console.log("Navigating to: /article/1 in SkyGrayCard mode");
+    action("Navigated to")("/article/1");
+  },
+  render: (args) => (
+    <div
+      style={{
+        backgroundColor: args.backgroundColor,
+        padding: 20,
+        borderRadius: 10,
+        position: "relative",
+      }}
+    >
+      <BoardCard {...args} />
+    </div>
+  ),
+};
+
+export const GrayCard: Story = {
+  args: {
+    article: defaultArticle,
+    link: "/article/1",
+    backgroundColor: "#d9dceb", // 회색 배경색
+    onClick: action("Gray card clicked"), // 회색 카드 클릭 이벤트
+  },
+  play: async ({ canvasElement }) => {
+    console.log("Navigating to: /article/1 in GrayCard mode");
+    action("Navigated to")("/article/1");
+  },
+  render: (args) => (
+    <div
+      style={{
+        backgroundColor: args.backgroundColor,
+        padding: 20,
+        borderRadius: 10,
+        position: "relative",
+      }}
+    >
+      <BoardCard {...args} />
     </div>
   ),
 };

@@ -2,12 +2,12 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
-interface WriteButtonProps {
+interface spButtonProps {
   currentPath: string;
   onClick: (path: string) => void; // 클릭 이벤트를 처리하는 함수
 }
 
-function WriteButton({ currentPath, onClick }: WriteButtonProps) {
+function spButton({ currentPath, onClick }: spButtonProps) {
   // 검은색 배경 스타일 정의
   const getStyles = (path: string) => {
     return {
@@ -57,10 +57,10 @@ function WriteButton({ currentPath, onClick }: WriteButtonProps) {
           color: styles.color, // 글씨 색 흰색
         }}
       >
-        문의하기
+        상품 보러가기
       </Typography>
     </Box>
   );
 }
 
-export default WriteButton;
+export default spButton;

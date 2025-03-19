@@ -41,9 +41,9 @@ const hoverIconComponents: Record<string, any> = {
 // 아이템과 연결된 경로 설정
 const routes: Record<string, string> = {
   camera: '/product?category=camera',
-  dicam: '/product?category=dicam',
+  dicam: '/product?category=camera',
   lens: '/product?category=lens',
-  accessories: '/product?category=accessory',
+  accessories: '/product?category=lens',
   rental: '/rental-inquiry', // 대여 페이지 경로 추가
 };
 

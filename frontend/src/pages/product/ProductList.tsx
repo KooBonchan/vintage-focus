@@ -72,7 +72,30 @@ function ProductList() {
         product.company?.toLowerCase() === filters.company.toLowerCase()
       );
     }
+
+    // 상품 상태(condition)
+    if (filters.condition && filters.condition !== "all") {
+      filtered = filtered.filter(product => {
+        console.log(`🔍 필터링 중 - condition: ${product.condition}, 선택된 상태: ${filters.condition}`);
     
+        // 프론트에서 선택한 필터 값과 백엔드에서 사용하는 값 매칭
+        const conditionMapping = {
+          mint: "MINT", // 미세사용 → MINT
+          good: "GOOD", // 양호 → GOOD
+          used: ["FAIR", "POOR"] // 사용감 있음 → FAIR 또는 POOR
+        };
+    
+        // "used"는 배열이므로 includes()로 체크
+        if (filters.condition === "used") {
+          return conditionMapping.used.includes(product.condition);
+        } else {
+          return product.condition === conditionMapping[filters.condition];
+        }
+      });
+    }
+    
+
+  
     
     if (filters.sortBy) {
       filtered.sort((a, b) => {
@@ -99,7 +122,14 @@ function ProductList() {
   const endIndex: number = startIndex + ITEMS_PER_PAGE;
   const currentPageProducts = filteredProducts?.slice(startIndex, endIndex);
 
-  const totalPages = filteredProducts ? Math.ceil(products.length / ITEMS_PER_PAGE) : 0;
+  const totalPages = filteredProducts ? Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) : 0;
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(1);
+    }
+  }, [totalPages]);
+
 
   return (
     <>

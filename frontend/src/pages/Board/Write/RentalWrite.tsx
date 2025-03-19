@@ -236,15 +236,16 @@ export default function RentalWrite() {
                 }}
               >
                 <img
-                  src={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${product.productImages[0]}`}
-                  alt={product.modelName}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                    borderRadius: "8px",
-                  }}
-                />
+                src={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${product.productImages[0]}`}
+                alt={product.modelName}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover", // 변경: 이미지가 빈 공간 없이 꽉 차도록 설정
+                  borderRadius: "8px",
+                }}
+              />
+
               </Box>
             </Grid2>
             <Grid2 xs={12} sm={8} md={9}>

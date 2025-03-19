@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { LocalMallOutlined, LocalMallTwoTone } from '@mui/icons-material';
 
 interface spButtonProps {
   currentPath: string;
@@ -46,7 +47,7 @@ function spButton({ currentPath, onClick }: spButtonProps) {
       }}
       onClick={handleClick} // 전체 박스에 클릭 이벤트 핸들러 추가
     >
-      <EditIcon sx={{ height: '2.5rem', mr: '1rem', color: styles.iconColor }} />
+      <LocalMallOutlined sx={{ height: '2.5rem', mr: '1rem', color: styles.iconColor }} />
       <Typography
         variant="body1"
         sx={{

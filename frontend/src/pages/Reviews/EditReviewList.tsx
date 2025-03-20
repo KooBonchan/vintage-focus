@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, List, ListItem, ListItemText, Button, Rating } from "@mui/material";
+import { Box, Typography, List, ListItem, ListItemText, Button, Rating, CardMedia } from "@mui/material";
 
 const EditReviewList = () => {
   const navigate = useNavigate();
@@ -61,7 +61,22 @@ const EditReviewList = () => {
               secondary={`작성 날짜: ${new Date(review.createdAt).toLocaleDateString("ko-KR")}`}
               sx={{ flexGrow: 1 }}
             />
-            <Box
+            
+            { review.images && review.images.length > 0 ?
+              <CardMedia
+                component="img"
+                image={review.images[0]} // 첫 번째 사진 표시
+                alt={`Camera Review ${review.id}`}
+                sx={{
+                  width: 100,
+                  height: 100,
+                  objectFit: "contain", // contain으로 변경하여 전체 이미지 표시
+                  backgroundColor: "#f0f0f0", // 빈 공간 채우기
+                  mr: 2,
+                }}
+              />
+              :
+              <Box
               sx={{
                 width: 100,
                 height: 100,
@@ -72,8 +87,10 @@ const EditReviewList = () => {
                 mr: 2,
               }}
             >
-              <Typography>미리보기</Typography>
+              <Typography>이미지 없음</Typography>
+
             </Box>
+            }
             <Box sx={{ display: "flex", gap: 1 }}>
               <Button
                 variant="contained"

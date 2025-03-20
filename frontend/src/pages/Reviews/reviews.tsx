@@ -181,7 +181,7 @@ const Reviews = () => {
               </Typography>
             </Box>
             <Rating value={review.rating} readOnly sx={{ mb: 1 }} />
-            { review.images.length > 0 &&
+            { review.images && review.images.length > 0 &&
             <CardMedia
               component="img"
               image={review.images[0]} // 첫 번째 사진 표시

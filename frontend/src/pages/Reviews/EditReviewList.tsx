@@ -6,6 +6,19 @@ const EditReviewList = () => {
   const navigate = useNavigate();
   const savedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
 
+  // 리뷰 삭제 함수
+  const handleDeleteReview = (reviewId) => {
+    // 삭제 확인
+    if (window.confirm("정말로 이 리뷰를 삭제하시겠습니까?")) {
+      // 현재 리뷰 목록에서 선택한 리뷰를 제외한 새 배열 생성
+      const updatedReviews = savedReviews.filter(review => review.id !== reviewId);
+      // localStorage 업데이트
+      localStorage.setItem("reviews", JSON.stringify(updatedReviews));
+      // 페이지 새로고침
+      window.location.reload();
+    }
+  };
+
   if (savedReviews.length === 0) {
     return (
       <Box sx={{ maxWidth: 800, margin: "0 auto", padding: 3, textAlign: "center" }}>
@@ -61,14 +74,22 @@ const EditReviewList = () => {
             >
               <Typography>미리보기</Typography>
             </Box>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => navigate(`/mypage/edit-reviews/${review.id}`)}
-              sx={{ ml: 2 }}
-            >
-              수정
-            </Button>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate(`/mypage/edit-reviews/${review.id}`)}
+              >
+                수정
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => handleDeleteReview(review.id)}
+              >
+                삭제
+              </Button>
+            </Box>
           </ListItem>
         ))}
       </List>

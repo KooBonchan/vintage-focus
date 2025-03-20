@@ -5,7 +5,7 @@ export const dummyReviews = [
       content: "구입 후 2년 정도 사용했습니다. 스크래치 거의 없고 상태 양호합니다.",
       product: {
         name: "Sony A7 III",
-        imageUrl: "/images/sony-a7iii.jpg",
+        imageUrl: "/image/sony-a7iii.jpg",
       },
       author: { name: "김철수", avatar: "/static/images/avatar/default.png" },
       locked: false,
@@ -20,7 +20,7 @@ export const dummyReviews = [
       content: "니콘 Z6 II 바디 중고 구매 희망합니다. 배터리 포함이면 좋겠습니다.",
       product: {
         name: "Nikon Z6 II",
-        imageUrl: "/images/nikon-z6ii.jpg",
+        imageUrl: "/image/nikon-z6ii.jpg",
       },
       author: { name: "박영희", avatar: "/static/images/avatar/default.png" },
       locked: false,
@@ -35,7 +35,7 @@ export const dummyReviews = [
       content: "여행 중 사용할 용도로 Canon EOS R6 대여하고 싶습니다. 렌즈 포함이면 좋겠습니다.",
       product: {
         name: "Canon EOS R6",
-        imageUrl: "/images/canon-eosr6.jpg",
+        imageUrl: "/image/rental2.jpg",
       },
       author: { name: "이민호", avatar: "/static/images/avatar/default.png" },
       locked: false,
@@ -59,7 +59,7 @@ export const dummyReviews = [
       content: "박스 및 구성품 모두 포함된 상태로 판매합니다. 실 사용감 적습니다.",
       product: {
         name: "Fujifilm X-T4",
-        imageUrl: "/images/fuji-xt4.jpg",
+        imageUrl: "/image/fuji-xt4.jpg",
       },
       author: { name: "오진수", avatar: "/static/images/avatar/default.png" },
       locked: false,
@@ -89,7 +89,7 @@ export const dummyReviews = [
       content: "출사 여행 중 사용할 용도로 니콘 Z fc 대여 원합니다. 배터리 포함 필수.",
       product: {
         name: "Nikon Z fc",
-        imageUrl: "/image/nikon-zfc.jpg",
+        imageUrl: "/image/rental.jpg",
       },
       author: { name: "조현우", avatar: "/static/images/avatar/default.png" },
       locked: false,

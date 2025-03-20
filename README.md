@@ -1,5 +1,5 @@
 # Vintage Focus
-202502 중고 카메라 거래 프로젝트 - Spring Boot + React
+202502 중고 카메라 거래 프로젝트 - Spring Boot - React
 
 <img style="height:2rem" src="https://img.shields.io/badge/mysql-4479A1?logo=mysql&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/springboot-6DB33F?logo=springboot&logoColor=white" > <img style="height:2rem" src="https://img.shields.io/badge/react-61DAFB?logo=react&logoColor=black" >
 

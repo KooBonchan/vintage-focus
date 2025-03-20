@@ -10,6 +10,7 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
+import { dummyReviews } from "@/pages/Reviews/dummyReviews";
 
 const ReviewDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,33 +18,6 @@ const ReviewDetail = () => {
 
   // localStorage에서 저장된 리뷰 가져오기
   const savedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
-
-  // 더미 데이터 (기존과 동일)
-  const dummyReviews = Array.from({ length: 20 }, (_, index) => {
-    const date = new Date();
-    date.setDate(date.getDate() - index);
-    return {
-      id: index + 1,
-      user: {
-        name: `CameraUser${index + 1}`,
-        avatar: "/static/images/avatar/default.png",
-      },
-      rating: Math.floor(Math.random() * 5) + 1,
-      images: [
-        "https://placehold.co/200?text=Image1",
-        "https://placehold.co/200?text=Image2",
-        "https://placehold.co/200?text=Image3",
-      ],
-      content: [
-        "이 카메라는 야외 촬영 시 뛰어난 화질을 제공합니다. 저조도 환경에서도 선명한 사진을 찍을 수 있어 만족스럽습니다.",
-        "렌즈 교체가 쉽고 무게도 가벼워 여행용으로 적합합니다. 배터리 수명도 긴 편이라 하루 종일 촬영할 수 있습니다.",
-        "AF 속도가 빠르고 컬러 표현이 정확합니다. 단, 동영상 촬영 시 발열이 약간 발생할 수 있습니다.",
-        "터치스크린이 반응이 빠르고 조작이 편리합니다. 초보자도 쉽게 사용할 수 있는 인터페이스가 강점입니다.",
-        "사진의 디테일이 뛰어나고 색감도 자연스럽습니다. 하지만 가격이 다소 비싸다는 점이 단점입니다.",
-      ][index % 5],
-      createdAt: date.toISOString(),
-    };
-  });
 
   // 저장된 리뷰와 더미 데이터를 결합 (ID는 문자열로 비교)
   const allReviews = [...savedReviews, ...dummyReviews];

@@ -95,7 +95,7 @@ export function ProductDetail({
     if (imageFile) {
       const formData = new FormData();
       formData.append("image", imageFile);
-      console.log("이미지 업로드:", imageFile);
+     
 
       // 서버로 업로드 로직 (예시)
       // fetch('/api/upload', { method: 'POST', body: formData })

@@ -63,7 +63,6 @@ export default function SellWrite() {
 
   const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newIsPublic = !e.target.checked;
-    console.log("isPublic changed to:", newIsPublic);
     setIsPublic(newIsPublic);
   };
 
@@ -100,7 +99,7 @@ export default function SellWrite() {
       };
       reader.readAsDataURL(file);
 
-      console.log(`이미지 ${index + 1} 선택됨:`, file.name);
+      
     }
   };
 
@@ -126,7 +125,7 @@ export default function SellWrite() {
       fileInputRefs.current[index].value = "";
     }
 
-    console.log(`이미지 ${index + 1} 삭제됨`);
+    
   };
 
   useEffect(() => {

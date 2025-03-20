@@ -18,7 +18,7 @@ export default function BuyWrite() {
   // 스위치 상태 변경 핸들러 (논리 반대로 설정)
   const handleSwitchChange = (e) => {
     const newIsPublic = !e.target.checked; // 스위치가 체크되면 isPublic을 false로 설정
-    console.log("isPublic changed to:", newIsPublic); // 디버깅 로그
+    
     setIsPublic(newIsPublic);
   };
 

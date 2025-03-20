@@ -36,6 +36,7 @@ import ReviewNew from './pages/Reviews/reviewnew';
 import Reviews from './pages/Reviews/reviews';
 import WroteReview from './pages/Reviews/wrotereview';
 import { GoogleMapsProvider } from './utils/GoogleMapsProvider';
+import { dummyReviews } from './utils/dummyReviews';
 
 
 const baseTheme = createTheme({
@@ -79,23 +80,24 @@ function App() {
     if (existingPosts) return;
 
     // ✅ 기본 더미 데이터 생성
-    const dummyPosts = [];
-    const categories = ['매각문의', '구매문의', '대여문의'];
+    const dummyPosts = Array(5).fill(dummyReviews).flat().map((post, i) => ({...post, id: Date.now() + i}));
 
-    for (let i = 1; i <= 50; i++) {
-      dummyPosts.push({
-        id: Date.now() + i, // 고유 ID
-        title: `테스트 게시글 ${i}`,
-        price: `${Math.floor(Math.random() * 100000) + 10000}원`,
-        content: `이것은 ${i}번째 테스트 게시글입니다.`,
-        date: new Date().toISOString().split('T')[0],
-        views: Math.floor(Math.random() * 500),
-        author: { name: `사용자${i}`, avatar: '/static/images/avatar/default.png' },
-        tag: categories[i % categories.length], // 매각문의 / 구매문의 / 대여문의 순환
-        locked: i % 2 === 0, // 짝수 번째 게시글은 비공개
-        password: i % 2 === 0 ? '1234' : null, // 비공개 게시글만 비밀번호 설정
-      });
-    }
+    // const categories = ['매각문의', '구매문의', '대여문의'];
+
+    // for (let i = 1; i <= 50; i++) {
+    //   dummyPosts.push({
+    //     id: Date.now() + i, // 고유 ID
+    //     title: `테스트 게시글 ${i}`,
+    //     price: `${Math.floor(Math.random() * 100000) + 10000}원`,
+    //     content: `이것은 ${i}번째 테스트 게시글입니다.`,
+    //     date: new Date().toISOString().split('T')[0],
+    //     views: Math.floor(Math.random() * 500),
+    //     author: { name: `사용자${i}`, avatar: '/static/images/avatar/default.png' },
+    //     tag: categories[i % categories.length], // 매각문의 / 구매문의 / 대여문의 순환
+    //     locked: i % 2 === 0, // 짝수 번째 게시글은 비공개
+    //     password: i % 2 === 0 ? '1234' : null, // 비공개 게시글만 비밀번호 설정
+    //   });
+    // }
 
     // ✅ `sessionStorage`에 데이터 저장
     sessionStorage.setItem('posts', JSON.stringify(dummyPosts));

@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography, Avatar, Card, CardMedia, CardContent, Rating, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import CustomButton from '../../components/CustomButton'; // adjust path
+=======
+import { dummyReviews } from "./dummyReviews";
+>>>>>>> origin/yjm
 
 const Reviews = () => {
   const navigate = useNavigate();
   const theme = useTheme(); // Hook to access the current theme
 
+<<<<<<< HEAD
   // 더미 데이터 (기존과 동일)
   const dummyReviews = Array.from({ length: 20 }, (_, index) => {
     const date = new Date();
@@ -34,6 +39,9 @@ const Reviews = () => {
     };
   });
 
+=======
+  // localStorage에서 리뷰 가져오기
+>>>>>>> origin/yjm
   const [reviews, setReviews] = useState(() => {
     const savedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
     return [...savedReviews, ...dummyReviews];
@@ -76,6 +84,7 @@ const Reviews = () => {
     setVisibleReviews(nextReviews);
     setPage(nextPage);
   };
+  
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -205,6 +214,7 @@ const Reviews = () => {
               </Typography>
             </Box>
             <Rating value={review.rating} readOnly sx={{ mb: 1 }} />
+            { review.images.length > 0 &&
             <CardMedia
               component="img"
               image={review.images[0]} // 첫 번째 사진 표시
@@ -216,7 +226,8 @@ const Reviews = () => {
                 backgroundColor: "#f0f0f0", // 빈 공간 채우기
                 mb: 1,
               }}
-            />
+            />  
+            }
             <CardContent
               sx={{
                 display: "flex",

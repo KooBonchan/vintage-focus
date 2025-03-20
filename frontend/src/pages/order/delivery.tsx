@@ -224,7 +224,13 @@ const handleSubmit = async (e: React.FormEvent) => {
             orderItems.map((item) => (
               <Grid container spacing={1} key={item.name} sx={{ py: 1, borderBottom: "1px solid #eee", alignItems: "center" }}>
                 <Grid item xs={2} sx={{ textAlign: "center" }}>
-                  <img src={`${import.meta.env.VITE_IMAGE_RESOURCE_ROOT}/${item.image}`} alt={item.name} width={80} height={60} style={{ borderRadius: "5px" }} />
+                <img 
+                  src={item.image} 
+                  alt={item.name} 
+                  width={80} height={60} 
+                  style={{ borderRadius: "5px", objectFit: "cover" }} 
+                  onError={(e) => e.currentTarget.src = "/default.jpg"} 
+                />
                 </Grid>
                 <Grid item xs={3} sx={{ textAlign: "center" }}>{item.name}</Grid>
                 <Grid item xs={2} sx={{ textAlign: "center" }}>{item.quantity}개</Grid>

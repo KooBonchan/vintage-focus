@@ -4,7 +4,7 @@ import FilterBar from "./FilterBar";
 
 function Navbar(props) {
   return (
-    <AppBar position="static" sx={{ background: "#fff", color: "#000", boxShadow: 0, borderBottom: "1px solid #ddd" }}>
+    <AppBar position="static" sx={{ background: 'rgba(0,0,0,0)', boxShadow: 0, borderBottom: "1px solid #999" }}>
       <Toolbar sx={{ flexDirection: "column", alignItems: "center", gap: 2, py: 2 }}>
         
         {/* 🔹 로고 & 메뉴바 */}

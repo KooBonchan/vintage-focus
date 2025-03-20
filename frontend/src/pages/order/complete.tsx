@@ -83,10 +83,9 @@ const OrderCompletePage = () => {
                       style={{ objectFit: "cover", borderRadius: "5px" }} 
                     />
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{item.name}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{item.quantity}개</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{item.price.toLocaleString()}원</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{item.shipping.toLocaleString()}원</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{item.price?.toLocaleString() ?? "0"}원</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{item.shipping?.toLocaleString() ?? "0"}원</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{((item.price ?? 0) * (item.quantity ?? 0)).toLocaleString()}원</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>{(item.price * item.quantity).toLocaleString()}원</TableCell>
                 </TableRow>
               ))}

@@ -46,10 +46,13 @@ export default function BoardList() {
 
   React.useEffect(() => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
-    setPosts(storedPosts);
-  }, []);
+   
+    const filteredArticles = storedPosts.filter((article) => article.tag == selectedTab);
+    
+    setPosts(filteredArticles);
+  }, [setPosts, selectedTab]);
 
-  const filteredArticles = posts.filter((article) => article.tag === selectedTab);
+  
 
   const handleArticleClick = (article) => {
     if (article.locked) {
@@ -121,7 +124,7 @@ export default function BoardList() {
         </Box>
 
       <Grid container spacing={2} sx={{ mt: 3 }}>
-        {filteredArticles
+        {posts
           .slice((page - 1) * itemsPerPage, page * itemsPerPage)
           .map((article) => (
             <Grid
@@ -151,7 +154,7 @@ export default function BoardList() {
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
         <Pagination
-          count={Math.ceil(filteredArticles.length / itemsPerPage)}
+          count={Math.ceil(posts.length / itemsPerPage)}
           page={page}
           onChange={(event, value) => setPage(value)}
           color="primary"

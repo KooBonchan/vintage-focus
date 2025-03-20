@@ -18,7 +18,7 @@ export default function RentalDetail() {
     productImage = "https://placehold.co/500x450" 
   } = location?.state || {};
 
-  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY as string;
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
@@ -40,7 +40,6 @@ export default function RentalDetail() {
   useEffect(() => {
     const storedPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const foundPost = storedPosts.find((p) => p.id.toString() === id);
-    console.log("Found post from sessionStorage:", foundPost);
     setPost(foundPost);
 
     const queryParams = new URLSearchParams(location.search);

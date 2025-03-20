@@ -36,7 +36,7 @@ function ProductList() {
   },[setProducts])
 
   useEffect(() => {
-    console.log("🌍 URL에서 가져온 category 값:", urlCategory);
+    
     setFilters(prevFilters => ({
       ...prevFilters,
       category: urlCategory, // filters.category 값을 URL 값과 동기화
@@ -44,7 +44,7 @@ function ProductList() {
   }, [urlCategory]);
 
   useEffect(() => {
-    console.log(products);
+    
     if (!products || products.length === 0) return;
 
     let filtered = [...products];

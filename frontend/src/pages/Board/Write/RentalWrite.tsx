@@ -105,7 +105,7 @@ export default function RentalWrite() {
 
     const now = new Date().toISOString();
     const content = updateContent();
-    console.log("Saving content:", content);
+    
     const existingPosts = JSON.parse(sessionStorage.getItem("posts") || "[]");
     const newPost = {
       id: Date.now(),
@@ -161,19 +161,19 @@ export default function RentalWrite() {
   };
 
   const handleMapLoad = (map) => {
-    console.log("Map loaded successfully"); // 디버깅 로그 추가
+   
     mapRef.current = map;
     setIsMapLoaded(true);
   };
 
   const handleMapUnmount = () => {
-    console.log("Map unmounted"); // 디버깅 로그 추가
+    
     mapRef.current = null;
     setIsMapLoaded(false);
   };
 
   const handleScriptLoad = () => {
-    console.log("Google Maps script loaded"); // 디버깅 로그 추가
+    
     setIsScriptLoaded(true);
   };
 

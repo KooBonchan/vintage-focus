@@ -66,9 +66,7 @@ export default function SellDetail() {
   };
 
   const handlePasswordSubmit = () => {
-    console.log("입력된 비밀번호:", inputPassword);
-    console.log("저장된 비밀번호:", post.password);
-    console.log("비밀번호 일치 여부:", post.password === inputPassword);
+   
 
     if (post.password === inputPassword) {
       setShowContent(true);

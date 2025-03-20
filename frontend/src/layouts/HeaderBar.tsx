@@ -110,7 +110,7 @@ export default function HeaderBar() {
             :
             ( <NavLink to="/signin">
                 <Button color="primary" variant="text" size="small">
-                  Sign in
+                  로그인
                 </Button>
               </NavLink>
             )
@@ -186,7 +186,7 @@ export default function HeaderBar() {
                     <NavLink to="/signin">
                       <MenuItem>
                         <Button color="primary" variant="outlined" fullWidth>
-                          Sign in
+                          로그인
                         </Button>
                       </MenuItem>
                     </NavLink>  

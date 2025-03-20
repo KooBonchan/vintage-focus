@@ -1,6 +1,6 @@
 import ColorModeIconDropdown from '@/components/ColorModeIconDropdown';
 import { Facebook, GitHub, Google } from '@mui/icons-material';
-import { Container } from '@mui/material';
+import { Container, Divider } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MuiCard from '@mui/material/Card';
@@ -9,6 +9,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 import LoginButtons from './components/LoginButtons';
+import LoginIconButtons from './components/LoginIconButtons';
 
 
 
@@ -76,9 +77,11 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           variant="h4"
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
         >
-          Sign in or Register
+          로그인
         </Typography>
         <LoginButtons />
+        <Divider />
+        <LoginIconButtons />
       </Card>
     </SignInContainer>
 

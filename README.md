@@ -1,4 +1,6 @@
 # Vintage Focus
+2026.01.11. EC2 컨테이너 종료
+
 202502 중고 카메라 거래 추천 프로젝트 - Spring Boot + React
 
 <img style="height:2rem" src="https://img.shields.io/badge/mysql-4479A1?logo=mysql&logoColor=white"> <img style="height:2rem" src="https://img.shields.io/badge/springboot-6DB33F?logo=springboot&logoColor=white" > <img style="height:2rem" src="https://img.shields.io/badge/react-61DAFB?logo=react&logoColor=black" >
